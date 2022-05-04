@@ -4,3 +4,59 @@ h1 {
   text-align: center;
   color: blue;
 }
+
+.container {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .board {
+  background-color: white;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 700px;
+  height: 700px;
+  border: 1px solid black;
+}
+
+.grid div {
+  width: 25px;
+  height: 25px;
+}
+
+.pac-dot {
+  background-color: #dac06a;
+  border: 5px solid white;
+  border-radius: 7.5px;
+  box-sizing: border-box;
+}
+
+.wall {
+  background-color: blue;
+}
+
+.power-pellet {
+  background-color: green;
+  border-radius: 7.5px;
+}
+
+.pacman {
+  background-color: orange;
+  border-radius: 7.5px;
+  border: none;
+} */
+
+#gameCanvas {
+  height: 70vh;
+  width: 70vh;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
