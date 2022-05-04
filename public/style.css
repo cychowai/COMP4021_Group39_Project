@@ -45,6 +45,7 @@ h1 {
 body {
   display: flex;
   justify-content: center;
+
   background-image: url('src/images/frontPage.jpeg');
   background-repeat: no-repeat;
   background-size: 100%;

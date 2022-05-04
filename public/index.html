@@ -10,19 +10,19 @@
   <link href="style.css" rel="stylesheet">
 </head>
 
-<body>
-  <div>
-    <div class="frontPage">
-      <button class="frontPageBtn" onclick="">Start Game</button>
-      <button class="frontPageBtn">Instructions</button>
-    </div>
-    <div class="container">
-      <h1>Pacman Game</h1>
-      <canvas id="gameCanvas"></canvas>
-    </div>
+<body id="mainBody">
+  <div id="frontPage" class="frontPage">
+    <button id="startGame" class="frontPageBtn" onclick="">Start Game</button>
+    <button class="frontPageBtn">Instructions</button>
+  </div>
+  <div id="container" class="container">
+    <h1>Pacman Game</h1>
+    <canvas id="gameCanvas"></canvas>
   </div>
   <!-- import js file here -->
   <script src="./map.js"></script>
+  <script src="./frontPage.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 
 </html>
