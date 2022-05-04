@@ -1,8 +1,6 @@
 const express = require("express");
 
-const bcrypt = require("bcrypt");
-const fs = require("fs");
-const session = require("express-session");
+//const session = require("express-session");
 
 // Create the Express app
 const app = express();
@@ -14,6 +12,7 @@ app.use(express.static("public"));
 app.use(express.json());
 
 // Use the session middleware to maintain sessions
+/*
 const gameSession = session({
   secret: "game",
   resave: false,
@@ -22,6 +21,7 @@ const gameSession = session({
   cookie: { maxAge: 300000 }
 });
 app.use(gameSession);
+*/
 
 // Use a web server to listen at port 8000
 app.listen(8000, () => {
