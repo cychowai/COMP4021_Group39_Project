@@ -27,13 +27,13 @@
 
         <div id="main-panel" class="row">
             <div id="game-panel" > 
-                <canvas width="854px" height="480px"></canvas>
+                <canvas id="game-area" width="854px" height="480px" style="background-color: #000000"></canvas>
                 
 
             </div>
             <div id="chat-panel" class="col">
                 <div id="instructionBox" class = "col playerBox">This is the instruction of the game.
-                     Pacman is a classical game. Come play it tgt!</div> 
+                    Pacman is a classical game. Come play it tgt!</div> 
                 <div id="player1" class = "col playerBox">Player1 here!</div>
                 <div id="player2" class = "col playerBox">Player2 here!</div>
                 <div id="player3" class = "col playerBox">Player3 here!</div>
@@ -93,10 +93,10 @@
         
 
         // Initialize the UI
-        //UI.initialize();
+        UI.initialize();
 
         // Validate the signin
-        /*Authentication.validate(
+        Authentication.validate(
             () => {
                 SignInForm.hide();
                 UserPanel.update(Authentication.getUser());
@@ -106,7 +106,7 @@
             },
             () => { SignInForm.show(); }
         );
-*/
+
 
         /* Get the canvas and 2D context */
         const cv = $("canvas").get(0);
@@ -120,7 +120,7 @@
 
         //starting the game, will be changed to pressing a button later
         $("#startButton").on("click", function() {
-            
+            $("#game-panel").show();
             /* Hide the start screen */
             $("#chat-panel").hide();
 

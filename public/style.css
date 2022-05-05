@@ -192,7 +192,7 @@ button.icon:active {
 
 /*game area*/
 #game-panel{
-    display: "";
+    display: none;
 }
 
 /* Chat area */
