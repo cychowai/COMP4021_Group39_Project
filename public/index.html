@@ -1,20 +1,176 @@
+
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pacman Game</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link href="style.css" rel="stylesheet">
+    <title>The PacMan</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
 </head>
-
 <body>
-  <div>
-    <h1>Pacman Game</h1>
-  </div>
-  <!-- import js file here -->
-</body>
+    <div id="container" class="col">
+        <div id="header" class="row">
+            <div id="title">The PacMan
+                <span class="material-icons">chat</span>
+            </div>
 
+            <div class="spacer-grow"></div>
+
+            <div id="user-panel" class="row">
+                <div class="field-content row shadow">
+                    <span class="user-avatar"></span>
+                    <span class="user-name">-</span>
+                </div>
+                <button id="signout-button" class="icon"><span class="material-icons">logout</span></button>
+            </div>
+        </div>
+
+        <div id="main-panel" class="row">
+            <div id="game-panel" > 
+                <canvas width="854px" height="480px"></canvas>
+                
+
+            </div>
+            <div id="chat-panel" class="col">
+                <div id="instructionBox" class = "col playerBox">This is the instruction of the game.
+                     Pacman is a classical game. Come play it tgt!</div> 
+                <div id="player1" class = "col playerBox">Player1 here!</div>
+                <div id="player2" class = "col playerBox">Player2 here!</div>
+                <div id="player3" class = "col playerBox">Player3 here!</div>
+                <div id="player4" class = "col playerBox">Player4 here!</div>
+                <button id="readyButton" class="">Ready !</button>
+                <button id="startButton" class="">here we go !</button>
+
+            </div>
+
+            
+        </div>
+    </div>
+
+    <div id="signin-overlay" class="overlay row">
+        <div class="content shadow row">
+            <form id="signin-form" class="col">
+                <div class="caption">SIGN IN WITH YOUR ACCOUNT</div>
+                <div class="spacer-0"></div>
+                <input id="signin-username" placeholder="Enter your username"></input>
+                <input id="signin-password" type="password" placeholder="Enter your password"></input>
+                <div class="spacer-0"></div>
+                <button type="submit">Sign In</button>
+                <div id="signin-message" class="warning center"></div>
+                <div class="spacer-grow"></div>
+            </form>
+
+            <div class="spacer-0"></div>
+
+            <form id="register-form" class="col">
+                <div class="caption">OR, REGISTER IF YOU DO NOT HAVE ONE</div>
+                <div class="spacer-0"></div>
+                <input id="register-username" maxlength="10" placeholder="Enter your username"></input>
+                <select id="register-avatar">
+                    <option value="">Select your avatar</option>
+                </select>
+                <input id="register-name" maxlength="16" placeholder="Enter your name"></input>
+                <input id="register-password" type="password" placeholder="Enter your password"></input>
+                <input id="register-confirm" type="password" placeholder="Enter your password again"></input>
+                <div class="spacer-0"></div>
+                <button type="submit">Register</button>
+                <div id="register-message" class="warning center"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.min.js"></script>
+    <script src="scripts/socket.js"></script>
+    <script src="scripts/avatar.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/registration.js"></script>
+    <script src="scripts/authentication.js"></script>
+    <script src="player.js"></script>
+    <script src="bounding_box.js"></script>
+    <script src="sprite.js"></script>
+    <script>
+    $(document).ready(function() {
+        
+
+        // Initialize the UI
+        //UI.initialize();
+
+        // Validate the signin
+        /*Authentication.validate(
+            () => {
+                SignInForm.hide();
+                UserPanel.update(Authentication.getUser());
+                UserPanel.show();
+
+                Socket.connect();
+            },
+            () => { SignInForm.show(); }
+        );
+*/
+
+        /* Get the canvas and 2D context */
+        const cv = $("canvas").get(0);
+        const context = cv.getContext("2d");
+
+        /* Create the game area */
+        const gameArea = BoundingBox(context, 165, 60, 420, 800);
+
+         /* Create the sprites in the game */
+         const player = Player(context, 427, 240, gameArea); // The player     
+
+        //starting the game, will be changed to pressing a button later
+        $("#startButton").on("click", function() {
+            
+            /* Hide the start screen */
+            $("#chat-panel").hide();
+
+            /* Handle the keydown of arrow keys and spacebar */
+            $(document).on("keydown", function(event) {
+                console.log("success");
+
+                /* TODO */
+                /* Handle the key down */
+                player.move(event.keyCode%36);
+
+                //cheat key: "Space Bar"
+                if(event.keyCode == 32)
+                    player.speedUp();
+            });
+
+            /* Handle the keyup of arrow keys and spacebar */
+            $(document).on("keyup", function(event) {
+
+
+                /* TODO */
+                /* Handle the key up */
+                player.stop(event.keyCode%36);
+                if(event.keyCode == 32)
+                    player.slowDown();
+            });
+
+            /* Start the game */
+            //sounds.background.play();
+            requestAnimationFrame(doFrame);
+            
+        });
+
+        /* The main processing of the game */
+    
+        function doFrame(now) {
+
+        /* Update the sprites */
+        player.update(now);
+
+        /* Clear the screen */
+        context.clearRect(0, 0, cv.width, cv.height);
+
+        /* Draw the sprites */
+        player.draw();
+
+        /* Process the next frame */
+        requestAnimationFrame(doFrame);
+        }
+    });
+    </script>
+</body>
 </html>
