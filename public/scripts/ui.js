@@ -1,4 +1,8 @@
 const SignInForm = (function() {
+    let playerNum = null;
+    const getPlayerNum = function(){
+        return playerNum;
+    }
     // This function initializes the UI
     const initialize = function() {
         // Populate the avatar selection
@@ -22,8 +26,10 @@ const SignInForm = (function() {
                     hide();
                     UserPanel.update(Authentication.getUser());
                     UserPanel.show();
-
+                    GamePanel.createPlayer();
                     Socket.connect();
+                    playerNum = Authentication.getPlayerNum();
+                    console.out(playerNum);
                 },
                 (error) => { $("#signin-message").text(error); }
             );
@@ -71,7 +77,7 @@ const SignInForm = (function() {
         $("#signin-overlay").fadeOut(500);
     };
 
-    return { initialize, show, hide };
+    return { initialize, show, hide, getPlayerNum };
 })();
 
 const UserPanel = (function() {
@@ -251,8 +257,8 @@ const GamePanel = (function() {
     let cv = null;
     let context = null;
     let gameArea = null;
-    let player = null;
-
+    let player = [];
+    let playerNum = null;
     const initialize = function(){
         /* Get the canvas and 2D context */
         cv = $("canvas").get(0);
@@ -262,85 +268,112 @@ const GamePanel = (function() {
         gameArea = BoundingBox(context, 165, 60, 420, 800);
 
         /* Create the sprites in the game */
-        player = Player(context, 427, 240, gameArea); // The player     
+        //player = Player(context, 427, 240, gameArea); // The player     
 
-        //starting the game, will be changed to pressing a button later
+        
+
+        
+
+        //starting the game
         $("#startButton").on("click", function() {
-            $("#game-panel").show();
-            /* Hide the start screen */
-            $("#chat-panel").hide();
-
-            /* Handle the keydown of arrow keys and spacebar */
-            $(document).on("keydown", function(event) {
-                
-                /* TODO */
-                /* Handle the key down */
-                
-                //player.move(event.keyCode%36);
-
-                //cheat key: "Space Bar"
-                if(event.keyCode == 32)
-                    player.speedUp();
-
-                // Send a move request
-                Authentication.move(
-                    event.keyCode%36,
-                    () => {
-                        //player.move(event.keyCode%36);
-                        Socket.newMoveSignal(event.keyCode%36);
-                    },
-                    //error, do nothing
-                );
-            });
-
-            /* Handle the keyup of arrow keys and spacebar */
-            $(document).on("keyup", function(event) {
-                /* TODO */
-                /* Handle the key up */
-                //player.stop(event.keyCode%36);
-                if(event.keyCode == 32)
-                    player.slowDown();
-                Authentication.stop(
-                    event.keyCode%36,
-                    () => {
-                        //player.move(event.keyCode%36);
-                        Socket.newStopSignal(event.keyCode%36);
-                    },
-                    //error, do nothing
-                );
-            });
-
-            /* Start the game */
-            //sounds.background.play();
-            requestAnimationFrame(doFrame);
             
+            Authentication.startGame(()=>{
+                Socket.startGame(Authentication.getTotalPlayerNum());
+            });
+
+        //    $("#game-panel").show();
+            /* Hide the start screen */
+        //    $("#chat-panel").hide();
+    
         });
-        /* The main processing of the game */
+    }
+    const detectKeys = function(){
+        playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
+        /* Handle the keydown of arrow keys and spacebar */
+        $(document).on("keydown", function(event) {
+            
+            /* TODO */
+            /* Handle the key down */
+            
+            //player.move(event.keyCode%36);
 
-        function doFrame(now) {
+            //cheat key: "Space Bar"
+            if(event.keyCode == 32)
+                player[playerNum-1].speedUp();
 
-            /* Update the sprites */
-            player.update(now);
+            // Send a move request
+            Authentication.move(playerNum, event.keyCode%36,
+                () => {
+                    //player.move(event.keyCode%36);
+                    Socket.newMoveSignal(playerNum, event.keyCode%36);
+                    console.log(playerNum)
+                },
+                console.log(playerNum)
 
-            /* Clear the screen */
-            context.clearRect(0, 0, cv.width, cv.height);
+                //error, do nothing
+            );
+        });
 
-            /* Draw the sprites */
-            player.draw();
+        /* Handle the keyup of arrow keys and spacebar */
+        $(document).on("keyup", function(event) {
+            /* TODO */
+            /* Handle the key up */
+            //player.stop(event.keyCode%36);
+            if(event.keyCode == 32)
+                player[playerNum-1].slowDown();
+            Authentication.stop(playerNum, event.keyCode%36,
+                () => {
+                    //player.move(event.keyCode%36);
+                    Socket.newStopSignal(playerNum, event.keyCode%36);
+                },
+                //error, do nothing
+            );
+        });
 
-            /* Process the next frame */
-            requestAnimationFrame(doFrame);
+        /* Start the game */
+        //sounds.background.play();
+        requestAnimationFrame(doFrame);
+    }
+
+    /* The main processing of the game */
+
+    function doFrame(now) {
+
+        /* Update the sprites */
+        for(let i=0; i<player.length; i++)
+            player[i].update(now);
+
+        /* Clear the screen */
+        context.clearRect(0, 0, cv.width, cv.height);
+
+        /* Draw the sprites */
+        for(let i=0; i<player.length; i++)
+            player[i].draw();
+
+        /* Process the next frame */
+        requestAnimationFrame(doFrame);
+    };
+
+    
+    const movePlayer = function(playerNum, keyCode){
+        player[playerNum-1].move(keyCode);
+        
+    }
+
+    const stopPlayer = function(playerNum, keycode){
+        player[playerNum-1].stop(keycode);
+    }
+
+    const createPlayer = function(playerNum){
+        for(let i=0; i<playerNum; i++){
+            player.push(Player(context, 427+i*100, 240, gameArea));
+            console.log(player[i]);
         }
-    }
-    const movePlayer = function(keyCode){
-        player.move(keyCode);
-    }
 
-    const stopPlayer = function(keycode){
-        player.stop(keycode);
+
     }
     
-    return {stopPlayer, movePlayer, initialize};
+    return {createPlayer, stopPlayer, movePlayer, initialize, detectKeys};
 })();
 
 const UI = (function() {

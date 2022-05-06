@@ -1,10 +1,20 @@
 const Authentication = (function() {
     // This stores the current signed-in user
     let user = null;
+    let playerNum = null;
+    let totalPlayerNum = null;
 
     // This function gets the signed-in user
     const getUser = function() {
         return user;
+    }
+
+    const getPlayerNum = function(){
+        return playerNum;
+    }
+
+    const getTotalPlayerNum = function(){
+        return totalPlayerNum;
     }
 
     // This function sends a sign-in request to the server
@@ -36,6 +46,7 @@ const Authentication = (function() {
             
             if (json.status == "success") {
                 user = json.user;
+                playerNum = json.playerNum;                
                 /* Run the onSuccess() callback */
                 onSuccess(json.success);
             }
@@ -121,11 +132,11 @@ const Authentication = (function() {
         //if (onError) onError("This function is not yet implemented.");
     };
 
-    const move = function(keyCode, onSuccess, onError){
+    const move = function(playerNum, keyCode, onSuccess, onError){
         fetch("/move", {
             method: "POST",
             header:{"Content-Type": "move/json"},
-            body: keyCode
+            body: {"playerNum": playerNum, "keyCode": keyCode}
         })
         .then((res) => res.json())
         .then((json) => {
@@ -140,11 +151,11 @@ const Authentication = (function() {
         });
     }
 
-    const stop = function(keyCode, onSuccess, onError){
+    const stop = function(playerNum, keyCode, onSuccess, onError){
         fetch("/stop", {
             method: "POST",
             header:{"Content-Type": "stop/json"},
-            body: keyCode
+            body: {"playerNum": playerNum, "keyCode": keyCode}
         })
         .then((res) => res.json())
         .then((json) => {
@@ -159,5 +170,24 @@ const Authentication = (function() {
         });
     }
 
-    return { getUser, signin, validate, signout, move, stop };
+    const startGame = function(onSuccess, onError){
+        fetch("/start", {
+            method: "GET",
+            headers: {"Content-Type": "start/json"}
+        })
+        .then((res) => res.json())
+        .then((json) => {
+            if (json.status == "success") {
+                /* Run the onSuccess() callback */
+                totalPlayerNum = json.totalPlayerNum;
+                onSuccess(json.success);
+            }
+            else if (onError) onError(json.error);
+        })
+        .catch((err) => {
+            console.log("Error4!");
+        });
+    }
+
+    return { getUser, signin, validate, signout, move, stop, getPlayerNum, startGame, getTotalPlayerNum };
 })();

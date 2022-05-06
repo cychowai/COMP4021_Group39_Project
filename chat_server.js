@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const fs = require("fs");
 const session = require("express-session");
 
+
 // Create the Express app
 const app = express();
 
@@ -28,6 +29,8 @@ function containWordCharsOnly(text) {
     return /^\w+$/.test(text);
 }
 
+
+let playerNum = 0;
 // Handle the /register endpoint
 app.post("/register", (req, res) => {
     // Get the JSON data from the body
@@ -99,6 +102,8 @@ app.post("/signin", (req, res) => {
     }
     else{
         //const userReturn = {};
+        playerNum++;
+        console.log(playerNum);
         const userReturn = {
             "username": username,
             "avatar": usersRead[username].avatar, 
@@ -106,7 +111,8 @@ app.post("/signin", (req, res) => {
         };
         //console.log(userReturn);
         req.session.user = userReturn;
-        res.json({ status: "success", user: userReturn/* the user object */ });
+        res.json({ status: "success", user: userReturn, playerNum: playerNum });
+        
     }
     //
     // G. Sending a success response with the user account
@@ -143,6 +149,7 @@ app.get("/signout", (req, res) => {
     //
     // Deleting req.session.user
     //
+    playerNum--;
     delete req.session.user;
     //
     // Sending a success response
@@ -153,23 +160,28 @@ app.get("/signout", (req, res) => {
 });
 
 app.post("/move", (req, res) => {
-    const keyCode = req.body;
+    const keyCode = req.body.keyCode;
+    const playerNum = req.body.playerNum;
     //const mapRead = JSON.parse(fs.readFileSync("data/map.json"));
     //determine valid move or not
     if(true){
-        res.json({ status: "success", key: keyCode})
+        res.json({ status: "success", playerNum: playerNum, keyCode: keyCode})
     }
 })
 
 app.post("/stop", (req, res) => {
-    const keyCode = req.body;
+    const keyCode = req.body.keyCode;
+    const playerNum = req.body.playerNum;
     //const mapRead = JSON.parse(fs.readFileSync("data/map.json"));
     //determine valid move or not
     if(true){
-        res.json({ status: "success", key: keyCode})
+        res.json({ status: "success", playerNum: playerNum, keyCode: keyCode})
     }
 })
 
+app.get("/start", (req, res) =>{
+    res.json({status: "success", totalPlayerNum: playerNum});
+})
 
 //
 // ***** Please insert your Lab 6 code here *****
@@ -240,11 +252,15 @@ io.on("connection", (socket) => {
         //console.log(socket.request.session.user.username);
     })
 
-    socket.on("newMoveSignal", (keyCode) => {
-        io.emit("move signal", keyCode);
+    socket.on("newMoveSignal", (playerNum, keyCode) => {
+        io.emit("move signal", playerNum, keyCode);
     })
 
-    socket.on("newStopSignal", (keyCode) => {
-        io.emit("stop signal", keyCode);
+    socket.on("newStopSignal", (playerNum, keyCode) => {
+        io.emit("stop signal", playerNum, keyCode);
+    })
+
+    socket.on("start game", (totalPlayerNum) => {
+        io.emit("start game", totalPlayerNum);
     })
 });

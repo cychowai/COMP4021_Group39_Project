@@ -8,5 +8,10 @@
   "avatar": "Rabbit",
   "name": "test guy",
   "password": "$2b$10$Euu4f4I2vxZh/bcB9O9Mhuusx/tKh/TVGoGBDyM602ywQNj2hwGUu"
+ },
+ "test2": {
+  "avatar": "Bird",
+  "name": "testguy2",
+  "password": "$2b$10$r9k1RU31tEUc8.fIYzbko.4z9FUOdBzVFVlvzArqbNu2kLTbVCF1e"
  }
 }

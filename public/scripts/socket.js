@@ -66,12 +66,20 @@ const Socket = (function() {
                 ChatPanel.showUp(username);
         });
         
-        socket.on("move signal", (keyCode) => {
-            GamePanel.movePlayer(keyCode);
+        socket.on("move signal", (playerNum, keyCode) => {
+            GamePanel.movePlayer(playerNum, keyCode);
         });
 
-        socket.on("stop signal", (keyCode) => {
-            GamePanel.stopPlayer(keyCode);
+        socket.on("stop signal", (playerNum, keyCode) => {
+            GamePanel.stopPlayer(playerNum, keyCode);
+        });
+
+        socket.on("start game", (totalPlayerNum) => {
+            $("#game-panel").show();
+            /* Hide the start screen */
+            $("#chat-panel").hide();
+            GamePanel.createPlayer(totalPlayerNum);
+            GamePanel.detectKeys();
         });
     };
 
@@ -92,12 +100,16 @@ const Socket = (function() {
         socket.emit("sending message");
     }
 
-    const newMoveSignal = function(keyCode){
-        socket.emit("newMoveSignal", keyCode);
+    const newMoveSignal = function(playerNum, keyCode){
+        socket.emit("newMoveSignal",playerNum, keyCode);
     }
 
-    const newStopSignal = function(keyCode){
-        socket.emit("newStopSignal", keyCode);
+    const newStopSignal = function(playerNum, keyCode){
+        socket.emit("newStopSignal",playerNum, keyCode);
     }
-    return { getSocket, connect, disconnect, postMessage, sendingMessage, newMoveSignal, newStopSignal};
+
+    const startGame = function(totalPlayerNum){
+        socket.emit("start game", totalPlayerNum);
+    }
+    return { getSocket, connect, disconnect, postMessage, sendingMessage, newMoveSignal, newStopSignal, startGame};
 })();
