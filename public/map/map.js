@@ -38,13 +38,13 @@ const ctx = canvas.getContext("2d");
 const tileSize = 10;
 
 const wall = new Image();
-wall.src = "src/images/wall.png";
+wall.src = "src/images/block.png";
 
 const dot = new Image();
 dot.src = "src/images/yellowDot.png";
 
 const power = new Image();
-power.src = "src/images/pinkDot.png";
+power.src = "src/images/cherry.png";
 
 function setCanvasSize(canvas) {
   canvas.width = map[0].length * tileSize;
