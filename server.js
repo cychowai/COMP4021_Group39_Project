@@ -1,5 +1,7 @@
 const express = require("express");
 const session = require("express-session");
+const fs = require("fs");
+const bcrypt = require("bcrypt");
 
 // Create the Express app
 const app = express();
@@ -24,6 +26,42 @@ app.use(gameSession);
 function containWordCharsOnly(text) {
   return /^\w+$/.test(text);
 }
+
+// Handle the /register endpoint
+app.post("/register", (req, res) => {
+  // Get the JSON data from the body
+  const { username, avatar, name, password } = req.body;
+
+  // Reading the users.json file
+  const usersRead = JSON.parse(fs.readFileSync("data/users.json"));
+
+  // Checking for the user data correctness
+  if (username == "" || avatar == "" || name == "" || password == "") {
+    res.json({ status: "error", error: "contains empty field" });
+  }
+  else if (!containWordCharsOnly(username)) {
+    res.json({ status: "error", error: "contains non word Char" })
+  }
+  else if (username in usersRead) {
+    res.json({ status: "error", error: "name used" });
+  }
+  else {
+    // Adding the new user account
+    const hash = bcrypt.hashSync(password, 10);
+
+    // Saving the users.json file
+    usersRead[username] = {
+      "avatar": avatar,
+      "name": name,
+      "password": hash
+    };
+    fs.writeFileSync("data/users.json", JSON.stringify(usersRead, null, " "));
+    // Sending a success response to the browser
+    res.json({ status: "success" });
+    // Delete when appropriate
+    //res.json({ status: "error", error: "This endpoint is not yet implemented.1" });
+  }
+});
 
 // Use a web server to listen at port 8000
 app.listen(8000, () => {
