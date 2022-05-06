@@ -110,6 +110,16 @@ app.get("/validate", (req, res) => {
   // res.json({ status: "error", error: "This endpoint is not yet implemented.3" });
 });
 
+// Handle the /signout endpoint
+app.get("/signout", (req, res) => {
+  // Deleting req.session.user
+  delete req.session.user;
+  // Sending a success response
+  res.json({ status: "success" });
+  // Delete when appropriate
+  // res.json({ status: "error", error: "This endpoint is not yet implemented.4" });
+});
+
 // Use a web server to listen at port 8000
 app.listen(8000, () => {
   console.log("The server has started...");
