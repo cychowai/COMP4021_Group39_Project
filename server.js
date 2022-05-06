@@ -20,6 +20,11 @@ const gameSession = session({
 });
 app.use(gameSession);
 
+// This helper function checks whether the text only contains word characters
+function containWordCharsOnly(text) {
+  return /^\w+$/.test(text);
+}
+
 // Use a web server to listen at port 8000
 app.listen(8000, () => {
   console.log("The server has started...");
