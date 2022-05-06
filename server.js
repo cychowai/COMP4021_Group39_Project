@@ -138,6 +138,75 @@ app.get("/signout", (req, res) => {
   // res.json({ status: "error", error: "This endpoint is not yet implemented.4" });
 });
 
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const res = require("express/lib/response");
+const httpServer = createServer(app);
+const io = new Server(httpServer);
+
+io.use((socket, next) => {
+  chatSession(socket.request, {}, next);
+});
+
+const onlineUsers = {};
+io.on("connection", (socket) => {
+  // Add a new user to the online user list
+  if (socket.request.session.user) {
+    onlineUsers[socket.request.session.user.username] = {
+      "avatar": socket.request.session.user.avatar,
+      "name": socket.request.session.user.name
+    };
+  }
+  //io.emit("add user", JSON.stringify(socket.request.session.user));
+
+  socket.on("disconnect", () => {
+    // Remove the user from the online user list
+    if (socket.request.session.user) {
+      delete onlineUsers[socket.request.session.user.username];
+    }
+
+    //io.emit("remove user", JSON.stringify(socket.request.session.user));
+    io.emit("users", JSON.stringify(onlineUsers));
+  });
+
+  socket.on("get users", () => {
+    // Send the online users to the browser
+    io.emit("users", JSON.stringify(onlineUsers));
+  });
+
+  socket.on("get messages", () => {
+    // Send the chatroom messages to the browser
+    const chatroom = JSON.parse(fs.readFileSync("data/chatroom.json"));
+    socket.emit("messages", JSON.stringify(chatroom));
+  });
+
+  socket.on("post message", (content) => {
+    // Add the message to the chatroom
+    const message = {
+      user: socket.request.session.user/* { username, avatar, name } */,
+      datetime: new Date() /* date and time when the message is posted */,
+      content: content /* content of the message */
+    }
+
+    const chatroom = JSON.parse(fs.readFileSync("data/chatroom.json"));
+    chatroom.push(message);
+    fs.writeFileSync("data/chatroom.json", JSON.stringify(chatroom, null, " "));
+    io.emit("add message", JSON.stringify(message))
+  });
+
+  socket.on("sending message", () => {
+    io.emit("signal sending", socket.request.session.user.name);
+  })
+
+  socket.on("newMoveSignal", (keyCode) => {
+    io.emit("move signal", keyCode);
+  })
+
+  socket.on("newStopSignal", (keyCode) => {
+    io.emit("stop signal", keyCode);
+  })
+});
+
 // Use a web server to listen at port 8000
 app.listen(8000, () => {
   console.log("The server has started...");
