@@ -59,8 +59,39 @@ app.post("/register", (req, res) => {
     // Sending a success response to the browser
     res.json({ status: "success" });
     // Delete when appropriate
-    //res.json({ status: "error", error: "This endpoint is not yet implemented.1" });
+    // res.json({ status: "error", error: "This endpoint is not yet implemented.1" });
   }
+});
+
+app.post("/signin", (req, res) => {
+  // Get the JSON data from the body
+  const { username, password } = req.body;
+
+  // Reading the users.json file
+  const usersRead = JSON.parse(fs.readFileSync("data/users.json"));
+
+  // Checking for username/password
+  /* a hashed password stored in users.json */
+  // const hashedPassword = usersRead[username].password;
+  if (!(username in usersRead)) {
+    res.json({ status: "error", error: "user does not exist" });
+  }
+  else if (!bcrypt.compareSync(password, usersRead[username].password)) {
+    res.json({ status: "error", error: "Incorrect password" });
+  }
+  else {
+    const userReturn = {
+      "username": username,
+      "avatar": usersRead[username].avatar,
+      "name": usersRead[username].name
+    };
+    req.session.user = userReturn;
+    res.json({ status: "success", user: userReturn/* the user object */ });
+  }
+  // Sending a success response with the user account
+
+  // Delete when appropriate
+  // res.json({ status: "error", error: "This endpoint is not yet implemented.2" });
 });
 
 // Use a web server to listen at port 8000
