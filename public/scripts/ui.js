@@ -57,7 +57,7 @@ const SignInForm = (function() {
             );
         });
     };
-
+    
     // This function shows the form
     const show = function() {
         $("#signin-overlay").fadeIn(500);
@@ -247,6 +247,102 @@ const ChatPanel = (function() {
     return { initialize, update, addMessage, showUp };
 })();
 
+const GamePanel = (function() {
+    let cv = null;
+    let context = null;
+    let gameArea = null;
+    let player = null;
+
+    const initialize = function(){
+        /* Get the canvas and 2D context */
+        cv = $("canvas").get(0);
+        context = cv.getContext("2d");
+
+        /* Create the game area */
+        gameArea = BoundingBox(context, 165, 60, 420, 800);
+
+        /* Create the sprites in the game */
+        player = Player(context, 427, 240, gameArea); // The player     
+
+        //starting the game, will be changed to pressing a button later
+        $("#startButton").on("click", function() {
+            $("#game-panel").show();
+            /* Hide the start screen */
+            $("#chat-panel").hide();
+
+            /* Handle the keydown of arrow keys and spacebar */
+            $(document).on("keydown", function(event) {
+                
+                /* TODO */
+                /* Handle the key down */
+                
+                //player.move(event.keyCode%36);
+
+                //cheat key: "Space Bar"
+                if(event.keyCode == 32)
+                    player.speedUp();
+
+                // Send a move request
+                Authentication.move(
+                    event.keyCode%36,
+                    () => {
+                        //player.move(event.keyCode%36);
+                        Socket.newMoveSignal(event.keyCode%36);
+                    },
+                    //error, do nothing
+                );
+            });
+
+            /* Handle the keyup of arrow keys and spacebar */
+            $(document).on("keyup", function(event) {
+                /* TODO */
+                /* Handle the key up */
+                //player.stop(event.keyCode%36);
+                if(event.keyCode == 32)
+                    player.slowDown();
+                Authentication.stop(
+                    event.keyCode%36,
+                    () => {
+                        //player.move(event.keyCode%36);
+                        Socket.newStopSignal(event.keyCode%36);
+                    },
+                    //error, do nothing
+                );
+            });
+
+            /* Start the game */
+            //sounds.background.play();
+            requestAnimationFrame(doFrame);
+            
+        });
+        /* The main processing of the game */
+
+        function doFrame(now) {
+
+            /* Update the sprites */
+            player.update(now);
+
+            /* Clear the screen */
+            context.clearRect(0, 0, cv.width, cv.height);
+
+            /* Draw the sprites */
+            player.draw();
+
+            /* Process the next frame */
+            requestAnimationFrame(doFrame);
+        }
+    }
+    const movePlayer = function(keyCode){
+        player.move(keyCode);
+    }
+
+    const stopPlayer = function(keycode){
+        player.stop(keycode);
+    }
+    
+    return {stopPlayer, movePlayer, initialize};
+})();
+
 const UI = (function() {
     // This function gets the user display
     const getUserDisplay = function(user) {
@@ -257,7 +353,7 @@ const UI = (function() {
     };
 
     // The components of the UI are put here
-    const components = [SignInForm, UserPanel, OnlineUsersPanel, ChatPanel];
+    const components = [SignInForm, UserPanel, OnlineUsersPanel, ChatPanel, GamePanel];
 
     // This function initializes the UI
     const initialize = function() {

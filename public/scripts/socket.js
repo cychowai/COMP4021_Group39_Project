@@ -64,7 +64,15 @@ const Socket = (function() {
         socket.on("signal sending", (username) => {
             if(username != Authentication.getUser().name)
                 ChatPanel.showUp(username);
-        })
+        });
+        
+        socket.on("move signal", (keyCode) => {
+            GamePanel.movePlayer(keyCode);
+        });
+
+        socket.on("stop signal", (keyCode) => {
+            GamePanel.stopPlayer(keyCode);
+        });
     };
 
     // This function disconnects the socket from the server
@@ -81,9 +89,15 @@ const Socket = (function() {
     };
 
     const sendingMessage = function(){
-
         socket.emit("sending message");
     }
 
-    return { getSocket, connect, disconnect, postMessage, sendingMessage };
+    const newMoveSignal = function(keyCode){
+        socket.emit("newMoveSignal", keyCode);
+    }
+
+    const newStopSignal = function(keyCode){
+        socket.emit("newStopSignal", keyCode);
+    }
+    return { getSocket, connect, disconnect, postMessage, sendingMessage, newMoveSignal, newStopSignal};
 })();

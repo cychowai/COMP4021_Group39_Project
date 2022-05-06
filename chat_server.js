@@ -152,6 +152,24 @@ app.get("/signout", (req, res) => {
     //res.json({ status: "error", error: "This endpoint is not yet implemented.4" });
 });
 
+app.post("/move", (req, res) => {
+    const keyCode = req.body;
+    //const mapRead = JSON.parse(fs.readFileSync("data/map.json"));
+    //determine valid move or not
+    if(true){
+        res.json({ status: "success", key: keyCode})
+    }
+})
+
+app.post("/stop", (req, res) => {
+    const keyCode = req.body;
+    //const mapRead = JSON.parse(fs.readFileSync("data/map.json"));
+    //determine valid move or not
+    if(true){
+        res.json({ status: "success", key: keyCode})
+    }
+})
+
 
 //
 // ***** Please insert your Lab 6 code here *****
@@ -175,13 +193,10 @@ const onlineUsers = {};
 io.on("connection", (socket) => {
     // Add a new user to the online user list
    if(socket.request.session.user){
-        //Object.assign(onlineUsers, socket.request.session.user);
         onlineUsers[socket.request.session.user.username] = {
             "avatar": socket.request.session.user.avatar,
             "name": socket.request.session.user.name
         };
-        //console.log(onlineUsers);
-       // console.log(socket.request.session.user);
     }
     //io.emit("add user", JSON.stringify(socket.request.session.user));
     
@@ -190,7 +205,6 @@ io.on("connection", (socket) => {
         
         if(socket.request.session.user){
             delete onlineUsers[socket.request.session.user.username];
-            //console.log(onlineUsers);
         }
         //io.emit("remove user", JSON.stringify(socket.request.session.user));
         io.emit("users", JSON.stringify(onlineUsers));
@@ -224,5 +238,13 @@ io.on("connection", (socket) => {
     socket.on("sending message", () => {
         io.emit("signal sending", socket.request.session.user.name);
         //console.log(socket.request.session.user.username);
+    })
+
+    socket.on("newMoveSignal", (keyCode) => {
+        io.emit("move signal", keyCode);
+    })
+
+    socket.on("newStopSignal", (keyCode) => {
+        io.emit("stop signal", keyCode);
     })
 });

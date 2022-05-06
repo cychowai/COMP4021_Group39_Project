@@ -33,7 +33,7 @@ const Authentication = (function() {
         })
         .then((res) => res.json())
         .then((json) => {
-            console.log("good signin send!");
+            
             if (json.status == "success") {
                 user = json.user;
                 /* Run the onSuccess() callback */
@@ -121,5 +121,43 @@ const Authentication = (function() {
         //if (onError) onError("This function is not yet implemented.");
     };
 
-    return { getUser, signin, validate, signout };
+    const move = function(keyCode, onSuccess, onError){
+        fetch("/move", {
+            method: "POST",
+            header:{"Content-Type": "move/json"},
+            body: keyCode
+        })
+        .then((res) => res.json())
+        .then((json) => {
+            if (json.status == "success") {
+                /* Run the onSuccess() callback */
+                onSuccess(json.success);
+            }
+            else if (onError) onError(json.error);
+        })
+        .catch((err) => {
+            console.log("Error5!");
+        });
+    }
+
+    const stop = function(keyCode, onSuccess, onError){
+        fetch("/stop", {
+            method: "POST",
+            header:{"Content-Type": "stop/json"},
+            body: keyCode
+        })
+        .then((res) => res.json())
+        .then((json) => {
+            if (json.status == "success") {
+                /* Run the onSuccess() callback */
+                onSuccess(json.success);
+            }
+            else if (onError) onError(json.error);
+        })
+        .catch((err) => {
+            console.log("Error6!");
+        });
+    }
+
+    return { getUser, signin, validate, signout, move, stop };
 })();

@@ -108,68 +108,9 @@
         );
 
 
-        /* Get the canvas and 2D context */
-        const cv = $("canvas").get(0);
-        const context = cv.getContext("2d");
+        
 
-        /* Create the game area */
-        const gameArea = BoundingBox(context, 165, 60, 420, 800);
-
-         /* Create the sprites in the game */
-         const player = Player(context, 427, 240, gameArea); // The player     
-
-        //starting the game, will be changed to pressing a button later
-        $("#startButton").on("click", function() {
-            $("#game-panel").show();
-            /* Hide the start screen */
-            $("#chat-panel").hide();
-
-            /* Handle the keydown of arrow keys and spacebar */
-            $(document).on("keydown", function(event) {
-                console.log("success");
-
-                /* TODO */
-                /* Handle the key down */
-                player.move(event.keyCode%36);
-
-                //cheat key: "Space Bar"
-                if(event.keyCode == 32)
-                    player.speedUp();
-            });
-
-            /* Handle the keyup of arrow keys and spacebar */
-            $(document).on("keyup", function(event) {
-
-
-                /* TODO */
-                /* Handle the key up */
-                player.stop(event.keyCode%36);
-                if(event.keyCode == 32)
-                    player.slowDown();
-            });
-
-            /* Start the game */
-            //sounds.background.play();
-            requestAnimationFrame(doFrame);
-            
-        });
-
-        /* The main processing of the game */
-    
-        function doFrame(now) {
-
-        /* Update the sprites */
-        player.update(now);
-
-        /* Clear the screen */
-        context.clearRect(0, 0, cv.width, cv.height);
-
-        /* Draw the sprites */
-        player.draw();
-
-        /* Process the next frame */
-        requestAnimationFrame(doFrame);
-        }
+        
     });
     </script>
 </body>
