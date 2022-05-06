@@ -63,6 +63,7 @@ app.post("/register", (req, res) => {
   }
 });
 
+// Handle the /signin endpoint
 app.post("/signin", (req, res) => {
   // Get the JSON data from the body
   const { username, password } = req.body;
@@ -92,6 +93,21 @@ app.post("/signin", (req, res) => {
 
   // Delete when appropriate
   // res.json({ status: "error", error: "This endpoint is not yet implemented.2" });
+});
+
+// Handle the /validate endpoint
+app.get("/validate", (req, res) => {
+  // Getting req.session.user
+  if (req.session.user) {
+    res.json({ status: "success", user: req.session.user });
+  }
+  else {
+    res.json({ status: "error" });
+  }
+  // Sending a success response with the user account
+
+  // Delete when appropriate
+  // res.json({ status: "error", error: "This endpoint is not yet implemented.3" });
 });
 
 // Use a web server to listen at port 8000
