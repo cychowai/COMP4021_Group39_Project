@@ -110,6 +110,24 @@ app.get("/validate", (req, res) => {
   // res.json({ status: "error", error: "This endpoint is not yet implemented.3" });
 });
 
+app.post("/move", (req, res) => {
+  const keyCode = req.body;
+  // const mapRead = JSON.parse(fs.readFileSync("data/map.json"));
+  // determine valid move or not
+  if (true) {
+    res.json({ status: "success", key: keyCode })
+  }
+});
+
+app.post("/stop", (req, res) => {
+  const keyCode = req.body;
+  // const mapRead = JSON.parse(fs.readFileSync("data/map.json"));
+  // determine valid move or not
+  if (true) {
+    res.json({ status: "success", key: keyCode })
+  }
+});
+
 // Handle the /signout endpoint
 app.get("/signout", (req, res) => {
   // Deleting req.session.user
