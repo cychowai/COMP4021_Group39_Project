@@ -35,7 +35,7 @@ const map = [
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-const tileSize = 10;
+const blockSize = 10;
 
 const wall = new Image();
 wall.src = "src/images/block.png";
@@ -47,25 +47,25 @@ const power = new Image();
 power.src = "src/images/cherry.png";
 
 function setCanvasSize(canvas) {
-  canvas.width = map[0].length * tileSize;
-  canvas.height = map.length * tileSize;
+  canvas.width = map[0].length * blockSize;
+  canvas.height = map.length * blockSize;
 }
 
 function createBoard() {
   for (var i = 0; i < map.length; i++) {
     for (var j = 0; j < map[i].length; j++) {
       if (map[i][j] === 1) {
-        ctx.drawImage(wall, j * tileSize, i * tileSize, tileSize, tileSize);
+        ctx.drawImage(wall, j * blockSize, i * blockSize, blockSize, blockSize);
       }
       else if (map[i][j] === 2) {
-        ctx.drawImage(dot, j * tileSize, i * tileSize, tileSize, tileSize);
+        ctx.drawImage(dot, j * blockSize, i * blockSize, blockSize, blockSize);
       }
       else if (map[i][j] === 3) {
-        ctx.drawImage(power, j * tileSize, i * tileSize, tileSize, tileSize);
+        ctx.drawImage(power, j * blockSize, i * blockSize, blockSize, blockSize);
       }
       else {
         ctx.fillStyle = "black";
-        ctx.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
+        ctx.fillRect(j * blockSize, i * blockSize, blockSize, blockSize);
       }
     }
   }
