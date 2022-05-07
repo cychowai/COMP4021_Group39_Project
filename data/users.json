@@ -13,5 +13,15 @@
   "avatar": "Bird",
   "name": "testguy2",
   "password": "$2b$10$r9k1RU31tEUc8.fIYzbko.4z9FUOdBzVFVlvzArqbNu2kLTbVCF1e"
+ },
+ "jeff": {
+  "avatar": "Hamster",
+  "name": "jeff",
+  "password": "$2b$10$F.1actp8eRU/trX2McMOD.tnuiJXD2ZRTfvhWsRzVlH4jZjYIAiSC"
+ },
+ "jim": {
+  "avatar": "Hamster",
+  "name": "jim",
+  "password": "$2b$10$SdrjY0xKyuuqB0AJ4fAAcOXB59rRi6vD5pcDYG4cNTsvRMKLj7SM2"
  }
 }

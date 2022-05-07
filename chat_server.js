@@ -38,15 +38,11 @@ app.post("/register", (req, res) => {
     // Get the JSON data from the body
     const { username, avatar, name, password } = req.body;
 
-    //
     // D. Reading the users.json file
-    //
     const usersRead = JSON.parse(fs.readFileSync("data/users.json"));
     //console.log(usersRead);
     
-    //
     // E. Checking for the user data correctness
-    //
     if(username == "" || avatar =="" || name == "" || password == ""){
         res.json({ status: "error", error: "contains empty field"});
     }
@@ -57,26 +53,18 @@ app.post("/register", (req, res) => {
         res.json({ status: "error", error: "name used"});
     } 
     else{
-    //
     // G. Adding the new user account
-    //
     const hash = bcrypt.hashSync(password, 10);
   
-    //
     // H. Saving the users.json file
-    //
     usersRead[username] = { 
         "avatar": avatar, 
         "name": name, 
         "password": hash
     };
     fs.writeFileSync("data/users.json",JSON.stringify(usersRead, null, " "));
-    //
     // I. Sending a success response to the browser
-    //
     res.json({ status: "success" });
-    // Delete when appropriate
-    //res.json({ status: "error", error: "This endpoint is not yet implemented.1" });
     }
 
 });
@@ -86,14 +74,12 @@ app.post("/signin", (req, res) => {
     // Get the JSON data from the body
     const { username, password } = req.body;
 
-    //
     // D. Reading the users.json file
-    //
     const usersRead = JSON.parse(fs.readFileSync("data/users.json"));
 
-    //
+
     // E. Checking for username/password
-    //
+
     /* a hashed password stored in users.json */
     //const hashedPassword = usersRead[username].password;
     if(!(username in usersRead)){
@@ -103,7 +89,6 @@ app.post("/signin", (req, res) => {
         res.json({ status: "error", error: "Incorrect password"});
     }
     else{
-        //const userReturn = {};
         playerNum++;
         console.log(playerNum);
         const userReturn = {
@@ -116,10 +101,6 @@ app.post("/signin", (req, res) => {
         res.json({ status: "success", user: userReturn, playerNum: playerNum });
         
     }
-    //
-    // G. Sending a success response with the user account
-    //
-
 });
 
 // Handle the /validate endpoint
@@ -130,6 +111,7 @@ app.get("/validate", (req, res) => {
         //console.log(req.session.user);
     }
     else{
+        
         res.json({ status: "error"});
     }
 
@@ -138,17 +120,11 @@ app.get("/validate", (req, res) => {
 // Handle the /signout endpoint
 app.get("/signout", (req, res) => {
 
-    //
     // Deleting req.session.user
-    //
     playerNum--;
     delete req.session.user;
-    //
     // Sending a success response
-    //
     res.json({ status: "success"});
-    // Delete when appropriate
-    //res.json({ status: "error", error: "This endpoint is not yet implemented.4" });
 });
 
 app.post("/move", (req, res) => {
@@ -159,6 +135,9 @@ app.post("/move", (req, res) => {
     if(true){
         res.json({ status: "success", playerNum: playerNum, keyCode: keyCode})
     }
+    //ghost gameover
+
+    //wall, bounce
 })
 
 app.post("/stop", (req, res) => {
@@ -176,9 +155,6 @@ app.get("/start", (req, res) =>{
     
 })
 
-//
-// ***** Please insert your Lab 6 code here *****
-//
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const res = require("express/lib/response");

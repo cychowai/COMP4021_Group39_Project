@@ -26,16 +26,11 @@ const Authentication = (function() {
     //                 request fails in this form `onError(error)`
     const signin = function(username, password, onSuccess, onError) {
 
-        //
-        // A. Preparing the user data
-        //
         const userData = JSON.stringify({
             "username" :  username,
             "password" : password                            
         });
-        //
-        // B. Sending the AJAX request to the server
-        //
+
         fetch("/signin", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -43,7 +38,6 @@ const Authentication = (function() {
         })
         .then((res) => res.json())
         .then((json) => {
-            
             if (json.status == "success") {
                 user = json.user;
                 playerNum = json.playerNum;                
@@ -56,21 +50,11 @@ const Authentication = (function() {
         .catch((err) => {
             console.log("Error2!")
         })
-        //
-        // F. Processing any error returned by the server
-        //
-
-        //
-        // H. Handling the success response from the server
-        //
     };
 
 
     const validate = function(onSuccess, onError) {
 
-        //
-        // A. Sending the AJAX request to the server
-        //
         fetch("/validate", {
             method: "GET",
             headers: {"Content-Type": "validate/json"}
