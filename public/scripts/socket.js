@@ -16,15 +16,14 @@ const Socket = (function() {
         socket.on("connect", () => {
             // Get the online user list
             socket.emit("get users");
-
-            // Get the chatroom messages
-            socket.emit("get messages");
+            
         });
 
         // Set up the users event
         socket.on("users", (onlineUsers) => {
             onlineUsers = JSON.parse(onlineUsers);
-
+            //$("#player1").show();
+            console.log(onlineUsers);
             // Show the online users
             OnlineUsersPanel.update(onlineUsers);
         });
@@ -45,27 +44,6 @@ const Socket = (function() {
             OnlineUsersPanel.removeUser(user);
         });
 
-        // Set up the messages event
-        socket.on("messages", (chatroom) => {
-            chatroom = JSON.parse(chatroom);
-
-            // Show the chatroom messages
-            ChatPanel.update(chatroom);
-        });
-
-        // Set up the add message event
-        socket.on("add message", (message) => {
-            message = JSON.parse(message);
-
-            // Add the message to the chatroom
-            ChatPanel.addMessage(message);
-        });
-        
-        socket.on("signal sending", (username) => {
-            if(username != Authentication.getUser().name)
-                ChatPanel.showUp(username);
-        });
-        
         socket.on("move signal", (playerNum, keyCode) => {
             GamePanel.movePlayer(playerNum, keyCode);
         });
@@ -81,6 +59,10 @@ const Socket = (function() {
             GamePanel.createPlayer(totalPlayerNum);
             GamePanel.detectKeys();
         });
+
+        socket.on("refuse starting", () => {
+            $("#someonePlaying").show();
+        })
     };
 
     // This function disconnects the socket from the server

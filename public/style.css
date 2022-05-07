@@ -219,6 +219,7 @@ button.icon:active {
 }
 .playerBox{
     height: 25%;
+    display: none;
     
 }
 

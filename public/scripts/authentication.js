@@ -49,6 +49,7 @@ const Authentication = (function() {
                 playerNum = json.playerNum;                
                 /* Run the onSuccess() callback */
                 onSuccess(json.success);
+                console.log(user);
             }
             else if (onError) onError(json.error);
         })
@@ -62,16 +63,9 @@ const Authentication = (function() {
         //
         // H. Handling the success response from the server
         //
-
-        // Delete when appropriate
-        //if (onError) onError("This function is not yet implemented.");
     };
 
-    // This function sends a validate request to the server
-    // * `onSuccess` - This is a callback function to be called when the
-    //                 request is successful in this form `onSuccess()`
-    // * `onError`   - This is a callback function to be called when the
-    //                 request fails in this form `onError(error)`
+
     const validate = function(onSuccess, onError) {
 
         //
@@ -86,6 +80,7 @@ const Authentication = (function() {
             if (json.status == "success") {
                 /* Run the onSuccess() callback */
                 user = json.user;
+                playerNum = json.playerNum;    
                 onSuccess(json.success);
             }
             else if (onError) onError(json.error);
@@ -93,23 +88,8 @@ const Authentication = (function() {
         .catch((err) => {
             console.log("Error3!");
         });
-        //
-        // C. Processing any error returned by the server
-        //
-
-        //
-        // E. Handling the success response from the server
-        //
-
-        // Delete when appropriate
-        //if (onError) onError("This function is not yet implemented.");
     };
 
-    // This function sends a sign-out request to the server
-    // * `onSuccess` - This is a callback function to be called when the
-    //                 request is successful in this form `onSuccess()`
-    // * `onError`   - This is a callback function to be called when the
-    //                 request fails in this form `onError(error)`
     const signout = function(onSuccess, onError) {
         fetch("/signout", {
             method: "GET",
@@ -128,8 +108,6 @@ const Authentication = (function() {
         .catch((err) => {
             console.log("Error4!");
         });
-        // Delete when appropriate
-        //if (onError) onError("This function is not yet implemented.");
     };
 
     const move = function(playerNum, keyCode, onSuccess, onError){

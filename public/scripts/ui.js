@@ -26,8 +26,9 @@ const SignInForm = (function() {
                     hide();
                     UserPanel.update(Authentication.getUser());
                     UserPanel.show();
-                    GamePanel.createPlayer();
                     Socket.connect();
+                    //create a player
+                    GamePanel.createPlayer();
                     playerNum = Authentication.getPlayerNum();
                     console.out(playerNum);
                 },
@@ -141,12 +142,12 @@ const OnlineUsersPanel = (function() {
 
         // Add the user one-by-one
         for (const username in onlineUsers) {
-            if (username != currentUser.username) {
-                onlineUsersArea.append(
-                    $("<div id='username-" + username + "'></div>")
-                        .append(UI.getUserDisplay(onlineUsers[username]))
-                );
-            }
+            //$("#player1").show();
+            onlineUsersArea.append(
+                $("<div id='username-" + username + "'></div>")
+                    .append(UI.getUserDisplay(onlineUsers[username]))
+            );
+        
         }
     };
 
@@ -180,79 +181,6 @@ const OnlineUsersPanel = (function() {
     return { initialize, update, addUser, removeUser };
 })();
 
-const ChatPanel = (function() {
-	// This stores the chat area
-    let chatArea = null;
-
-    // This function initializes the UI
-    const initialize = function() {
-		// Set up the chat area
-		chatArea = $("#chat-area");
-
-        // Submit event for the input form
-        $("#chat-input-form").on("submit", (e) => {
-            // Do not submit the form
-            e.preventDefault();
-
-            // Get the message content
-            const content = $("#chat-input").val().trim();
-
-            // Post it
-            Socket.postMessage(content);
-
-			// Clear the message
-            $("#chat-input").val("");
-        });
-        $("#chat-input-form").on("keydown", () =>{
-            
-
-            Socket.sendingMessage();
-        })
- 	};
-
-    // This function updates the chatroom area
-    const update = function(chatroom) {
-        // Clear the online users area
-        chatArea.empty();
-
-        // Add the chat message one-by-one
-        for (const message of chatroom) {
-			addMessage(message);
-        }
-    };
-
-    // This function adds a new message at the end of the chatroom
-    const addMessage = function(message) {
-		const datetime = new Date(message.datetime);
-		const datetimeString = datetime.toLocaleDateString() + " " +
-							   datetime.toLocaleTimeString();
-
-		chatArea.append(
-			$("<div class='chat-message-panel row'></div>")
-				.append(UI.getUserDisplay(message.user))
-				.append($("<div class='chat-message col'></div>")
-					.append($("<div class='chat-date'>" + datetimeString + "</div>"))
-					.append($("<div class='chat-content'>" + message.content + "</div>"))
-				)
-		);
-		chatArea.scrollTop(chatArea[0].scrollHeight);
-    };
-    var clock;
-    const showUp = function(username){
-        
-        clearTimeout(clock);
-        $("#chat-whoIsUsing").text(username + " is typing....");
-        $("#chat-whoIsUsing").show();
-        clock = setTimeout(hide,3000);
-    }
-
-    const hide = function(){
-        $("#chat-whoIsUsing").hide();
-    }
-
-    return { initialize, update, addMessage, showUp };
-})();
-
 const GamePanel = (function() {
     let cv = null;
     let context = null;
@@ -270,10 +198,6 @@ const GamePanel = (function() {
         /* Create the sprites in the game */
         //player = Player(context, 427, 240, gameArea); // The player     
 
-        
-
-        
-
         //starting the game
         $("#startButton").on("click", function() {
             
@@ -281,10 +205,6 @@ const GamePanel = (function() {
                 Socket.startGame(Authentication.getTotalPlayerNum());
             });
 
-        //    $("#game-panel").show();
-            /* Hide the start screen */
-        //    $("#chat-panel").hide();
-    
         });
     }
     const detectKeys = function(){
@@ -386,7 +306,7 @@ const UI = (function() {
     };
 
     // The components of the UI are put here
-    const components = [SignInForm, UserPanel, OnlineUsersPanel, ChatPanel, GamePanel];
+    const components = [SignInForm, UserPanel, OnlineUsersPanel, GamePanel];
 
     // This function initializes the UI
     const initialize = function() {

@@ -30,7 +30,9 @@ function containWordCharsOnly(text) {
 }
 
 
-let playerNum = 0;
+let playerNum = 0;   //this is the current number of players, serves 2 purpose in this program.
+let playing = 0; //0=not playing
+
 // Handle the /register endpoint
 app.post("/register", (req, res) => {
     // Get the JSON data from the body
@@ -110,37 +112,27 @@ app.post("/signin", (req, res) => {
             "name": usersRead[username].name
         };
         //console.log(userReturn);
-        req.session.user = userReturn;
+        req.session.user = userReturn;                //this line is session
         res.json({ status: "success", user: userReturn, playerNum: playerNum });
         
     }
     //
     // G. Sending a success response with the user account
     //
- 
-    // Delete when appropriate
-    //res.json({ status: "error", error: "This endpoint is not yet implemented.2" });
+
 });
 
 // Handle the /validate endpoint
 app.get("/validate", (req, res) => {
 
-    //
-    // B. Getting req.session.user
-    //
     if (req.session.user){
-        res.json({ status: "success", user: req.session.user });
+        res.json({ status: "success", user: req.session.user ,playerNum: playerNum });
         //console.log(req.session.user);
     }
     else{
         res.json({ status: "error"});
     }
-    //
-    // D. Sending a success response with the user account
-    //
- 
-    // Delete when appropriate
-    //res.json({ status: "error", error: "This endpoint is not yet implemented.3" });
+
 });
 
 // Handle the /signout endpoint
@@ -181,6 +173,7 @@ app.post("/stop", (req, res) => {
 
 app.get("/start", (req, res) =>{
     res.json({status: "success", totalPlayerNum: playerNum});
+    
 })
 
 //
@@ -210,11 +203,10 @@ io.on("connection", (socket) => {
             "name": socket.request.session.user.name
         };
     }
-    //io.emit("add user", JSON.stringify(socket.request.session.user));
+    io.emit("add user", JSON.stringify(socket.request.session.user));
     
     socket.on("disconnect", () => {
         // Remove the user from the online user list
-        
         if(socket.request.session.user){
             delete onlineUsers[socket.request.session.user.username];
         }
@@ -227,31 +219,6 @@ io.on("connection", (socket) => {
         io.emit("users", JSON.stringify(onlineUsers));
     });
 
-    socket.on("get messages", () => {
-        // Send the chatroom messages to the browser
-        const chatroom = JSON.parse(fs.readFileSync("data/chatroom.json"));
-        socket.emit("messages", JSON.stringify(chatroom));
-    });
-
-    socket.on("post message", (content) => {
-        // Add the message to the chatroom
-        const message = {
-            user:     socket.request.session.user/* { username, avatar, name } */,
-            datetime: new Date() /* date and time when the message is posted */,
-            content: content /* content of the message */
-        }
-        const chatroom = JSON.parse(fs.readFileSync("data/chatroom.json"));
-        chatroom.push(message);
-        fs.writeFileSync("data/chatroom.json",JSON.stringify(chatroom, null, " "));
-
-        io.emit("add message", JSON.stringify(message))
-    });
-
-    socket.on("sending message", () => {
-        io.emit("signal sending", socket.request.session.user.name);
-        //console.log(socket.request.session.user.username);
-    })
-
     socket.on("newMoveSignal", (playerNum, keyCode) => {
         io.emit("move signal", playerNum, keyCode);
     })
@@ -261,6 +228,11 @@ io.on("connection", (socket) => {
     })
 
     socket.on("start game", (totalPlayerNum) => {
-        io.emit("start game", totalPlayerNum);
+        if(playing == 0){
+            io.emit("start game", totalPlayerNum);
+            playing = 1;
+        }
+        else
+            io.emit("refuse starting");
     })
 });
