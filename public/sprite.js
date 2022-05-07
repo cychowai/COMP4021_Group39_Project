@@ -1,20 +1,5 @@
-// This function defines a Sprite module.
-// - `ctx` - A canvas context for drawing
-// - `x` - The initial x position of the sprite
-// - `y` - The initial y position of the sprite
-const Sprite = function(ctx, x, y) {
-
-    // This is the image object for the sprite sheet.
+const Sprite = function (ctx, x, y) {
     const sheet = new Image();
-
-    // This is an object containing the sprite sequence information used by the sprite containing:
-    // - `x` - The starting x position of the sprite sequence in the sprite sheet
-    // - `y` - The starting y position of the sprite sequence in the sprite sheet
-    // - `width` - The width of each sprite image
-    // - `height` - The height of each sprite image
-    // - `count` - The total number of sprite images in the sequence
-    // - `timing` - The timing for each sprite image
-    // - `loop` - `true` if the sprite sequence is looped
     let sequence = { x: 0, y: 0, width: 20, height: 20, count: 1, timing: 0, loop: false };
 
     // This is the index indicating the current sprite image used in the sprite sequence.
@@ -34,32 +19,32 @@ const Sprite = function(ctx, x, y) {
 
     // This function uses a new sprite sheet in the image object.
     // - `spriteSheet` - The source of the sprite sheet (URL)
-    const useSheet = function(spriteSheet) {
+    const useSheet = function (spriteSheet) {
         sheet.src = spriteSheet;
         return this;
     };
 
     // This function returns the readiness of the sprite sheet image.
-    const isReady = function() {
+    const isReady = function () {
         return sheet.complete && sheet.naturalHeight != 0;
     };
 
     // This function gets the current sprite position.
-    const getXY = function() {
-        return {x, y};
+    const getXY = function () {
+        return { x, y };
     };
 
     // This function sets the sprite position.
     // - `xvalue` - The new x position
     // - `yvalue` - The new y position
-    const setXY = function(xvalue, yvalue) {
+    const setXY = function (xvalue, yvalue) {
         [x, y] = [xvalue, yvalue];
         return this;
     };
 
     // This function sets the sprite sequence.
     // - `newSequence` - The new sprite sequence to be used by the sprite
-    const setSequence = function(newSequence) {
+    const setSequence = function (newSequence) {
         sequence = newSequence;
         index = 0;
         lastUpdate = 0;
@@ -68,7 +53,7 @@ const Sprite = function(ctx, x, y) {
 
     // This function sets the scaling factor of the sprite.
     // - `value` - The new scaling factor
-    const setScale = function(value) {
+    const setScale = function (value) {
         scale = value;
         return this;
     };
@@ -77,21 +62,21 @@ const Sprite = function(ctx, x, y) {
     // - `value` - The new scaling factor as an object
     //   - `value.x` - The x scaling factor
     //   - `value.y` - The y scaling factor
-    const setShadowScale = function(value) {
+    const setShadowScale = function (value) {
         shadowScale = value;
         return this;
     };
 
     // This function gets the display size of the sprite.
-    const getDisplaySize = function() {
+    const getDisplaySize = function () {
         /* Find the scaled width and height of the sprite */
-        const scaledWidth  = sequence.width * scale;
+        const scaledWidth = sequence.width * scale;
         const scaledHeight = sequence.height * scale;
-        return {width: scaledWidth, height: scaledHeight};
+        return { width: scaledWidth, height: scaledHeight };
     };
 
     // This function gets the bounding box of the sprite.
-    const getBoundingBox = function() {
+    const getBoundingBox = function () {
         /* Get the display size of the sprite */
         const size = getDisplaySize();
 
@@ -105,7 +90,7 @@ const Sprite = function(ctx, x, y) {
     };
 
     // This function draws shadow underneath the sprite.
-    const drawShadow = function() {
+    const drawShadow = function () {
         /* Save the settings */
         ctx.save();
 
@@ -113,7 +98,7 @@ const Sprite = function(ctx, x, y) {
         const size = getDisplaySize();
 
         /* Find the scaled width and height of the shadow */
-        const shadowWidth  = size.width * shadowScale.x;
+        const shadowWidth = size.width * shadowScale.x;
         const shadowHeight = size.height * shadowScale.y;
 
         /* Draw a semi-transparent oval */
@@ -121,7 +106,7 @@ const Sprite = function(ctx, x, y) {
         ctx.globalAlpha = 0.6;
         ctx.beginPath();
         ctx.ellipse(x, y + size.height / 2,
-                    shadowWidth / 2, shadowHeight / 2, 0, 0, 2 * Math.PI);
+            shadowWidth / 2, shadowHeight / 2, 0, 0, 2 * Math.PI);
         ctx.fill();
 
         /* Restore saved settings */
@@ -129,42 +114,38 @@ const Sprite = function(ctx, x, y) {
     };
 
     // This function draws the sprite.
-    const drawSprite = function() {
+    const drawSprite = function () {
         /* Save the settings */
         ctx.save();
 
         /* Get the display size of the sprite */
         const size = getDisplaySize();
 
-
         /* TODO */
         /* Replace the following code to draw the sprite correctly */
-        
-        /*ctx.fillStyle = "red";
+
+        /*
+        ctx.fillStyle = "red";
         ctx.globalAlpha = 0.6;
-        ctx.fillRect(parseInt(x - size.width / 2), parseInt(y - size.height / 2),
-                     size.width, size.height);
-        
-                   */  
-        
+        ctx.fillRect(parseInt(x - size.width / 2), parseInt(y - size.height / 2), size.width, size.height);
+        */
         //console.log(sequence);
         ctx.drawImage(
             sheet,
-            sequence.x + 
-            index * sequence.width, 
-            sequence.y, 
+            sequence.x +
+            index * sequence.width,
+            sequence.y,
             sequence.width, sequence.height,
             parseInt(x - size.width / 2), parseInt(y - size.height / 2),
             size.width, size.height
-            );
-
+        );
 
         /* Restore saved settings */
         ctx.restore();
     };
-     
+
     // This function draws the shadow and the sprite.
-    const draw = function() {
+    const draw = function () {
         if (isReady()) {
             drawShadow();
             drawSprite();
@@ -175,25 +156,19 @@ const Sprite = function(ctx, x, y) {
     // This function updates the sprite by moving to the next sprite
     // at appropriate time.
     // - `time` - The timestamp when this function is called
-    const update = function(time) {
+    const update = function (time) {
         if (lastUpdate == 0) lastUpdate = time;
-
 
         /* TODO */
         /* Move to the next sprite when the timing is right */
-        
-        if(time - lastUpdate >= sequence.timing){
+        if (time - lastUpdate >= sequence.timing) {
             index++;
             lastUpdate = time;
             if (index >= sequence.count && sequence.loop == true)
                 index = 0;
-            else if(index >= sequence.count && sequence.loop == false)
+            else if (index >= sequence.count && sequence.loop == false)
                 index--;
         }
-        
-
-        
-
         return this;
     };
 
