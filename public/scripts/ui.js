@@ -188,12 +188,15 @@ const GamePanel = (function() {
     let player = [];
     let playerNum = null;
     const initialize = function(){
+        MapSet.initialize();
         /* Get the canvas and 2D context */
-        cv = $("canvas").get(0);
-        context = cv.getContext("2d");
+        //cv = $("canvas").get(0);
+        cv = MapSet.getCanvas();
 
+        //context = cv.getContext("2d");
+        context = MapSet.getContext();
         /* Create the game area */
-        gameArea = BoundingBox(context, 165, 60, 420, 800);
+        gameArea = BoundingBox(context, 60, 60, 800, 800);
 
         /* Create the sprites in the game */
         //player = Player(context, 427, 240, gameArea); // The player     
@@ -263,6 +266,11 @@ const GamePanel = (function() {
         for(let i=0; i<player.length; i++)
             player[i].update(now);
 
+        //if(player[playerNum-1].getBoundingBox().isPointInBox(dot.getXY().x,dot.getXY().y)){
+        //    collectedDot++;
+
+        //}
+
         /* Clear the screen */
         context.clearRect(0, 0, cv.width, cv.height);
 
@@ -287,7 +295,7 @@ const GamePanel = (function() {
     const createPlayer = function(playerNum){
         for(let i=0; i<playerNum; i++){
             player.push(Player(context, 427+i*100, 240, gameArea));
-            console.log(player[i]);
+            //console.log(player[i]);
         }
 
 
