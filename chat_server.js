@@ -38,43 +38,30 @@ app.post("/register", (req, res) => {
     // D. Reading the users.json file
     const usersRead = JSON.parse(fs.readFileSync("data/users.json"));
     //console.log(usersRead);
-    
+
     // E. Checking for the user data correctness
-    if(username == "" || avatar =="" || name == "" || password == ""){
-        res.json({ status: "error", error: "contains empty field"});
+    if (username == "" || avatar == "" || name == "" || password == "") {
+        res.json({ status: "error", error: "contains empty field" });
     }
-    else if(!containWordCharsOnly(username)){
-        res.json({ status: "error", error: "contains non word Char"})
-    } 
-    else if(username in usersRead){
-        res.json({ status: "error", error: "name used"});
-    } 
-    else{
-    // G. Adding the new user account
-    const hash = bcrypt.hashSync(password, 10);
-  
-    // H. Saving the users.json file
-    usersRead[username] = { 
-        "avatar": avatar, 
-        "name": name, 
-        "password": hash
-    };
-    fs.writeFileSync("data/users.json",JSON.stringify(usersRead, null, " "));
-    // I. Sending a success response to the browser
-    res.json({ status: "success" });
+    else if (!containWordCharsOnly(username)) {
+        res.json({ status: "error", error: "contains non word Char" })
+    }
+    else if (username in usersRead) {
+        res.json({ status: "error", error: "name used" });
     }
     else {
+        // G. Adding the new user account
         const hash = bcrypt.hashSync(password, 10);
 
+        // H. Saving the users.json file
         usersRead[username] = {
             "avatar": avatar,
             "name": name,
             "password": hash
         };
         fs.writeFileSync("data/users.json", JSON.stringify(usersRead, null, " "));
+        // I. Sending a success response to the browser
         res.json({ status: "success" });
-        // Delete when appropriate
-        //res.json({ status: "error", error: "This endpoint is not yet implemented.1" });
     }
 });
 
@@ -91,7 +78,7 @@ app.post("/signin", (req, res) => {
     else if (!bcrypt.compareSync(password, usersRead[username].password)) {
         res.json({ status: "error", error: "Incorrect password" });
     }
-    else{
+    else {
         playerNum++;
         console.log(playerNum);
         const userReturn = {
@@ -123,7 +110,7 @@ app.get("/signout", (req, res) => {
     playerNum--;
     delete req.session.user;
     // Sending a success response
-    res.json({ status: "success"});
+    res.json({ status: "success" });
 });
 
 app.post("/move", (req, res) => {
