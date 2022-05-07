@@ -70,8 +70,8 @@ const Sprite = function (ctx, x, y) {
     // This function gets the display size of the sprite.
     const getDisplaySize = function () {
         /* Find the scaled width and height of the sprite */
-        const scaledWidth = sequence.width * scale;
-        const scaledHeight = sequence.height * scale;
+        const scaledWidth = sequence.width * scale * 0.4;
+        const scaledHeight = sequence.height * scale * .4;
         return { width: scaledWidth, height: scaledHeight };
     };
 
@@ -87,30 +87,6 @@ const Sprite = function (ctx, x, y) {
         const right = x + size.width / 2;
 
         return BoundingBox(ctx, top, left, bottom, right);
-    };
-
-    // This function draws shadow underneath the sprite.
-    const drawShadow = function () {
-        /* Save the settings */
-        ctx.save();
-
-        /* Get the display size of the sprite */
-        const size = getDisplaySize();
-
-        /* Find the scaled width and height of the shadow */
-        const shadowWidth = size.width * shadowScale.x;
-        const shadowHeight = size.height * shadowScale.y;
-
-        /* Draw a semi-transparent oval */
-        ctx.fillStyle = "black";
-        ctx.globalAlpha = 0.6;
-        ctx.beginPath();
-        ctx.ellipse(x, y + size.height / 2,
-            shadowWidth / 2, shadowHeight / 2, 0, 0, 2 * Math.PI);
-        ctx.fill();
-
-        /* Restore saved settings */
-        ctx.restore();
     };
 
     // This function draws the sprite.
@@ -147,7 +123,6 @@ const Sprite = function (ctx, x, y) {
     // This function draws the shadow and the sprite.
     const draw = function () {
         if (isReady()) {
-            drawShadow();
             drawSprite();
         }
         return this;

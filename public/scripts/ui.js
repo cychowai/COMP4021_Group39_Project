@@ -182,21 +182,13 @@ const OnlineUsersPanel = (function() {
 })();
 
 const GamePanel = (function() {
-    let cv = null;
-    let context = null;
     let gameArea = null;
     let player = [];
     let playerNum = null;
     const initialize = function(){
-        MapSet.initialize();
-        /* Get the canvas and 2D context */
-        //cv = $("canvas").get(0);
-        cv = MapSet.getCanvas();
 
-        //context = cv.getContext("2d");
-        context = MapSet.getContext();
         /* Create the game area */
-        gameArea = BoundingBox(context, 60, 60, 800, 800);
+        gameArea = BoundingBox(context, 0, 0, 560, 560);
 
         /* Create the sprites in the game */
         //player = Player(context, 427, 240, gameArea); // The player     
@@ -229,7 +221,7 @@ const GamePanel = (function() {
                 () => {
                     //player.move(event.keyCode%36);
                     Socket.newMoveSignal(playerNum, event.keyCode%36);
-                    console.log(playerNum)
+                    console.log(playerNum);
                 },
                 console.log(playerNum)
 
@@ -238,9 +230,8 @@ const GamePanel = (function() {
         });
 
         /* Handle the keyup of arrow keys and spacebar */
-        $(document).on("keyup", function(event) {
-            /* TODO */
-            /* Handle the key up */
+        /*$(document).on("keyup", function(event) {
+
             //player.stop(event.keyCode%36);
             if(event.keyCode == 32)
                 player[playerNum-1].slowDown();
@@ -251,7 +242,8 @@ const GamePanel = (function() {
                 },
                 //error, do nothing
             );
-        });
+        }); 
+        */
 
         /* Start the game */
         //sounds.background.play();
@@ -272,8 +264,8 @@ const GamePanel = (function() {
         //}
 
         /* Clear the screen */
-        context.clearRect(0, 0, cv.width, cv.height);
-
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        createBoard();
         /* Draw the sprites */
         for(let i=0; i<player.length; i++)
             player[i].draw();
@@ -294,8 +286,8 @@ const GamePanel = (function() {
 
     const createPlayer = function(playerNum){
         for(let i=0; i<playerNum; i++){
-            player.push(Player(context, 427+i*100, 240, gameArea));
-            //console.log(player[i]);
+            player.push(Player(context, 30+i*100, 30, gameArea));
+            //console.log(tileSize);
         }
 
 
