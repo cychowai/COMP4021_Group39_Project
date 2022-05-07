@@ -23,5 +23,10 @@
   "avatar": "Hamster",
   "name": "jim",
   "password": "$2b$10$SdrjY0xKyuuqB0AJ4fAAcOXB59rRi6vD5pcDYG4cNTsvRMKLj7SM2"
+ },
+ "potato": {
+  "avatar": "Bear",
+  "name": "potato",
+  "password": "$2b$10$m9XZv8TgFgYXhHFdLinreOtdfItmW7joHHOBAjyAsyxOyUb81KNBO"
  }
 }
