@@ -28,5 +28,10 @@
   "avatar": "Bear",
   "name": "potato",
   "password": "$2b$10$m9XZv8TgFgYXhHFdLinreOtdfItmW7joHHOBAjyAsyxOyUb81KNBO"
+ },
+ "jim2": {
+  "avatar": "Rabbit Face",
+  "name": "jim2",
+  "password": "$2b$10$szgX.aPfZqqeGso2uEyL2eCuww7er0UYRtlLeXpen6AhNIQwYjZDC"
  }
 }
