@@ -101,6 +101,7 @@ const Player = function (ctx, x, y, gameArea) {
         const column = Math.floor(x / tileSize);
         if (map[row][column] === 2) {
             map[row][column] = 0;
+            //scores += 50;
             return true;
         }
         return false;
@@ -111,6 +112,7 @@ const Player = function (ctx, x, y, gameArea) {
         const column = Math.floor(x / tileSize);
         if (map[row][column] === 3) {
             map[row][column] = 0;
+            //scores += 100;
             return true;
         }
         return false;

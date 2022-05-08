@@ -1,24 +1,11 @@
 const Sprite = function (ctx, x, y) {
     const sheet = new Image();
     let sequence = { x: 0, y: 0, width: 20, height: 20, count: 1, timing: 0, loop: false };
-
-    // This is the index indicating the current sprite image used in the sprite sequence.
     let index = 0;
-
-    // This is the scaling factor for drawing the sprite.
     let scale = 1;
-
-    // This is the scaling factor to determine the size of the shadow, relative to the scaled sprite image size.
-    // - `x` - The x scaling factor
-    // - `y` - The y scaling factor
     let shadowScale = { x: 1, y: 0.25 };
-
-    // This is the updated time of the current sprite image.
-    // It is used to determine the timing to switch to the next sprite image.
     let lastUpdate = 0;
 
-    // This function uses a new sprite sheet in the image object.
-    // - `spriteSheet` - The source of the sprite sheet (URL)
     const useSheet = function (spriteSheet) {
         sheet.src = spriteSheet;
         return this;
@@ -34,16 +21,11 @@ const Sprite = function (ctx, x, y) {
         return { x, y };
     };
 
-    // This function sets the sprite position.
-    // - `xvalue` - The new x position
-    // - `yvalue` - The new y position
     const setXY = function (xvalue, yvalue) {
         [x, y] = [xvalue, yvalue];
         return this;
     };
 
-    // This function sets the sprite sequence.
-    // - `newSequence` - The new sprite sequence to be used by the sprite
     const setSequence = function (newSequence) {
         sequence = newSequence;
         index = 0;
@@ -51,17 +33,11 @@ const Sprite = function (ctx, x, y) {
         return this;
     };
 
-    // This function sets the scaling factor of the sprite.
-    // - `value` - The new scaling factor
     const setScale = function (value) {
         scale = value;
         return this;
     };
 
-    // This function sets the scaling factor of the sprite shadow.
-    // - `value` - The new scaling factor as an object
-    //   - `value.x` - The x scaling factor
-    //   - `value.y` - The y scaling factor
     const setShadowScale = function (value) {
         shadowScale = value;
         return this;
@@ -97,15 +73,6 @@ const Sprite = function (ctx, x, y) {
         /* Get the display size of the sprite */
         const size = getDisplaySize();
 
-        /* TODO */
-        /* Replace the following code to draw the sprite correctly */
-
-        /*
-        ctx.fillStyle = "red";
-        ctx.globalAlpha = 0.6;
-        ctx.fillRect(parseInt(x - size.width / 2), parseInt(y - size.height / 2), size.width, size.height);
-        */
-        //console.log(sequence);
         ctx.drawImage(
             sheet,
             sequence.x +
@@ -128,14 +95,9 @@ const Sprite = function (ctx, x, y) {
         return this;
     };
 
-    // This function updates the sprite by moving to the next sprite
-    // at appropriate time.
-    // - `time` - The timestamp when this function is called
     const update = function (time) {
         if (lastUpdate == 0) lastUpdate = time;
 
-        /* TODO */
-        /* Move to the next sprite when the timing is right */
         if (time - lastUpdate >= sequence.timing) {
             index++;
             lastUpdate = time;
