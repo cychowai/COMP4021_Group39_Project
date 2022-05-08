@@ -11,12 +11,8 @@
 <body>
     <div id="container" class="col">
         <div id="header" class="row">
-            <div id="title">The PacMan
-                <span class="material-icons">chat</span>
-            </div>
-
+            <div id="title">Pacman Game</div>
             <div class="spacer-grow"></div>
-
             <div id="user-panel" class="row">
                 <div class="field-content row shadow">
                     <span class="user-avatar"></span>
@@ -31,22 +27,21 @@
                 <canvas id="game-area"></canvas>
             </div>
             <div id="chat-panel" class="col">
-                <div id="instructionBox" class="col">The player controls Pac-Man,
+                <div id="instructionBox" class="col">
+                    The player controls Pac-Man,
                     who must eat all the dots inside an enclosed maze while avoiding four colored ghosts.
                     Eating large flashing dots called "Power Pellets" causes the ghosts to temporarily turn blue,
-                    allowing Pac-Man to eat them for bonus points.</div>
+                    allowing Pac-Man to eat them for bonus points.
+                </div>
                 <div id="online-users-area" class="col">Hi</div>
                 <div id="player1" class="col playerBox">Player1 here!</div>
                 <div id="player2" class="col playerBox">Player2 here!</div>
                 <div id="player3" class="col playerBox">Player3 here!</div>
                 <div id="player4" class="col playerBox">Player4 here!</div>
                 <div id="someonePlaying" class="col playerBox">someone is playing! please wait!</div>
-
                 <button id="readyButton" class="">Ready !</button>
                 <button id="startButton" class="">here we go !</button>
-
             </div>
-
         </div>
     </div>
 
@@ -62,9 +57,7 @@
                 <div id="signin-message" class="warning center"></div>
                 <div class="spacer-grow"></div>
             </form>
-
             <div class="spacer-0"></div>
-
             <form id="register-form" class="col">
                 <div class="caption">OR, REGISTER IF YOU DO NOT HAVE ONE</div>
                 <div class="spacer-0"></div>
@@ -92,10 +85,10 @@
     <script src="boundingBox.js"></script>
     <script src="sprite.js"></script>
     <script src="scripts/map.js"></script>
+    <script src="scripts/game.js"></script>
+    <script src="scripts/checkGameStatus.js"></script>
     <script>
         $(document).ready(function () {
-
-
             // Initialize the UI
             UI.initialize();
 
@@ -110,7 +103,6 @@
                 },
                 () => { SignInForm.show(); }
             );
-
         });
     </script>
 </body>
