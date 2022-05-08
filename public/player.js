@@ -64,12 +64,12 @@ const Player = function (ctx, x, y, gameArea) {
 
     // This function speeds up the player.
     const speedUp = function () {
-        speed = 250;
+        speed = 30;
     };
 
     // This function slows down the player.
     const slowDown = function () {
-        speed = 150;
+        speed = 20;
     };
 
     // This function updates the player depending on his movement.

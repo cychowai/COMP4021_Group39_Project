@@ -202,12 +202,6 @@ const GamePanel = (function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         /* Handle the keydown of arrow keys and spacebar */
         $(document).on("keydown", function (event) {
-
-            /* TODO */
-            /* Handle the key down */
-
-            //player.move(event.keyCode%36);
-
             //cheat key: "Space Bar"
             if (event.keyCode == 32)
                 player[playerNum - 1].speedUp();
@@ -224,20 +218,18 @@ const GamePanel = (function () {
         });
 
         /* Handle the keyup of arrow keys and spacebar */
-        /*$(document).on("keyup", function(event) {
-
+        $(document).on("keyup", function (event) {
             //player.stop(event.keyCode%36);
-            if(event.keyCode == 32)
-                player[playerNum-1].slowDown();
-            Authentication.stop(playerNum, event.keyCode%36,
+            if (event.keyCode == 32)
+                player[playerNum - 1].slowDown();
+            Authentication.stop(playerNum, event.keyCode % 36,
                 () => {
                     //player.move(event.keyCode%36);
-                    Socket.newStopSignal(playerNum, event.keyCode%36);
+                    Socket.newStopSignal(playerNum, event.keyCode % 36);
                 },
                 //error, do nothing
             );
-        }); 
-        */
+        });
 
         /* Start the game */
         //sounds.background.play();
