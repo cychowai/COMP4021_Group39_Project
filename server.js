@@ -150,10 +150,6 @@ io.use((socket, next) => {
     chatSession(socket.request, {}, next);
 });
 
-// Use a web server to listen at port 8000
-httpServer.listen(8000, () => {
-    console.log("The chat server has started...");
-});
 const onlineUsers = {};
 
 io.on("connection", (socket) => {
@@ -196,4 +192,9 @@ io.on("connection", (socket) => {
         else
             io.emit("refuse starting");
     });
+});
+
+// Use a web server to listen at port 8000
+httpServer.listen(8000, () => {
+    console.log("The chat server has started...");
 });

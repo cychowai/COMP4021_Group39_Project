@@ -7,18 +7,17 @@ const Authentication = (function () {
     // This function gets the signed-in user
     const getUser = function () {
         return user;
-    }
+    };
 
     const getPlayerNum = function () {
         return playerNum;
-    }
+    };
 
     const getTotalPlayerNum = function () {
         return totalPlayerNum;
-    }
+    };
 
     const signin = function (username, password, onSuccess, onError) {
-
         const userData = JSON.stringify({
             "username": username,
             "password": password
@@ -42,12 +41,10 @@ const Authentication = (function () {
             })
             .catch((err) => {
                 console.log("Error2!")
-            })
+            });
     };
 
-
     const validate = function (onSuccess, onError) {
-
         fetch("/validate", {
             method: "GET",
             headers: { "Content-Type": "validate/json" }

@@ -280,7 +280,6 @@ const GamePanel = (function () {
     const createPlayer = function (playerNum) {
         for (let i = 0; i < playerNum; i++) {
             player.push(Player(context, 30 + i * 100, 30, gameArea));
-            //console.log(tileSize);
         }
     }
 
