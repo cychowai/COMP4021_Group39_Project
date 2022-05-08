@@ -222,6 +222,7 @@ const GamePanel = (function () {
             //player.stop(event.keyCode%36);
             if (event.keyCode == 32)
                 player[playerNum - 1].slowDown();
+            /*
             Authentication.stop(playerNum, event.keyCode % 36,
                 () => {
                     //player.move(event.keyCode%36);
@@ -229,6 +230,7 @@ const GamePanel = (function () {
                 },
                 //error, do nothing
             );
+            */
         });
 
         /* Start the game */
