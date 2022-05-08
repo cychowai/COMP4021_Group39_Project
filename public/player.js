@@ -56,7 +56,6 @@ const Player = function (ctx, x, y, gameArea) {
                 case 2: sprite.setSequence(sequences.idleUp); break;
                 case 3: sprite.setSequence(sequences.idleRight); break;
                 case 4: sprite.setSequence(sequences.idleDown); break;
-
             }
             direction = 0;
         }
@@ -72,12 +71,34 @@ const Player = function (ctx, x, y, gameArea) {
         speed = 20; //back to normal speed
     };
 
+    const eatDot = function (x, y) {
+        const row = parseInt(y / tileSize);
+        const column = parseInt(x / tileSize);
+        if (map[row][column] === 2) {
+            map[row][column] = 0;
+            return true;
+        }
+        return false;
+    }
+
+    const eatPowerDot = function (x, y) {
+        const row = parseInt(y / tileSize);
+        const column = parseInt(x / tileSize);
+        if (map[row][column] === 3) {
+            map[row][column] = 0;
+            return true;
+        }
+        return false;
+    }
+
     // This function updates the player depending on his movement.
     // - `time` - The timestamp when this function is called
     const update = function (time) {
         /* Update the player if the player is moving */
         if (direction != 0) {
             let { x, y } = sprite.getXY();
+            //console.log(x, y);
+            //console.log(map);
 
             /* Move the player */
             switch (direction) {
@@ -90,6 +111,14 @@ const Player = function (ctx, x, y, gameArea) {
             /* Set the new position if it is within the game area */
             if (gameArea.isPointInBox(x, y))
                 sprite.setXY(x, y);
+
+            if (eatDot(x, y)) {
+                wakaSound.play();
+            }
+
+            if (eatPowerDot(x, y)) {
+                powerDotSound.play();
+            }
         }
 
         /* Update the sprite object */
