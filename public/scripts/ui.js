@@ -184,6 +184,7 @@ const GamePanel = (function () {
     let gameArea = null;
     let player = [];
     let playerNum = null;
+
     const initialize = function () {
         /* Create the game area */
         gameArea = BoundingBox(context, 0, 0, 560, 560);
@@ -198,6 +199,7 @@ const GamePanel = (function () {
             });
         });
     }
+
     const detectKeys = function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         /* Handle the keydown of arrow keys and spacebar */
@@ -239,16 +241,13 @@ const GamePanel = (function () {
     }
 
     /* The main processing of the game */
-
     function doFrame(now) {
-
         /* Update the sprites */
         for (let i = 0; i < player.length; i++)
             player[i].update(now);
 
         //if(player[playerNum-1].getBoundingBox().isPointInBox(dot.getXY().x,dot.getXY().y)){
         //    collectedDot++;
-
         //}
 
         /* Clear the screen */
@@ -264,18 +263,17 @@ const GamePanel = (function () {
 
     const movePlayer = function (playerNum, keyCode) {
         player[playerNum - 1].move(keyCode);
-
-    }
+    };
 
     const stopPlayer = function (playerNum, keycode) {
         player[playerNum - 1].stop(keycode);
-    }
+    };
 
     const createPlayer = function (playerNum) {
         for (let i = 0; i < playerNum; i++) {
             player.push(Player(context, 30 + i * 100, 30, gameArea));
         }
-    }
+    };
 
     return { createPlayer, stopPlayer, movePlayer, initialize, detectKeys };
 })();

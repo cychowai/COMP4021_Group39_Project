@@ -1,10 +1,6 @@
 let gameOver = false;
 let gameWin = false;
 
-//sound effects - do at the end
-//const gameOverSound = new Audio("src/sounds/gameOver.wav");
-//const gameWinSound = new Audio("src/sounds/gameWin.wav");
-
 function checkGameWin() {
   if (!gameWin) {
     //gameWin = isGameWin();
