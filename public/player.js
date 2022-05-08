@@ -33,10 +33,47 @@ const Player = function (ctx, x, y, gameArea) {
     // This is the moving speed (pixels per second) of the player
     let speed = 20;
 
+    const isCollideWithWall = function (x, y, direction) {
+        if (direction == null) {
+            return;
+        }
+
+        const row = y / tileSize;
+        const column = x / tileSize;
+        let nextRow, nextColumn = 0;
+
+        switch (direction) {
+            case 1:
+                nextRow = row;
+                nextColumn = column - 0.5;
+                break;
+            case 2:
+                nextRow = row - 0.5;
+                nextColumn = column;
+                break;
+            case 3:
+                nextRow = row;
+                nextColumn = column + 0.5;
+                break;
+            case 4:
+                nextRow = row + 0.5;
+                nextColumn = column;
+                break;
+        }
+
+        console.log(nextRow, nextColumn);
+        if (map[Math.floor(nextRow)][Math.floor(nextColumn)] === 1) {
+            return true;
+        }
+        return false;
+    };
+
     // This function sets the player's moving direction.
     // - `dir` - the moving direction (1: Left, 2: Up, 3: Right, 4: Down)
     const move = function (dir) {
-        if (dir >= 1 && dir <= 4 && dir != direction) {
+        let { x, y } = sprite.getXY();
+        if (dir >= 1 && dir <= 4 && dir != direction && !isCollideWithWall(x, y, dir)) {
+            //if (dir >= 1 && dir <= 4 && dir != direction) {
             switch (dir) {
                 case 1: sprite.setSequence(sequences.moveLeft); break;
                 case 2: sprite.setSequence(sequences.moveUp); break;
@@ -72,24 +109,24 @@ const Player = function (ctx, x, y, gameArea) {
     };
 
     const eatDot = function (x, y) {
-        const row = parseInt(y / tileSize);
-        const column = parseInt(x / tileSize);
+        const row = Math.floor(y / tileSize);
+        const column = Math.floor(x / tileSize);
         if (map[row][column] === 2) {
             map[row][column] = 0;
             return true;
         }
         return false;
-    }
+    };
 
     const eatPowerDot = function (x, y) {
-        const row = parseInt(y / tileSize);
-        const column = parseInt(x / tileSize);
+        const row = Math.floor(y / tileSize);
+        const column = Math.floor(x / tileSize);
         if (map[row][column] === 3) {
             map[row][column] = 0;
             return true;
         }
         return false;
-    }
+    };
 
     // This function updates the player depending on his movement.
     // - `time` - The timestamp when this function is called
@@ -97,8 +134,6 @@ const Player = function (ctx, x, y, gameArea) {
         /* Update the player if the player is moving */
         if (direction != 0) {
             let { x, y } = sprite.getXY();
-            //console.log(x, y);
-            //console.log(map);
 
             /* Move the player */
             switch (direction) {
@@ -119,6 +154,26 @@ const Player = function (ctx, x, y, gameArea) {
             if (eatPowerDot(x, y)) {
                 powerDotSound.play();
             }
+
+            if (isCollideWithWall(x, y, direction)) {
+                /*
+                switch (direction) {
+                    case 1:
+                        sprite.setXY(x, parseInt(y - tileSize / 2));
+                        break;
+                    case 2:
+                        sprite.setXY(parseInt(x - tileSize / 2), y);
+                        break;
+                    case 3:
+                        sprite.setXY(x, parseInt(y + tileSize / 2));
+                        break;
+                    case 4:
+                        sprite.setXY(parseInt(x + tileSize / 2), y);
+                        break;
+                }
+                */
+                direction = 0;
+            }
         }
 
         /* Update the sprite object */
@@ -133,6 +188,9 @@ const Player = function (ctx, x, y, gameArea) {
         slowDown: slowDown,
         getBoundingBox: sprite.getBoundingBox,
         draw: sprite.draw,
-        update: update
+        update: update,
+        isCollideWithWall: isCollideWithWall,
+        eatDot: eatDot,
+        eatPowerDot: eatPowerDot,
     };
 };
