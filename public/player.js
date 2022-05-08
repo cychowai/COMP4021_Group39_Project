@@ -1,28 +1,23 @@
 const Player = function (ctx, x, y, gameArea) {
     const sequences = {
-        /* Idling sprite sequences for facing different directions */
         idleLeft: { x: 84, y: 4, width: 20, height: 20, count: 3, timing: 2000, loop: false },
         idleUp: { x: 84, y: 44, width: 20, height: 20, count: 3, timing: 2000, loop: false },
         idleRight: { x: 84, y: 24, width: 20, height: 20, count: 3, timing: 2000, loop: false },
         idleDown: { x: 84, y: 64, width: 20, height: 20, count: 3, timing: 2000, loop: false },
 
-        /* Moving sprite sequences for facing different directions */
         moveLeft: { x: 4, y: 4, width: 20, height: 20, count: 2, timing: 50, loop: true },
         moveUp: { x: 4, y: 44, width: 20, height: 20, count: 2, timing: 50, loop: true },
         moveRight: { x: 4, y: 24, width: 20, height: 20, count: 2, timing: 50, loop: true },
         moveDown: { x: 4, y: 64, width: 20, height: 20, count: 2, timing: 50, loop: true }
     };
 
-    // This is the sprite object of the player created from the Sprite module.
     const sprite = Sprite(ctx, x, y);
 
-    // The sprite object is configured for the player sprite here.
     sprite.setSequence(sequences.idleDown)
         .setScale(2)
         .setShadowScale({ x: 0.75, y: 0.20 })
         .useSheet("src/images/pac_sprite.png");
 
-    // This is the moving direction, which can be a number from 0 to 4:
     // - `0` - not moving
     // - `1` - moving to the left
     // - `2` - moving up
@@ -30,7 +25,6 @@ const Player = function (ctx, x, y, gameArea) {
     // - `4` - moving down
     let direction = 0;
 
-    // This is the moving speed (pixels per second) of the player
     let speed = 20;
 
     const isCollideWithWall = function (x, y, direction) {
@@ -61,19 +55,15 @@ const Player = function (ctx, x, y, gameArea) {
                 break;
         }
 
-        console.log(nextRow, nextColumn);
         if (map[Math.floor(nextRow)][Math.floor(nextColumn)] === 1) {
             return true;
         }
         return false;
     };
 
-    // This function sets the player's moving direction.
-    // - `dir` - the moving direction (1: Left, 2: Up, 3: Right, 4: Down)
     const move = function (dir) {
         let { x, y } = sprite.getXY();
         if (dir >= 1 && dir <= 4 && dir != direction && !isCollideWithWall(x, y, dir)) {
-            //if (dir >= 1 && dir <= 4 && dir != direction) {
             switch (dir) {
                 case 1: sprite.setSequence(sequences.moveLeft); break;
                 case 2: sprite.setSequence(sequences.moveUp); break;
@@ -84,8 +74,6 @@ const Player = function (ctx, x, y, gameArea) {
         }
     };
 
-    // This function stops the player from moving.
-    // - `dir` - the moving direction when the player is stopped (1: Left, 2: Up, 3: Right, 4: Down)
     const stop = function (dir) {
         if (direction == dir) {
             switch (dir) {
@@ -128,8 +116,6 @@ const Player = function (ctx, x, y, gameArea) {
         return false;
     };
 
-    // This function updates the player depending on his movement.
-    // - `time` - The timestamp when this function is called
     const update = function (time) {
         /* Update the player if the player is moving */
         if (direction != 0) {
@@ -156,22 +142,6 @@ const Player = function (ctx, x, y, gameArea) {
             }
 
             if (isCollideWithWall(x, y, direction)) {
-                /*
-                switch (direction) {
-                    case 1:
-                        sprite.setXY(x, parseInt(y - tileSize / 2));
-                        break;
-                    case 2:
-                        sprite.setXY(parseInt(x - tileSize / 2), y);
-                        break;
-                    case 3:
-                        sprite.setXY(x, parseInt(y + tileSize / 2));
-                        break;
-                    case 4:
-                        sprite.setXY(parseInt(x + tileSize / 2), y);
-                        break;
-                }
-                */
                 direction = 0;
             }
         }
