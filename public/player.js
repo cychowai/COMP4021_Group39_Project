@@ -27,37 +27,120 @@ const Player = function (ctx, x, y, gameArea) {
 
     let speed = 20;
 
-    const isCollideWithWall = function (x, y, direction) {
-        if (direction == null) {
+    const isCollideWithWall = function (x, y, dir) {
+        if (dir == null) {
             return;
         }
-
-        const row = y / tileSize;
-        const column = x / tileSize;
-        let nextRow, nextColumn = 0;
+        
+        let row = y / tileSize- .5;
+        let column = x / tileSize - .5;
+        let nextRow, nextColumn = null;
+        let nextRow2, nextColumn2 = null;
 
         switch (direction) {
+            case 0:
+                console.log("this is it");
+                nextColumn = Math.round(column);
+                nextRow = Math.round(row);
+                if(dir == 1){
+                    nextColumn--;
+                }
+                else if(dir == 2){
+                    nextRow--;
+                }
+                else if(dir == 3){
+                    nextColumn++;
+                }
+                else if(dir == 4){
+                    nextRow++;
+                }
+                nextRow2 = nextRow;
+                nextColumn2 = nextColumn;
+                break;
             case 1:
-                nextRow = row;
-                nextColumn = column - 0.5;
+                nextColumn = Math.ceil(column);
+                nextColumn2 = Math.floor(column);
+                if(dir == 2){//from left to up
+                    nextRow = row - 1;
+                }
+                else if(dir == 4){//left to down
+                    nextRow = row + 1;
+                }
+                else if(dir == 1){//left to left
+                    nextColumn--;
+                    nextRow = row;
+                }
+                else{
+                    nextRow = row;
+                }
+                nextRow2 = nextRow;
                 break;
             case 2:
-                nextRow = row - 0.5;
-                nextColumn = column;
+                nextRow = Math.ceil(row);
+                nextRow2 = Math.floor(row);
+                if(dir == 1){//from up to left
+                    nextColumn = column - 1;
+                }
+                else if(dir == 3){//up to right
+                    nextColumn = column + 1;
+                }
+                else if(dir == 4){//up to up
+                    nextRow--;
+                    nextColumn = column;
+                }
+                else{
+                    nextColumn = column;
+                }
+                nextColumn2 = nextColumn;
                 break;
-            case 3:
-                nextRow = row;
-                nextColumn = column + 0.5;
+            case 3:         //moving right
+                nextColumn = Math.floor(column);
+                nextColumn2 = Math.ceil(column);
+                if(dir == 2){//from right to up
+                    nextRow = row - 1;
+                }
+                else if(dir == 4){//right to down
+                    nextRow = row + 1;
+                }
+                else if(dir == 3){//right to right
+                    nextColumn++;
+                    nextRow = row;
+                }
+                else{
+                    nextRow = row;
+                }
+                nextRow2 = nextRow;
                 break;
             case 4:
-                nextRow = row + 0.5;
-                nextColumn = column;
+                nextRow = Math.floor(row);
+                nextRow2 = Math.ceil(row);
+                if(dir == 1){//from down to left
+                    nextColumn = column - 1;
+                }
+                else if(dir == 3){//down to right
+                    nextColumn = column + 1;
+                }
+                else if(dir == 4){//down to down
+                    nextRow++;
+                    nextColumn = column;
+                }
+                else{
+                    nextColumn = column;
+                }
+                nextColumn2 = nextColumn;
                 break;
         }
-
-        if (map[Math.floor(nextRow)][Math.floor(nextColumn)] === 1) {
+        
+        console.log(nextRow, nextColumn);
+        let roundedRow = Math.round(nextRow);
+        let roundedColumn = Math.round(nextColumn); 
+        let roundedRow2 = Math.round(nextRow2);
+        let roundedColumn2 = Math.round(nextColumn2); 
+        if (map[roundedRow][roundedColumn] === 1 || map[roundedRow2][roundedColumn2] === 1) {
+            console.log("blocked");
             return true;
         }
+        //console.log("passed");
         return false;
     };
 
@@ -142,10 +225,10 @@ const Player = function (ctx, x, y, gameArea) {
             if (eatPowerDot(x, y)) {
                 powerDotSound.play();
             }
-
             if (isCollideWithWall(x, y, direction)) {
                 direction = 0;
             }
+
         }
 
         /* Update the sprite object */
