@@ -146,7 +146,9 @@ const Player = function (ctx, x, y, gameArea) {
 
     const move = function (dir) {
         let { x, y } = sprite.getXY();
-        if (dir >= 1 && dir <= 4 && dir != direction && !isCollideWithWall(x, y, dir)) {
+        if (dir >= 1 && dir <= 4 && dir != direction
+            //&& !isCollideWithWall(x, y, direction) 
+            && !isCollideWithWall(x, y, dir)) {
             switch (dir) {
                 case 1: sprite.setSequence(sequences.moveLeft); break;
                 case 2: sprite.setSequence(sequences.moveUp); break;
