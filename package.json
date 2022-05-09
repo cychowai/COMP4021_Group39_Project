@@ -1,0 +1,27 @@
+{
+  "name": "comp4021_group39_project",
+  "version": "1.0.0",
+  "description": "## Chow Chi Yau (Jim) ## Lai Chak Pui (Jeffrey) ## Lee Wing Piu (Jimmy)",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.18.1",
+    "express-session": "^1.17.2",
+    "socket.io": "^4.5.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cychowai/COMP4021_Group39_Project.git"
+  },
+  "author": "Jim Jeffrey Jimmy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cychowai/COMP4021_Group39_Project/issues"
+  },
+  "homepage": "https://github.com/cychowai/COMP4021_Group39_Project#readme"
+}
