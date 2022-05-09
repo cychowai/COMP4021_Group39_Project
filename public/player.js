@@ -28,30 +28,29 @@ const Player = function (ctx, x, y, gameArea) {
     let speed = 20;
 
     const isCollideWithWall = function (x, y, dir) {
-        if (dir == null) {
+        if (dir === 0) {
             return;
         }
-        
-        let row = y / tileSize- .5;
-        let column = x / tileSize - .5;
+
+        let row = y / tileSize - 0.5;
+        let column = x / tileSize - 0.5;
         let nextRow, nextColumn = null;
         let nextRow2, nextColumn2 = null;
 
         switch (direction) {
             case 0:
-                console.log("this is it");
                 nextColumn = Math.round(column);
                 nextRow = Math.round(row);
-                if(dir == 1){
+                if (dir === 1) {
                     nextColumn--;
                 }
-                else if(dir == 2){
+                else if (dir === 2) {
                     nextRow--;
                 }
-                else if(dir == 3){
+                else if (dir === 3) {
                     nextColumn++;
                 }
-                else if(dir == 4){
+                else if (dir === 4) {
                     nextRow++;
                 }
                 nextRow2 = nextRow;
@@ -60,17 +59,17 @@ const Player = function (ctx, x, y, gameArea) {
             case 1:
                 nextColumn = Math.ceil(column);
                 nextColumn2 = Math.floor(column);
-                if(dir == 2){//from left to up
+                if (dir === 2) {//from left to up
                     nextRow = row - 1;
                 }
-                else if(dir == 4){//left to down
+                else if (dir === 4) {//left to down
                     nextRow = row + 1;
                 }
-                else if(dir == 1){//left to left
+                else if (dir === 1) {//left to left
                     nextColumn--;
                     nextRow = row;
                 }
-                else{
+                else {
                     nextRow = row;
                 }
                 nextRow2 = nextRow;
@@ -78,35 +77,35 @@ const Player = function (ctx, x, y, gameArea) {
             case 2:
                 nextRow = Math.ceil(row);
                 nextRow2 = Math.floor(row);
-                if(dir == 1){//from up to left
+                if (dir === 1) {//from up to left
                     nextColumn = column - 1;
                 }
-                else if(dir == 3){//up to right
+                else if (dir === 3) {//up to right
                     nextColumn = column + 1;
                 }
-                else if(dir == 4){//up to up
+                else if (dir === 4) {//up to up
                     nextRow--;
                     nextColumn = column;
                 }
-                else{
+                else {
                     nextColumn = column;
                 }
                 nextColumn2 = nextColumn;
                 break;
-            case 3:         //moving right
+            case 3:
                 nextColumn = Math.floor(column);
                 nextColumn2 = Math.ceil(column);
-                if(dir == 2){//from right to up
+                if (dir === 2) {//from right to up
                     nextRow = row - 1;
                 }
-                else if(dir == 4){//right to down
+                else if (dir === 4) {//right to down
                     nextRow = row + 1;
                 }
-                else if(dir == 3){//right to right
+                else if (dir === 3) {//right to right
                     nextColumn++;
                     nextRow = row;
                 }
-                else{
+                else {
                     nextRow = row;
                 }
                 nextRow2 = nextRow;
@@ -114,40 +113,46 @@ const Player = function (ctx, x, y, gameArea) {
             case 4:
                 nextRow = Math.floor(row);
                 nextRow2 = Math.ceil(row);
-                if(dir == 1){//from down to left
+                if (dir === 1) {//from down to left
                     nextColumn = column - 1;
                 }
-                else if(dir == 3){//down to right
+                else if (dir === 3) {//down to right
                     nextColumn = column + 1;
                 }
-                else if(dir == 4){//down to down
+                else if (dir === 4) {//down to down
                     nextRow++;
                     nextColumn = column;
                 }
-                else{
+                else {
                     nextColumn = column;
                 }
                 nextColumn2 = nextColumn;
                 break;
         }
-        
-        console.log(nextRow, nextColumn);
+
         let roundedRow = Math.round(nextRow);
-        let roundedColumn = Math.round(nextColumn); 
+        let roundedColumn = Math.round(nextColumn);
         let roundedRow2 = Math.round(nextRow2);
-        let roundedColumn2 = Math.round(nextColumn2); 
+        let roundedColumn2 = Math.round(nextColumn2);
+
+        //console.log(Math.abs(row - Math.floor(row)), Math.abs(column - Math.floor(column)));
+        if (direction !== dir
+            && (Math.abs(column - Math.floor(column)) < 0.1 || Math.abs(column - Math.floor(column)) > 0.9)
+            && (Math.abs(row - Math.floor(row)) < 0.1 || Math.abs(row - Math.floor(row)) > 0.9)) {
+            console.log("reached");
+            return false;
+        }
+
         if (map[roundedRow][roundedColumn] === 1 || map[roundedRow2][roundedColumn2] === 1) {
-            console.log("blocked");
             return true;
         }
-        //console.log("passed");
+
         return false;
     };
 
     const move = function (dir) {
         let { x, y } = sprite.getXY();
         if (dir >= 1 && dir <= 4 && dir != direction
-            //&& !isCollideWithWall(x, y, direction) 
             && !isCollideWithWall(x, y, dir)) {
             switch (dir) {
                 case 1: sprite.setSequence(sequences.moveLeft); break;
@@ -227,10 +232,10 @@ const Player = function (ctx, x, y, gameArea) {
             if (eatPowerDot(x, y)) {
                 powerDotSound.play();
             }
+
             if (isCollideWithWall(x, y, direction)) {
                 direction = 0;
             }
-
         }
 
         /* Update the sprite object */
