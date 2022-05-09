@@ -135,7 +135,6 @@ const Player = function (ctx, x, y, gameArea) {
         let roundedRow2 = Math.round(nextRow2);
         let roundedColumn2 = Math.round(nextColumn2);
 
-        //console.log(Math.abs(row - Math.floor(row)), Math.abs(column - Math.floor(column)));
         if (direction !== dir && direction !== 0
             && (Math.abs(column - Math.floor(column)) < 0.1 || Math.abs(column - Math.floor(column)) > 0.9)
             && (Math.abs(row - Math.floor(row)) < 0.1 || Math.abs(row - Math.floor(row)) > 0.9)) {
@@ -154,7 +153,7 @@ const Player = function (ctx, x, y, gameArea) {
 
     const move = function (dir) {
         let { x, y } = sprite.getXY();
-        if (dir >= 1 && dir <= 4 && dir != direction
+        if (dir >= 1 && dir <= 4 && dir !== direction
             && !isCollideWithWall(x, y, dir)) {
             switch (dir) {
                 case 1: sprite.setSequence(sequences.moveLeft); break;
@@ -171,7 +170,7 @@ const Player = function (ctx, x, y, gameArea) {
     };
 
     const stop = function (dir) {
-        if (direction == dir) {
+        if (direction === dir) {
             switch (dir) {
                 case 1: sprite.setSequence(sequences.idleLeft); break;
                 case 2: sprite.setSequence(sequences.idleUp); break;
