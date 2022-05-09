@@ -15,16 +15,13 @@ const Registration = (function () {
         })
             .then((res) => res.json())
             .then((json) => {
-                //console.log("Successful!");
                 if (json.status == "success") {
-                    /* Run the onSuccess() callback */
                     onSuccess(json.success);
                 }
                 else if (onError) onError(json.error);
-                //console.log(json);
             })
             .catch((err) => {
-                console.log("Error!");
+                console.log("Error!", err);
             });
         // Delete when appropriate
         if (onError) onError("This function is not yet implemented.");

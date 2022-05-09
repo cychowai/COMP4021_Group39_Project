@@ -213,9 +213,8 @@ const GamePanel = (function () {
                 () => {
                     //player.move(event.keyCode%36);
                     Socket.newMoveSignal(playerNum, event.keyCode % 36);
-                    console.log(playerNum);
+                    //console.log(playerNum);
                 },
-                console.log(playerNum)
             );
         });
 

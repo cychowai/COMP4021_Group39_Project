@@ -33,5 +33,10 @@
   "avatar": "Rabbit Face",
   "name": "jim2",
   "password": "$2b$10$szgX.aPfZqqeGso2uEyL2eCuww7er0UYRtlLeXpen6AhNIQwYjZDC"
+ },
+ "jim3": {
+  "avatar": "Panda",
+  "name": "jim3",
+  "password": "$2b$10$3FUDU.ASgvBMNGg.aRbeS.87SmcnLge12gzAq0a8ow4MgoBJbE3F."
  }
 }

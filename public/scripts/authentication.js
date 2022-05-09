@@ -40,7 +40,7 @@ const Authentication = (function () {
                 else if (onError) onError(json.error);
             })
             .catch((err) => {
-                console.log("Error2!")
+                console.log("Error2!", err);
             });
     };
 
@@ -60,7 +60,7 @@ const Authentication = (function () {
                 else if (onError) onError(json.error);
             })
             .catch((err) => {
-                console.log("Error3!");
+                console.log("Error3!", err);
             });
     };
 
@@ -75,12 +75,11 @@ const Authentication = (function () {
                     /* Run the onSuccess() callback */
                     user = null;
                     onSuccess(json.success);
-                    //console.log(user);
                 }
                 else if (onError) onError(json.error);
             })
             .catch((err) => {
-                console.log("Error4!");
+                console.log("Error4!", err);
             });
     };
 
@@ -99,7 +98,7 @@ const Authentication = (function () {
                 else if (onError) onError(json.error);
             })
             .catch((err) => {
-                console.log("Error5!");
+                console.log("Error5!", err);
             });
     };
 
@@ -118,7 +117,7 @@ const Authentication = (function () {
                 else if (onError) onError(json.error);
             })
             .catch((err) => {
-                console.log("Error6!");
+                console.log("Error6!", err);
             });
     };
 
@@ -137,7 +136,7 @@ const Authentication = (function () {
                 else if (onError) onError(json.error);
             })
             .catch((err) => {
-                console.log("Error4!");
+                console.log("Error7!", err);
             });
     };
 
