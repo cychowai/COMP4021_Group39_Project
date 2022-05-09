@@ -58,7 +58,7 @@ const Player = function (ctx, x, y, gameArea) {
                 break;
             case 1:
                 nextColumn = Math.ceil(column);
-                nextColumn2 = Math.floor(column);
+                nextColumn2 = Math.floor(column + 0.1);
                 if (dir === 2) {//from left to up
                     nextRow = row - 1;
                 }
@@ -76,7 +76,7 @@ const Player = function (ctx, x, y, gameArea) {
                 break;
             case 2:
                 nextRow = Math.ceil(row);
-                nextRow2 = Math.floor(row);
+                nextRow2 = Math.floor(row + 0.1);
                 if (dir === 1) {//from up to left
                     nextColumn = column - 1;
                 }
@@ -94,7 +94,7 @@ const Player = function (ctx, x, y, gameArea) {
                 break;
             case 3:
                 nextColumn = Math.floor(column);
-                nextColumn2 = Math.ceil(column);
+                nextColumn2 = Math.ceil(column - 0.1);
                 if (dir === 2) {//from right to up
                     nextRow = row - 1;
                 }
@@ -112,7 +112,7 @@ const Player = function (ctx, x, y, gameArea) {
                 break;
             case 4:
                 nextRow = Math.floor(row);
-                nextRow2 = Math.ceil(row);
+                nextRow2 = Math.ceil(row - 0.1);
                 if (dir === 1) {//from down to left
                     nextColumn = column - 1;
                 }
@@ -135,12 +135,14 @@ const Player = function (ctx, x, y, gameArea) {
         let roundedRow2 = Math.round(nextRow2);
         let roundedColumn2 = Math.round(nextColumn2);
 
+        /*
         if (direction !== dir && direction !== 0
             && (Math.abs(column - Math.floor(column)) < 0.1 || Math.abs(column - Math.floor(column)) > 0.9)
             && (Math.abs(row - Math.floor(row)) < 0.1 || Math.abs(row - Math.floor(row)) > 0.9)) {
             moveBuffer = dir;
             return false;
         }
+        */
 
         if (map[roundedRow][roundedColumn] === 1 || map[roundedRow2][roundedColumn2] === 1) {
             if (direction !== dir && direction !== 0)
