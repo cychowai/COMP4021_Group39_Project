@@ -30,7 +30,6 @@ const SignInForm = (function () {
                     //create a player
                     GamePanel.createPlayer();
                     playerNum = Authentication.getPlayerNum();
-                    console.out(playerNum);
                 },
                 (error) => { $("#signin-message").text(error); }
             );
