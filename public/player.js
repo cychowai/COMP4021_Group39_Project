@@ -28,7 +28,7 @@ const Player = function (ctx, x, y, gameArea) {
     let speed = 20;
 
     const isCollideWithWall = function (x, y, direction) {
-        if (direction == null) {
+        if (direction === 0) {
             return;
         }
 
@@ -55,15 +55,27 @@ const Player = function (ctx, x, y, gameArea) {
                 break;
         }
 
+        /*
+        if (isMove
+            && !(x % tileSize < (tileSize / 2 + 1) || x % tileSize > (tileSize / 2 - 1))
+            && !(y % tileSize < (tileSize / 2 + 1) || y % tileSize > (tileSize / 2 - 1))
+        ) {
+            return true;
+        }
+        */
+
         if (map[Math.floor(nextRow)][Math.floor(nextColumn)] === 1) {
             return true;
         }
+
         return false;
     };
 
     const move = function (dir) {
         let { x, y } = sprite.getXY();
-        if (dir >= 1 && dir <= 4 && dir != direction && !isCollideWithWall(x, y, dir)) {
+        if (dir >= 1 && dir <= 4 && dir != direction
+            //&& !isCollideWithWall(x, y, direction) 
+            && !isCollideWithWall(x, y, dir)) {
             switch (dir) {
                 case 1: sprite.setSequence(sequences.moveLeft); break;
                 case 2: sprite.setSequence(sequences.moveUp); break;
