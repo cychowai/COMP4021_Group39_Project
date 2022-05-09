@@ -26,7 +26,7 @@ const Player = function (ctx, x, y, gameArea) {
     let direction = 0;
 
     let speed = 20;
-
+    let moveBuffer = null;
     const isCollideWithWall = function (x, y, dir) {
         if (dir == null) {
             return;
@@ -59,7 +59,7 @@ const Player = function (ctx, x, y, gameArea) {
                 break;
             case 1:
                 nextColumn = Math.ceil(column);
-                nextColumn2 = Math.floor(column);
+                nextColumn2 = Math.floor(column+.1);
                 if(dir == 2){//from left to up
                     nextRow = row - 1;
                 }
@@ -77,7 +77,7 @@ const Player = function (ctx, x, y, gameArea) {
                 break;
             case 2:
                 nextRow = Math.ceil(row);
-                nextRow2 = Math.floor(row);
+                nextRow2 = Math.floor(row+.1);
                 if(dir == 1){//from up to left
                     nextColumn = column - 1;
                 }
@@ -95,7 +95,7 @@ const Player = function (ctx, x, y, gameArea) {
                 break;
             case 3:         //moving right
                 nextColumn = Math.floor(column);
-                nextColumn2 = Math.ceil(column);
+                nextColumn2 = Math.ceil(column-.1);
                 if(dir == 2){//from right to up
                     nextRow = row - 1;
                 }
@@ -113,7 +113,7 @@ const Player = function (ctx, x, y, gameArea) {
                 break;
             case 4:
                 nextRow = Math.floor(row);
-                nextRow2 = Math.ceil(row);
+                nextRow2 = Math.ceil(row-.1);
                 if(dir == 1){//from down to left
                     nextColumn = column - 1;
                 }
@@ -138,6 +138,10 @@ const Player = function (ctx, x, y, gameArea) {
         let roundedColumn2 = Math.round(nextColumn2); 
         if (map[roundedRow][roundedColumn] === 1 || map[roundedRow2][roundedColumn2] === 1) {
             console.log("blocked");
+            if(direction != dir && direction != 0){
+                moveBuffer = dir;
+                console.log("this is the buffer " + moveBuffer);        
+            }   
             return true;
         }
         //console.log("passed");
@@ -146,9 +150,7 @@ const Player = function (ctx, x, y, gameArea) {
 
     const move = function (dir) {
         let { x, y } = sprite.getXY();
-        if (dir >= 1 && dir <= 4 && dir != direction
-            //&& !isCollideWithWall(x, y, direction) 
-            && !isCollideWithWall(x, y, dir)) {
+        if (dir >= 1 && dir <= 4 && dir != direction && !isCollideWithWall(x, y, dir)) {
             switch (dir) {
                 case 1: sprite.setSequence(sequences.moveLeft); break;
                 case 2: sprite.setSequence(sequences.moveUp); break;
@@ -156,6 +158,9 @@ const Player = function (ctx, x, y, gameArea) {
                 case 4: sprite.setSequence(sequences.moveDown); break;
             }
             direction = dir;
+
+            if(dir == moveBuffer)  //clear the buffer once it is succesfully moved
+                moveBuffer = null;
         }
     };
 
@@ -230,11 +235,14 @@ const Player = function (ctx, x, y, gameArea) {
             if (isCollideWithWall(x, y, direction)) {
                 direction = 0;
             }
-
         }
 
         /* Update the sprite object */
         sprite.update(time);
+        if(direction != moveBuffer){
+            move(moveBuffer);
+        }
+
     };
 
     // The methods are returned as an object here.
