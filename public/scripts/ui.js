@@ -184,6 +184,9 @@ const GamePanel = (function () {
     let gameArea = null;
     let player = [];
     let playerNum = null;
+	let ghost = [];
+	
+
 
     const initialize = function () {
         /* Create the game area */
@@ -191,7 +194,13 @@ const GamePanel = (function () {
 
         /* Create the sprites in the game */
         //player = Player(context, 427, 240, gameArea); // The player     
-
+		
+		for (let i = 0; i < 1; i++){
+			ghost.push(Ghost(context, 300, 272, gameArea));
+			ghost[i].scatterOn();
+		}
+		
+		
         //starting the game
         $("#startButton").on("click", function () {
             Authentication.startGame(() => {
@@ -245,7 +254,9 @@ const GamePanel = (function () {
         /* Update the sprites */
         for (let i = 0; i < player.length; i++)
             player[i].update(now);
-
+		
+        for (let i = 0; i < ghost.length; i++)
+            ghost[i].update(now);
         //if(player[playerNum-1].getBoundingBox().isPointInBox(dot.getXY().x,dot.getXY().y)){
         //    collectedDot++;
         //}
@@ -257,6 +268,8 @@ const GamePanel = (function () {
         for (let i = 0; i < player.length; i++)
             player[i].draw();
 
+		for (let i = 0; i < ghost.length; i++)
+            ghost[i].draw();
         /* Process the next frame */
         requestAnimationFrame(doFrame);
     };
