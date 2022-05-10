@@ -1,36 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pacman Game</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link href="style.css" rel="stylesheet">
+    <title>The PacMan</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
 </head>
 
-<body id="mainBody">
-  <div id="frontPage" class="frontPage">
-    <button id="startGame" class="frontPageBtn" onclick="">Start Game</button>
-    <button class="frontPageBtn">Instructions</button>
-  </div>
-  <div id="container" class="container">
-    <h1>Pacman Game</h1>
-    <canvas id="gameCanvas"></canvas>
-  </div>
-  <!-- import js file here -->
-  <!-- pacman game -->
-  <script src="map/map.js"></script>
-  <script src="./frontPage.js"></script>
-  <!-- common js files -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="/socket.io/socket.io.min.js"></script>
-  <script src="login/socket.js"></script>
-  <script src="login/avatar.js"></script>
-  <script src="login/ui.js"></script>
-  <script src="login/registration.js"></script>
-  <script src="login/authentication.js"></script>
+<body>
+    <div id="container" class="col">
+        <div id="header" class="row">
+            <div id="title">Pacman Game</div>
+            <div class="spacer-grow"></div>
+            <div id="user-panel" class="row">
+                <div class="field-content row shadow">
+                    <span class="user-avatar"></span>
+                    <span class="user-name">-</span>
+                </div>
+                <button id="signout-button" class="icon"><span class="material-icons">logout</span></button>
+            </div>
+        </div>
+
+        <div id="main-panel" class="row">
+            <div id="game-panel">
+                <div id="score-board-1" class="score-board">
+                    <div id="yellowDot"></div>&nbsp;&nbsp;
+                    <p>Player 1's Scores :</p>&nbsp;&nbsp;
+                    <div id="player1-score">0</div>
+                </div>
+                <div id="score-board-2" class="score-board">
+                    <div id="pinkDot"></div>&nbsp;&nbsp;
+                    <p>Player 2's Scores :</p>&nbsp;&nbsp;
+                    <div id="player2-score">0</div>
+                </div>
+                <div id="score-board-3" class="score-board">
+                    <div id="blueDot"></div>&nbsp;&nbsp;
+                    <p>Player 3's Scores :</p>&nbsp;&nbsp;
+                    <div id="player3-score">0</div>
+                </div>
+                <div id="score-board-4" class="score-board">
+                    <div id="redDot"></div>&nbsp;&nbsp;
+                    <p>Player 4's Scores :</p>&nbsp;&nbsp;
+                    <div id="player4-score">0</div>
+                </div>
+                <div id="time-board">
+                    <p>Time Remaining (in seconds) :</p>&nbsp;&nbsp;
+                    <div id="time-remaining">120</div>
+                </div>
+                <canvas id="game-area"></canvas>
+            </div>
+            <div id="chat-panel" class="col">
+                <div id="instructionBox" class="col">
+                    The player controls Pac-Man,
+                    who must eat all the dots inside an enclosed maze while avoiding four colored ghosts.
+                    Eating large flashing dots called "Power Pellets" causes the ghosts to temporarily turn blue,
+                    allowing Pac-Man to eat them for bonus points.
+                </div>
+                <div id="online-users-area" class="col">Hi</div>
+                <div id="player1" class="col playerBox">Player1 here!</div>
+                <div id="player2" class="col playerBox">Player2 here!</div>
+                <div id="player3" class="col playerBox">Player3 here!</div>
+                <div id="player4" class="col playerBox">Player4 here!</div>
+                <div id="someonePlaying" class="col playerBox">someone is playing! please wait!</div>
+                <button id="readyButton" class="">Ready !</button>
+                <button id="startButton" class="">here we go !</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="signin-overlay" class="overlay row">
+        <div class="content shadow row">
+            <form id="signin-form" class="col">
+                <div class="caption">SIGN IN WITH YOUR ACCOUNT</div>
+                <div class="spacer-0"></div>
+                <input id="signin-username" placeholder="Enter your username"></input>
+                <input id="signin-password" type="password" placeholder="Enter your password"></input>
+                <div class="spacer-0"></div>
+                <button type="submit">Sign In</button>
+                <div id="signin-message" class="warning center"></div>
+                <div class="spacer-grow"></div>
+            </form>
+            <div class="spacer-0"></div>
+            <form id="register-form" class="col">
+                <div class="caption">OR, REGISTER IF YOU DO NOT HAVE ONE</div>
+                <div class="spacer-0"></div>
+                <input id="register-username" maxlength="10" placeholder="Enter your username"></input>
+                <select id="register-avatar">
+                    <option value="">Select your avatar</option>
+                </select>
+                <input id="register-name" maxlength="16" placeholder="Enter your name"></input>
+                <input id="register-password" type="password" placeholder="Enter your password"></input>
+                <input id="register-confirm" type="password" placeholder="Enter your password again"></input>
+                <div class="spacer-0"></div>
+                <button type="submit">Register</button>
+                <div id="register-message" class="warning center"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.min.js"></script>
+    <script src="scripts/socket.js"></script>
+    <script src="scripts/avatar.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/registration.js"></script>
+    <script src="scripts/authentication.js"></script>
+    <script src="player.js"></script>
+    <script src="ghost.js"></script>
+    <script src="boundingBox.js"></script>
+    <script src="sprite.js"></script>
+    <script src="scripts/map.js"></script>
+    <script src="scripts/game.js"></script>
+    <script src="scripts/checkGameStatus.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize the UI
+            UI.initialize();
+
+            // Validate the signin
+            Authentication.validate(
+                () => {
+                    SignInForm.hide();
+                    UserPanel.update(Authentication.getUser());
+                    UserPanel.show();
+
+                    Socket.connect();
+                },
+                () => { SignInForm.show(); }
+            );
+        });
+    </script>
 </body>
 
 </html>

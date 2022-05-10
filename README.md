@@ -1,19 +1,24 @@
 # COMP4021 Group 39 Project
 
-## Please install the following packages:
+# PACMAN GAME (Multiple players version)
+
+### Chow Chi Yau (Jim)
+### Lai Chak Pui (Jeffrey)
+### Lee Wing Piu (Jimmy)
+
+## Please go to the directory of this project after you have downloaded.
+
+## Run the following command to install the all the packages needed:
 ```
-npm install express
-npm install bcrypt
-npm install express-session
-npm install socket.io
+npm install
 ```
 
-## Go to the directory of this project and run the following command:
+## Run the following command to build the server of the game:
 ```
 node server.js
 ```
 
-## Go to localhost 8000 to play the game:
+## Go to localhost 8000 to play the game, enjoy!:
 ```
 http://localhost:8000
 ```
