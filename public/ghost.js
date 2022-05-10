@@ -32,7 +32,7 @@ const Ghost = function (ctx, x, y, gameArea) {
         let nextRow, nextColumn = null;
         let nextRow2, nextColumn2 = null;
 
-        switch (dir) {
+        switch (direction) {
             case 0:
                 nextColumn = Math.round(column);
                 nextRow = Math.round(row);
@@ -201,120 +201,146 @@ const Ghost = function (ctx, x, y, gameArea) {
         while (!exit) {
             if (direction === 3) {
                 var r = Math.floor(Math.random() * 3);
-                if (r === 0) {
-                    if (!isCollideWithWall(x, y, direction)) {
-                        move(3);
-                        exit = true;
-                    }
-                }
-                if (r === 1) {
-                    if (!isCollideWithWall(x, y, direction)) {
-                        move(2);
-                        exit = true;
-                    }
-                }
-                if (r === 2) {
-                    if (!isCollideWithWall(x, y, direction)) {
-                        move(4);
-                        exit = true;
-                    }
+                let dir = 0;
+                switch (r) {
+                    case 0:
+                        dir = 3;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 1:
+                        dir = 2;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 2:
+                        dir = 4;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
                 }
             }
             else if (direction == 1) {
                 var r = Math.floor(Math.random() * 3);
-                if (r === 0) {
-                    if (!isCollideWithWall(x, y, direction)) {
-                        move(1);
-                        exit = true;
-                    }
-                }
-                if (r === 1) {
-                    if (!isCollideWithWall(x, y, direction)) {
-                        move(2);
-                        exit = true;
-                    }
-                }
-                if (r === 2) {
-                    if (!isCollideWithWall(x, y, direction)) {
-                        move(4);
-                        exit = true;
-                    }
+                let dir = 0;
+                switch (r) {
+                    case 0:
+                        dir = 1;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 1:
+                        dir = 2;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 2:
+                        dir = 4;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
                 }
             }
             else if (direction == 2) {
                 var r = Math.floor(Math.random() * 3);
-                if (r === 0) {
-                    if (!isCollideWithWall(x, y, direction)) {
-                        move(2);
-                        exit = true;
-                    }
-                }
-                if (r === 1) {
-                    if (!isCollideWithWall(x, y, direction)) {
-                        move(3);
-                        exit = true;
-                    }
-                }
-                if (r === 2) {
-                    if (!isCollideWithWall(x, y, direction)) {
-                        move(1);
-                        exit = true;
-                    }
+                let dir = 0;
+                switch (r) {
+                    case 0:
+                        dir = 2;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 1:
+                        dir = 3;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 2:
+                        dir = 1;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
                 }
             }
             else if (direction === 4) {
                 var r = Math.floor(Math.random() * 3);
-                if (r === 0) {
-                    if (!isCollideWithWall(x, y, direction)) {
-                        move(4);
-                        exit = true;
-                    }
-                }
-                if (r === 1) {
-                    if (!isCollideWithWall(x, y, direction)) {
-                        move(3);
-                        exit = true;
-                    }
-                }
-                if (r === 2) {
-                    if (!isCollideWithWall(x, y, direction)) {
-                        move(1);
-                        exit = true;
-                    }
+                let dir = 0;
+                switch (r) {
+                    case 0:
+                        dir = 4;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 1:
+                        dir = 3;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 2:
+                        dir = 1;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
                 }
             }
             else if (direction === 0) {
-                var r = Math.floor(Math.random() * 3);
-                if (r === 0) {
-                    if (!isCollideWithWall(x, y, 1)) {
-                        move(1);
-                        exit = true;
-                    }
-                }
-                if (r === 1) {
-                    if (!isCollideWithWall(x, y, 2)) {
-                        move(2);
-                        exit = true;
-                    }
-                }
-                if (r === 2) {
-                    if (!isCollideWithWall(x, y, 3)) {
-                        move(3);
-                        exit = true;
-                    }
-                }
-                if (r === 3) {
-                    if (!isCollideWithWall(x, y, 4)) {
-                        move(4);
-                        exit = true;
-                    }
+                var dir = Math.floor(Math.random() * 4) + 1;
+                switch (dir) {
+                    case 1:
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 2:
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 3:
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 4:
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
                 }
             }
         }
     };
 
     const scatterOn = function () {
-        ghostAI = setInterval(scatter, 500);
+        setInterval(scatter, 500);
     };
 
     // The methods are returned as an object here.
