@@ -184,13 +184,19 @@ const GamePanel = (function () {
     let gameArea = null;
     let player = [];
     let playerNum = null;
+	  let ghost = [];
     const totalGameTime = 120;   // Total game time in seconds (2 minutes)
     let gameStartTime = 0;
 
     const initialize = function () {
         /* Create the game area */
         gameArea = BoundingBox(context, 0, 0, 560, 560);
-
+		
+        for (let i = 0; i < 1; i++){
+          ghost.push(Ghost(context, 300, 272, gameArea));
+          ghost[i].scatterOn();
+        }
+      
         //starting the game
         $("#startButton").on("click", function () {
             Authentication.startGame(() => {
@@ -244,6 +250,9 @@ const GamePanel = (function () {
         /* Update the sprites */
         for (let i = 0; i < player.length; i++)
             player[i].update(now);
+		
+        for (let i = 0; i < ghost.length; i++)
+            ghost[i].update(now);
 
         /* timer */
         if (gameStartTime === 0) gameStartTime = now;
@@ -262,6 +271,9 @@ const GamePanel = (function () {
         for (let i = 0; i < player.length; i++)
             player[i].draw();
 
+		    for (let i = 0; i < ghost.length; i++)
+            ghost[i].draw();
+      
         for (let i = 0; i < player.length; i++) {
             let score = player[i].getScore();
             if (i === 0) {
