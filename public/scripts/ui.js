@@ -192,8 +192,8 @@ const GamePanel = (function () {
         /* Create the game area */
         gameArea = BoundingBox(context, 0, 0, 560, 560);
 		
-        for (let i = 0; i < 1; i++){
-          ghost.push(Ghost(context, 300, 272, gameArea));
+        for (let i = 0; i < 4; i++){
+          ghost.push(Ghost(context, 300, 272, i, gameArea));
           ghost[i].scatterOn();
         }
       

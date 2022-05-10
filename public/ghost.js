@@ -1,10 +1,25 @@
-const Ghost = function (ctx, x, y, gameArea) {
+const Ghost = function (ctx, x, y, colour, gameArea) {
+	
+	const sequences = [];
+	
+	for (let i=0;i<4;i++){
+		sequences[i] = {
+			moveLeft: { x: 84, y: 84+i*20, width: 20, height: 20, count: 2, timing: 50, loop: true },
+			moveUp: { x: 4, y: 84+i*20, width: 20, height: 20, count: 2, timing: 50, loop: true },
+			moveRight: { x: 124, y: 84+i*20, width: 20, height: 20, count: 2, timing: 50, loop: true },
+			moveDown: { x: 44, y: 84+i*20, width: 20, height: 20, count: 2, timing: 50, loop: true }
+		}
+
+	}
+	
+	/*
     const sequences = {
-        moveLeft: { x: 84, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
-        moveUp: { x: 4, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
-        moveRight: { x: 124, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
-        moveDown: { x: 44, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true }
+        moveLeftRed: { x: 84, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
+        moveUpRed: { x: 4, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
+        moveRightRed: { x: 124, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
+        moveDownRed: { x: 44, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true }
     }
+	*/
 
     const sprite = Sprite(ctx, x, y);
 
@@ -153,10 +168,10 @@ const Ghost = function (ctx, x, y, gameArea) {
         if (dir >= 1 && dir <= 4 && dir !== direction
             && !isCollideWithWall(x, y, dir)) {
             switch (dir) {
-                case 1: sprite.setSequence(sequences.moveLeft); break;
-                case 2: sprite.setSequence(sequences.moveUp); break;
-                case 3: sprite.setSequence(sequences.moveRight); break;
-                case 4: sprite.setSequence(sequences.moveDown); break;
+                case 1: sprite.setSequence(sequences[colour].moveLeft); break;
+                case 2: sprite.setSequence(sequences[colour].moveUp); break;
+                case 3: sprite.setSequence(sequences[colour].moveRight); break;
+                case 4: sprite.setSequence(sequences[colour].moveDown); break;
             }
             direction = dir;
 
