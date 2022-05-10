@@ -1,14 +1,14 @@
 const Player = function (ctx, x, y, gameArea, playerNum, score) {
     const sequences = {
-        idleLeft: { x: 45, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
-        idleUp: {  x: 45, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
-        idleRight: { x: 45, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
-        idleDown: { x: 45, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
+        idleLeft: { x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
+        idleUp: {  x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
+        idleRight: { x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
+        idleDown: { x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
 
-        moveLeft: { x: 143, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
-        moveUp: { x: 335, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
-        moveRight: { x: 237, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
-        moveDown: { x: 45, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true }
+        moveLeft: { x: 143, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
+        moveUp: { x: 335, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
+        moveRight: { x: 237, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
+        moveDown: { x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true }
     };
 
     const sprite = Sprite(ctx, x, y);
@@ -220,7 +220,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
         return false;
     };
 
-    const update = function (time) {
+    const update = function (time, updatingPlayer) {
         /* Update the player if the player is moving */
         if (direction != 0) {
             let { x, y } = sprite.getXY();
@@ -237,11 +237,11 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
             if (gameArea.isPointInBox(x, y))
                 sprite.setXY(x, y);
 
-            if (eatDot(x, y)) {
+            if (eatDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum()) ) {
                 wakaSound.play();
             }
 
-            if (eatPowerDot(x, y)) {
+            if (eatPowerDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum())) {
                 powerDotSound.play();
             }
 

@@ -249,8 +249,8 @@ const GamePanel = (function () {
     function doFrame(now) {
         /* Update the sprites */
         for (let i = 0; i < player.length; i++)
-            player[i].update(now);
-
+            player[i].update(now, i+1);
+		
         for (let i = 0; i < ghost.length; i++)
             ghost[i].update(now);
 
