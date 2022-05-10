@@ -282,7 +282,12 @@ button.icon:active {
     align-self: stretch;
 }
 
-#score-board {
+.score-board {
+    display: flex;
+    align-items: center;
+}
+
+#time-board {
     display: flex;
     align-items: center;
 }
