@@ -291,3 +291,31 @@ button.icon:active {
     display: flex;
     align-items: center;
 }
+
+#yellowDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: gold;
+}
+
+#pinkDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: hotpink;
+}
+
+#blueDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #40aceb;
+}
+
+#redDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #eb4a40;
+}
