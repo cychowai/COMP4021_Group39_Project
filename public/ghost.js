@@ -55,7 +55,7 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
 	
 	const eaten = function() {
 		console.log("player eaten");
-		powerDotSound.play();
+		gameOverSound.play();
 	}
 	
 	const getEatPriority = function () {

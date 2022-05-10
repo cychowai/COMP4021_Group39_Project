@@ -220,7 +220,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
     };
 	
 	const eaten = function() {
-		powerDotSound.play();
+		eatGhostSound.play();
 		console.log("ghost eaten");
 	}
 	
