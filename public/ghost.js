@@ -1,25 +1,23 @@
 const Ghost = function (ctx, x, y, colour, gameArea) {
-	
-	const sequences = [];
-	
-	for (let i=0;i<4;i++){
-		sequences[i] = {
-			moveLeft: { x: 84, y: 84+i*20, width: 20, height: 20, count: 2, timing: 50, loop: true },
-			moveUp: { x: 4, y: 84+i*20, width: 20, height: 20, count: 2, timing: 50, loop: true },
-			moveRight: { x: 124, y: 84+i*20, width: 20, height: 20, count: 2, timing: 50, loop: true },
-			moveDown: { x: 44, y: 84+i*20, width: 20, height: 20, count: 2, timing: 50, loop: true }
-		}
+    const sequences = [];
 
-	}
-	
-	/*
+    for (let i = 0; i < 4; i++) {
+        sequences[i] = {
+            moveLeft: { x: 84, y: 84 + i * 20, width: 20, height: 20, count: 2, timing: 50, loop: true },
+            moveUp: { x: 4, y: 84 + i * 20, width: 20, height: 20, count: 2, timing: 50, loop: true },
+            moveRight: { x: 124, y: 84 + i * 20, width: 20, height: 20, count: 2, timing: 50, loop: true },
+            moveDown: { x: 44, y: 84 + i * 20, width: 20, height: 20, count: 2, timing: 50, loop: true }
+        }
+    }
+
+    /*
     const sequences = {
         moveLeftRed: { x: 84, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
         moveUpRed: { x: 4, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
         moveRightRed: { x: 124, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
         moveDownRed: { x: 44, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true }
     }
-	*/
+    */
 
     const sprite = Sprite(ctx, x, y);
 
