@@ -8,6 +8,16 @@ const Ghost = function (ctx, x, y, gameArea) {
 
     const sprite = Sprite(ctx, x, y);
 
+    // This function gets the current sprite position.
+    const getXY = function () {
+        return { x, y };
+    };
+
+    const setXY = function (xvalue, yvalue) {
+        [x, y] = [xvalue, yvalue];
+        return this;
+    };
+
     sprite.setSequence(sequences.moveLeft)
         .setScale(2)
         .setShadowScale({ x: 0.75, y: 0.20 })
@@ -346,6 +356,8 @@ const Ghost = function (ctx, x, y, gameArea) {
     // The methods are returned as an object here.
     return {
         move: move,
+        getXY: getXY,
+        setXY: setXY,
         getBoundingBox: sprite.getBoundingBox,
         draw: sprite.draw,
         update: update,
