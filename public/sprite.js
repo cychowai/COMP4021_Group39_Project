@@ -5,6 +5,7 @@ const Sprite = function (ctx, x, y) {
     let scale = 1;
     let shadowScale = { x: 1, y: 0.25 };
     let lastUpdate = 0;
+    let playerScale = 1;
 
     const useSheet = function (spriteSheet) {
         sheet.src = spriteSheet;
@@ -33,8 +34,9 @@ const Sprite = function (ctx, x, y) {
         return this;
     };
 
-    const setScale = function (value) {
+    const setScale = function (value, playerValue) {
         scale = value;
+        playerScale =  playerValue;
         return this;
     };
 
@@ -46,8 +48,8 @@ const Sprite = function (ctx, x, y) {
     // This function gets the display size of the sprite.
     const getDisplaySize = function () {
         /* Find the scaled width and height of the sprite */
-        const scaledWidth = sequence.width * scale * 0.4;
-        const scaledHeight = sequence.height * scale * .4;
+        const scaledWidth = sequence.width * scale * 0.4 * playerScale;
+        const scaledHeight = sequence.height * scale * .4 * playerScale;
         return { width: scaledWidth, height: scaledHeight };
     };
 
