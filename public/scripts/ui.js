@@ -254,6 +254,8 @@ const GamePanel = (function () {
 			if (player.getEatPriority() > ghost.getEatPriority()){
 				//player eat ghost
 				console.log("player eat ghost");
+				console.log(player.getEatPriority());
+				console.log(ghost.getEatPriority());
 				player.eaten();
 			}
 			else if (ghost.getEatPriority() > player.getEatPriority()){
@@ -310,8 +312,6 @@ const GamePanel = (function () {
 	
 		for (let i = 0; i < player.length; i++) {
 			for (let j = 0; j < ghost.length; j++) {
-				//console.log(player[i].getRowCol());
-				//console.log(ghost[j].getRowCol());
 				eatGhost(player[i], ghost[j]);
 			}
 		}

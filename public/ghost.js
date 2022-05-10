@@ -386,7 +386,7 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
     // The methods are returned as an object here.
     return {
         move: move,
-        getXY: getXY,
+        getXY: sprite.getXY,
         setXY: setXY,
         getBoundingBox: sprite.getBoundingBox,
         draw: sprite.draw,

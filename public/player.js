@@ -234,13 +234,18 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
         }
         return false;
     };
+	
+	const changeEatPriority = function (num) {
+		eatPriority = num;
+		return this;
+	}
 
     const eatPowerDot = function (x, y) {
         const row = Math.floor(y / tileSize);
         const column = Math.floor(x / tileSize);
         if (map[row][column] === 3) {
             map[row][column] = 0;
-			eatPriority = 3;
+			changeEatPriority(3);
 			console.log(eatPriority);
             score += 50;
             return true;
@@ -308,5 +313,6 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
 		getEatPriority: getEatPriority,
 		eaten: eaten,
 		getRowCol: getRowCol,
+		changeEatPriority: changeEatPriority,
     };
 };
