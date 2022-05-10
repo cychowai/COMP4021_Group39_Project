@@ -335,3 +335,49 @@ button.icon:active {
 #score-board-4 { 
     display: none;
 }
+
+.frontPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 50vh;
+  margin-left: 50vw;
+}
+
+.frontPageBtn {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+
+  font-family:'Times New Roman', Times, serif;
+  font-size: 8vh;
+  font-weight: bold;
+  color: blue;
+  -webkit-text-stroke-width: 0.2vh;
+  -webkit-text-stroke-color: white;
+}
+
+.container {
+  display: none;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#gameCanvas {
+  height: 72vh;
+  width: 72vh;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+
+  background-image: url('src/images/frontPage.jpeg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
