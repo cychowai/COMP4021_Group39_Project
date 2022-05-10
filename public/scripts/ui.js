@@ -184,19 +184,19 @@ const GamePanel = (function () {
     let gameArea = null;
     let player = [];
     let playerNum = null;
-	  let ghost = [];
+    let ghost = [];
     const totalGameTime = 120;   // Total game time in seconds (2 minutes)
     let gameStartTime = 0;
 
     const initialize = function () {
         /* Create the game area */
         gameArea = BoundingBox(context, 0, 0, 560, 560);
-		
-        for (let i = 0; i < 4; i++){
-          ghost.push(Ghost(context, 300, 272, i, gameArea));
-          ghost[i].scatterOn();
+
+        for (let i = 0; i < 4; i++) {
+            ghost.push(Ghost(context, 300, 272, i, gameArea));
+            ghost[i].scatterOn();
         }
-      
+
         //starting the game
         $("#startButton").on("click", function () {
             Authentication.startGame(() => {
@@ -271,9 +271,26 @@ const GamePanel = (function () {
         for (let i = 0; i < player.length; i++)
             player[i].draw();
 
-		    for (let i = 0; i < ghost.length; i++)
+        for (let i = 0; i < ghost.length; i++)
             ghost[i].draw();
-      
+
+        /* print score board */
+        for (let i = 0; i < player.length; i++) {
+            if (i === 0) {
+                $("#score-board-1").css("display", "flex");
+            }
+            else if (i === 1) {
+                $("#score-board-2").css("display", "flex");
+            }
+            else if (i === 2) {
+                $("#score-board-3").css("display", "flex");
+            }
+            else {
+                $("#score-board-4").css("display", "flex");
+            }
+        }
+
+        /* update score */
         for (let i = 0; i < player.length; i++) {
             let score = player[i].getScore();
             if (i === 0) {
@@ -301,17 +318,17 @@ const GamePanel = (function () {
     const stopPlayer = function (playerNum, keycode) {
         player[playerNum - 1].stop(keycode);
     };
-    
+
     const createPlayer = function (totalPlayerNum) {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         for (let i = 0; i < totalPlayerNum; i++) {
-            switch(i+1){
-                case 1: player.push(Player(context, 30 , 30, gameArea, i, 0));break;
-                case 2: player.push(Player(context, 530 , 30, gameArea, i, 0));break;
-                case 3: player.push(Player(context, 30, 530, gameArea, i, 0));break;
-                case 4: player.push(Player(context, 530, 530, gameArea, i, 0));break;
+            switch (i + 1) {
+                case 1: player.push(Player(context, 30, 30, gameArea, i, 0)); break;
+                case 2: player.push(Player(context, 530, 30, gameArea, i, 0)); break;
+                case 3: player.push(Player(context, 30, 530, gameArea, i, 0)); break;
+                case 4: player.push(Player(context, 530, 530, gameArea, i, 0)); break;
             }
-            
+
             console.log("player no.:", playerNum);
         }
     };
