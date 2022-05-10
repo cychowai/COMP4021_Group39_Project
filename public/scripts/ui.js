@@ -305,7 +305,13 @@ const GamePanel = (function () {
     const createPlayer = function (totalPlayerNum) {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         for (let i = 0; i < totalPlayerNum; i++) {
-            player.push(Player(context, 30 + i * 100, 30, gameArea, i, 0));
+            switch(i+1){
+                case 1: player.push(Player(context, 30 , 30, gameArea, i, 0));break;
+                case 2: player.push(Player(context, 530 , 30, gameArea, i, 0));break;
+                case 3: player.push(Player(context, 30, 530, gameArea, i, 0));break;
+                case 4: player.push(Player(context, 530, 530, gameArea, i, 0));break;
+            }
+            
             console.log("player no.:", playerNum);
         }
     };

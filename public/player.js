@@ -14,7 +14,8 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
     const sprite = Sprite(ctx, x, y);
 
     sprite.setSequence(sequences.idleDown)
-        .setScale(2, 0.7)
+        .setScale(2)
+        .setPlayerScale(0.7)
         .setShadowScale({ x: 0.75, y: 0.20 })
         .useSheet("src/images/pac_man.png");
 

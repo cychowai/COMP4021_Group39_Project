@@ -33,10 +33,13 @@ const Sprite = function (ctx, x, y) {
         lastUpdate = 0;
         return this;
     };
+    const setPlayerScale = function(playerValue) {
+        playerScale = playerValue;
+        return this;
+    };
 
-    const setScale = function (value, playerValue) {
+    const setScale = function (value) {
         scale = value;
-        playerScale =  playerValue;
         return this;
     };
 
@@ -124,5 +127,6 @@ const Sprite = function (ctx, x, y) {
         isReady: isReady,
         draw: draw,
         update: update,
+        setPlayerScale: setPlayerScale,
     };
 };
