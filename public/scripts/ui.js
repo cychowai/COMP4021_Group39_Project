@@ -187,6 +187,7 @@ const GamePanel = (function () {
     let ghost = [];
     const totalGameTime = 120;   // Total game time in seconds (2 minutes)
     let gameStartTime = 0;
+    let gameEnd = false;
 
     const initialize = function () {
         /* Create the game area */
@@ -249,8 +250,8 @@ const GamePanel = (function () {
     function doFrame(now) {
         /* Update the sprites */
         for (let i = 0; i < player.length; i++)
-            player[i].update(now, i+1);
-		
+            player[i].update(now, i + 1);
+
         for (let i = 0; i < ghost.length; i++)
             ghost[i].update(now);
 
@@ -258,10 +259,20 @@ const GamePanel = (function () {
         if (gameStartTime === 0) gameStartTime = now;
         const gameTimeSoFar = now - gameStartTime;
         const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
-        $("#time-remaining").text(timeRemaining);
+        if (timeRemaining >= 0) {
+            $("#time-remaining").text(timeRemaining);
+            gameEnd = checkGameWinDot();
+        }
+        else {
+            gameEnd = true;
+        }
 
-        //checkGameOver(); //in checkGameStatus.js
-        //checkGameWin(); //in checkGameStatus.js
+        if (gameEnd) {
+            //winner
+            gameWinSound.play();
+            //other players
+            //gameOverSound.play();
+        }
 
         /* Clear the screen */
         context.clearRect(0, 0, canvas.width, canvas.height);
