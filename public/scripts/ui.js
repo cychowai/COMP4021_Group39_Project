@@ -268,10 +268,12 @@ const GamePanel = (function () {
     const stopPlayer = function (playerNum, keycode) {
         player[playerNum - 1].stop(keycode);
     };
-
-    const createPlayer = function (playerNum) {
-        for (let i = 0; i < playerNum; i++) {
-            player.push(Player(context, 30 + i * 100, 30, gameArea));
+    
+    const createPlayer = function (totalPlayerNum) {
+        playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
+        for (let i = 0; i < totalPlayerNum; i++) {
+            player.push(Player(context, 30 + i * 100, 30, gameArea, i));
+            console.log(playerNum);
         }
     };
 
