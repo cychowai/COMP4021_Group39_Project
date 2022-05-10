@@ -1,19 +1,18 @@
 const Ghost = function (ctx, x, y, gameArea) {
-	
-	const sequences = {
-		moveLeft: { x: 84, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
-		moveUp: { x: 4, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
-		moveRight: { x: 124, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
-		moveDown: { x: 44, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true }
-	}
+    const sequences = {
+        moveLeft: { x: 84, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
+        moveUp: { x: 4, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
+        moveRight: { x: 124, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true },
+        moveDown: { x: 44, y: 84, width: 20, height: 20, count: 2, timing: 50, loop: true }
+    }
 
-	const sprite = Sprite(ctx, x, y);
+    const sprite = Sprite(ctx, x, y);
 
-	sprite.setSequence(sequences.moveLeft)
-		.setScale(2)
-		.setShadowScale({ x: 0.75, y: 0.20 })
-		.useSheet("src/images/pac_sprite.png");
-	
+    sprite.setSequence(sequences.moveLeft)
+        .setScale(2)
+        .setShadowScale({ x: 0.75, y: 0.20 })
+        .useSheet("src/images/pac_sprite.png");
+
     // - `0` - not moving
     // - `1` - moving to the left
     // - `2` - moving up
@@ -33,7 +32,7 @@ const Ghost = function (ctx, x, y, gameArea) {
         let nextRow, nextColumn = null;
         let nextRow2, nextColumn2 = null;
 
-        switch (dir) {
+        switch (direction) {
             case 0:
                 nextColumn = Math.round(column);
                 nextRow = Math.round(row);
@@ -150,8 +149,6 @@ const Ghost = function (ctx, x, y, gameArea) {
     };
 
     const move = function (dir) {
-		if (dir != null)
-			console.log(dir);
         let { x, y } = sprite.getXY();
         if (dir >= 1 && dir <= 4 && dir !== direction
             && !isCollideWithWall(x, y, dir)) {
@@ -171,7 +168,7 @@ const Ghost = function (ctx, x, y, gameArea) {
 
     const update = function (time) {
         /* Update the player if the player is moving */
-        if (direction != 0) {
+        if (direction !== 0) {
             let { x, y } = sprite.getXY();
 
             /* Move the player */
@@ -198,127 +195,153 @@ const Ghost = function (ctx, x, y, gameArea) {
         if (direction !== moveBuffer)
             move(moveBuffer);
     };
-	
-	const scatter = function(){
-		var exit = false;
-		while (!exit){
-			if (direction == 3){
-				var r = Math.floor(Math.random() * 3);
-				if (r == 0){
-					if (!isCollideWithWall(x, y, direction)){
-						move(3);
-						exit = true;
-					}
-				}
-				if (r == 1){
-					if (!isCollideWithWall(x, y, direction)){
-						move(2);
-						exit = true;
-					}
-				}
-				if (r == 2){
-					if (!isCollideWithWall(x, y, direction)){
-						move(4);
-						exit = true;
-					}
-				}
-			}
-			else if (direction == 1){
-				var r = Math.floor(Math.random() * 3);
-				if (r == 0){
-					if (!isCollideWithWall(x, y, direction)){
-						move(1);
-						exit = true;
-					}
-				}
-				if (r == 1){
-					if (!isCollideWithWall(x, y, direction)){
-						move(2);
-						exit = true;
-					}
-				}
-				if (r == 2){
-					if (!isCollideWithWall(x, y, direction)){
-						move(4);
-						exit = true;
-					}
-				}
-			}
-			else if (direction == 2){
-				var r = Math.floor(Math.random() * 3);
-				if (r == 0){
-					if (!isCollideWithWall(x, y, direction)){
-						move(2);
-						exit = true;
-					}
-				}
-				if (r == 1){
-					if (!isCollideWithWall(x, y, direction)){
-						move(3);
-						exit = true;
-					}
-				}
-				if (r == 2){
-					if (!isCollideWithWall(x, y, direction)){
-						move(1);
-						exit = true;
-					}
-				}
-			}
-			else if (direction == 4){
-				var r = Math.floor(Math.random() * 3);
-				if (r == 0){
-					if (!isCollideWithWall(x, y, direction)){
-						move(4);
-						exit = true;
-					}
-				}
-				if (r == 1){
-					if (!isCollideWithWall(x, y, direction)){
-						move(3);
-						exit = true;
-					}
-				}
-				if (r == 2){
-					if (!isCollideWithWall(x, y, direction)){
-						move(1);
-						exit = true;
-					}
-				}
-			}
-			else if (direction == 0){
-				var r = Math.floor(Math.random() * 3);
-				if (r == 0){
-					if (!isCollideWithWall(x, y, 1)){
-						move(1);
-						exit = true;
-					}
-				}
-				if (r == 1){
-					if (!isCollideWithWall(x, y, 2)){
-						move(2);
-						exit = true;
-					}
-				}
-				if (r == 2){
-					if (!isCollideWithWall(x, y, 3)){
-						move(3);
-						exit = true;
-					}
-				}
-				if (r == 3){
-					if (!isCollideWithWall(x, y, 4)){
-						move(4);
-						exit = true;
-					}
-				}
-			}
-		}
-	}
-	
-	const scatterOn = function(){
-		ghostAI = setInterval(scatter, 500);
-	}
+
+    const scatter = function () {
+        var exit = false;
+        while (!exit) {
+            if (direction === 3) {
+                var r = Math.floor(Math.random() * 3);
+                let dir = 0;
+                switch (r) {
+                    case 0:
+                        dir = 3;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 1:
+                        dir = 2;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 2:
+                        dir = 4;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                }
+            }
+            else if (direction == 1) {
+                var r = Math.floor(Math.random() * 3);
+                let dir = 0;
+                switch (r) {
+                    case 0:
+                        dir = 1;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 1:
+                        dir = 2;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 2:
+                        dir = 4;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                }
+            }
+            else if (direction == 2) {
+                var r = Math.floor(Math.random() * 3);
+                let dir = 0;
+                switch (r) {
+                    case 0:
+                        dir = 2;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 1:
+                        dir = 3;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 2:
+                        dir = 1;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                }
+            }
+            else if (direction === 4) {
+                var r = Math.floor(Math.random() * 3);
+                let dir = 0;
+                switch (r) {
+                    case 0:
+                        dir = 4;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 1:
+                        dir = 3;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 2:
+                        dir = 1;
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                }
+            }
+            else if (direction === 0) {
+                var dir = Math.floor(Math.random() * 4) + 1;
+                switch (dir) {
+                    case 1:
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 2:
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 3:
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                    case 4:
+                        if (!isCollideWithWall(x, y, dir)) {
+                            move(dir);
+                            exit = true;
+                        }
+                        break;
+                }
+            }
+        }
+    };
+
+    const scatterOn = function () {
+        setInterval(scatter, 500);
+    };
 
     // The methods are returned as an object here.
     return {
@@ -327,6 +350,6 @@ const Ghost = function (ctx, x, y, gameArea) {
         draw: sprite.draw,
         update: update,
         isCollideWithWall: isCollideWithWall,
-		scatterOn: scatterOn,
-    };	
+        scatterOn: scatterOn,
+    };
 }

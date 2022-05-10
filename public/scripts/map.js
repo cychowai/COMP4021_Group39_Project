@@ -3,7 +3,10 @@
 //2 - dot
 //3 - power
 //4 - player 1
-//5 - ghost
+//5 - player 2
+//6 - player 3
+//7 - player 4
+//8 - ghost
 
 const map = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
