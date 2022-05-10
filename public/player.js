@@ -1,14 +1,14 @@
-const Player = function (ctx, x, y, gameArea, score) {
+const Player = function (ctx, x, y, gameArea, playerNum, score) {
     const sequences = {
-        idleLeft: { x: 84, y: 4, width: 20, height: 20, count: 3, timing: 2000, loop: false },
-        idleUp: { x: 84, y: 44, width: 20, height: 20, count: 3, timing: 2000, loop: false },
-        idleRight: { x: 84, y: 24, width: 20, height: 20, count: 3, timing: 2000, loop: false },
-        idleDown: { x: 84, y: 64, width: 20, height: 20, count: 3, timing: 2000, loop: false },
+        idleLeft: { x: 45, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
+        idleUp: {  x: 45, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
+        idleRight: { x: 45, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
+        idleDown: { x: 45, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
 
-        moveLeft: { x: 4, y: 4, width: 20, height: 20, count: 2, timing: 50, loop: true },
-        moveUp: { x: 4, y: 44, width: 20, height: 20, count: 2, timing: 50, loop: true },
-        moveRight: { x: 4, y: 24, width: 20, height: 20, count: 2, timing: 50, loop: true },
-        moveDown: { x: 4, y: 64, width: 20, height: 20, count: 2, timing: 50, loop: true }
+        moveLeft: { x: 143, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
+        moveUp: { x: 335, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
+        moveRight: { x: 237, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
+        moveDown: { x: 45, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true }
     };
 
     const sprite = Sprite(ctx, x, y);
@@ -16,7 +16,7 @@ const Player = function (ctx, x, y, gameArea, score) {
     sprite.setSequence(sequences.idleDown)
         .setScale(2)
         .setShadowScale({ x: 0.75, y: 0.20 })
-        .useSheet("src/images/pac_sprite.png");
+        .useSheet("src/images/pac_man.png");
 
     // - `0` - not moving
     // - `1` - moving to the left
