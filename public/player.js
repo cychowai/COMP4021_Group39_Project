@@ -27,6 +27,11 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
     let direction = 0;
     let speed = 20;
     let moveBuffer = null;
+    let dotCollected = 0;
+
+    const getDotCollected = function(){
+        return dotCollected;
+    };
 
     const getScore = function () {
         return score;
@@ -239,6 +244,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
 
             if (eatDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum()) ) {
                 wakaSound.play();
+                dotCollected++;
             }
 
             if (eatPowerDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum())) {
@@ -270,5 +276,6 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
         eatDot: eatDot,
         eatPowerDot: eatPowerDot,
         getScore: getScore,
+        getDotCollected : getDotCollected,
     };
 };

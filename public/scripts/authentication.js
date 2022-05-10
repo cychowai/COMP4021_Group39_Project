@@ -140,5 +140,23 @@ const Authentication = (function () {
             });
     };
 
-    return { getUser, signin, validate, signout, move, stop, getPlayerNum, startGame, getTotalPlayerNum };
+    const unlock = function (onSuccess, onError) {
+        fetch("/unlock", {
+            method: "GET",
+            headers: { "Content-Type": "unlock/json" }
+        })
+            .then((res) => res.json())
+            .then((json) => {
+                if (json.status == "success") {
+                    /* Run the onSuccess() callback */
+                    onSuccess(json.success);
+                }
+                else if (onError) onError(json.error);
+            })
+            .catch((err) => {
+                console.log("Error8!", err);
+            });
+    };
+
+    return { getUser, signin, validate, signout, move, stop, getPlayerNum, startGame, getTotalPlayerNum, unlock };
 })();

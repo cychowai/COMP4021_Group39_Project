@@ -18,7 +18,7 @@ const chatSession = session({
     resave: false,
     saveUninitialized: false,
     rolling: true,
-    cookie: { maxAge: 300000 }
+    cookie: { maxAge: 3000000 }
 });
 app.use(chatSession);
 
@@ -140,6 +140,11 @@ app.get("/start", (req, res) => {
     res.json({ status: "success", totalPlayerNum: playerNum });
 });
 
+app.get("/unlock", (req, res) => {
+    playing = 0;
+    res.json({ status: "success"});
+});
+
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const res = require("express/lib/response");
@@ -191,6 +196,10 @@ io.on("connection", (socket) => {
         }
         else
             io.emit("refuse starting");
+    });
+
+    socket.on("unlock game", () => {
+        io.emit("unlock game");
     });
 });
 

@@ -63,6 +63,13 @@ const Socket = (function () {
         socket.on("refuse starting", () => {
             $("#someonePlaying").show();
         });
+
+        socket.on("unlock game", () => {
+            UI.initialize();
+            $("#game-panel").hide();
+            /* Hide the start screen */
+            $("#chat-panel").show();
+        });
     };
 
     // This function disconnects the socket from the server
@@ -94,5 +101,9 @@ const Socket = (function () {
         socket.emit("start game", totalPlayerNum);
     };
 
-    return { getSocket, connect, disconnect, postMessage, sendingMessage, newMoveSignal, newStopSignal, startGame };
+    const unlockGame = function () {
+        socket.emit("unlock game");
+    };
+
+    return { getSocket, connect, disconnect, postMessage, sendingMessage, newMoveSignal, newStopSignal, startGame, unlockGame };
 })();

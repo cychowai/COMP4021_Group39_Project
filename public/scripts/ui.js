@@ -185,7 +185,7 @@ const GamePanel = (function () {
     let player = [];
     let playerNum = null;
     let ghost = [];
-    const totalGameTime = 120;   // Total game time in seconds (2 minutes)
+    const totalGameTime = 12;   // Total game time in seconds (2 minutes)
     let gameStartTime = 0;
 
     const initialize = function () {
@@ -229,15 +229,6 @@ const GamePanel = (function () {
             //player.stop(event.keyCode%36);
             if (event.keyCode == 32)
                 player[playerNum - 1].slowDown();
-            /*
-            Authentication.stop(playerNum, event.keyCode % 36,
-                () => {
-                    //player.move(event.keyCode%36);
-                    Socket.newStopSignal(playerNum, event.keyCode % 36);
-                },
-                //error, do nothing
-            );
-            */
         });
 
         /* Start the game */
@@ -260,6 +251,18 @@ const GamePanel = (function () {
         const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
         $("#time-remaining").text(timeRemaining);
 
+        if(timeRemaining <= 0){
+            $("#game-over").show();
+            $("#final-gems").text(player[0].getDotCollected);
+            gameOverSound.play();
+            $("#restart-button").on("click", function () {
+                Authentication.unlock( () => {
+                    Socket.unlockGame();
+                });
+            });
+            $("#restart-button").show();
+            return;
+        }
         //checkGameOver(); //in checkGameStatus.js
         //checkGameWin(); //in checkGameStatus.js
 
