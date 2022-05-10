@@ -319,3 +319,19 @@ button.icon:active {
     border-radius: 50%;
     background-color: #eb4a40;
 }
+
+#score-board-1 { 
+    display: none;
+}
+
+#score-board-2 { 
+    display: none;
+}
+
+#score-board-3 { 
+    display: none;
+}
+
+#score-board-4 { 
+    display: none;
+}
