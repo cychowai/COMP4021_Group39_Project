@@ -184,13 +184,12 @@ const GamePanel = (function () {
     let gameArea = null;
     let player = [];
     let playerNum = null;
+    const totalGameTime = 120;   // Total game time in seconds (2 minutes)
+    let gameStartTime = 0;
 
     const initialize = function () {
         /* Create the game area */
         gameArea = BoundingBox(context, 0, 0, 560, 560);
-
-        /* Create the sprites in the game */
-        //player = Player(context, 427, 240, gameArea); // The player     
 
         //starting the game
         $("#startButton").on("click", function () {
@@ -246,16 +245,38 @@ const GamePanel = (function () {
         for (let i = 0; i < player.length; i++)
             player[i].update(now);
 
-        //if(player[playerNum-1].getBoundingBox().isPointInBox(dot.getXY().x,dot.getXY().y)){
-        //    collectedDot++;
-        //}
+        /* timer */
+        if (gameStartTime === 0) gameStartTime = now;
+        const gameTimeSoFar = now - gameStartTime;
+        const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
+        $("#time-remaining").text(timeRemaining);
+
+        //checkGameOver(); //in checkGameStatus.js
+        //checkGameWin(); //in checkGameStatus.js
 
         /* Clear the screen */
         context.clearRect(0, 0, canvas.width, canvas.height);
         createBoard();
+
         /* Draw the sprites */
         for (let i = 0; i < player.length; i++)
             player[i].draw();
+
+        for (let i = 0; i < player.length; i++) {
+            let score = player[i].getScore();
+            if (i === 0) {
+                $("#player1-score").text(score);
+            }
+            else if (i === 1) {
+                $("#player2-score").text(score);
+            }
+            else if (i === 2) {
+                $("#player3-score").text(score);
+            }
+            else {
+                $("#player4-score").text(score);
+            }
+        }
 
         /* Process the next frame */
         requestAnimationFrame(doFrame);
@@ -272,8 +293,8 @@ const GamePanel = (function () {
     const createPlayer = function (totalPlayerNum) {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         for (let i = 0; i < totalPlayerNum; i++) {
-            player.push(Player(context, 30 + i * 100, 30, gameArea, i));
-            console.log(playerNum);
+            player.push(Player(context, 30 + i * 100, 30, gameArea, i, 0));
+            console.log("player no.:", playerNum);
         }
     };
 

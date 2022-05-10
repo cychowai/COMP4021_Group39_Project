@@ -54,16 +54,6 @@ function setCanvasSize(canvas) {
   canvas.height = map.length * tileSize;
 }
 
-/*
-function didWin() {
-  return this.dotLeft() === 0;
-}
-
-function dotLeft() {
-  return map.flat().filter((e) => e === 0).length;
-}
-*/
-
 function createBoard() {
   for (var i = 0; i < map.length; i++) {
     for (var j = 0; j < map[i].length; j++) {

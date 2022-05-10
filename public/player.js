@@ -1,4 +1,4 @@
-const Player = function (ctx, x, y, gameArea, playerNum) {
+const Player = function (ctx, x, y, gameArea, playerNum, score) {
     const sequences = {
         idleLeft: { x: 45, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
         idleUp: {  x: 45, y: 40 + (62*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
@@ -26,6 +26,10 @@ const Player = function (ctx, x, y, gameArea, playerNum) {
     let direction = 0;
     let speed = 20;
     let moveBuffer = null;
+
+    const getScore = function () {
+        return score;
+    };
 
     const isCollideWithWall = function (x, y, dir) {
         if (dir === 0) {
@@ -198,7 +202,7 @@ const Player = function (ctx, x, y, gameArea, playerNum) {
         const column = Math.floor(x / tileSize);
         if (map[row][column] === 2) {
             map[row][column] = 0;
-            //scores += 50;
+            score += 50;
             return true;
         }
         return false;
@@ -209,7 +213,7 @@ const Player = function (ctx, x, y, gameArea, playerNum) {
         const column = Math.floor(x / tileSize);
         if (map[row][column] === 3) {
             map[row][column] = 0;
-            //scores += 100;
+            score += 50;
             return true;
         }
         return false;
@@ -264,5 +268,6 @@ const Player = function (ctx, x, y, gameArea, playerNum) {
         isCollideWithWall: isCollideWithWall,
         eatDot: eatDot,
         eatPowerDot: eatPowerDot,
+        getScore: getScore,
     };
 };
