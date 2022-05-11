@@ -194,6 +194,14 @@ const GamePanel = (function () {
     let ghostDead = [];
     let playerDead = [];
 
+    const getGhost = function () {
+        return ghost;
+    };
+
+    const setGameStartTime = function () {
+        gameStartTime = 0;
+    };
+
     const initialize = function () {
         /* Create the game area */
         gameArea = BoundingBox(context, 0, 0, 560, 560);
@@ -211,6 +219,13 @@ const GamePanel = (function () {
             });
         });
     }
+
+    const createGhost = function () {
+        for (let i = 0; i < 4; i++) {
+            ghost.push(Ghost(context, 300, 272, i, gameArea));
+            ghost[i].scatterOn();
+        }
+    };
 
     const detectKeys = function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
@@ -376,7 +391,6 @@ const GamePanel = (function () {
             gameEnd = checkGameWinDot();
 
             if (playerDead.filter((e) => e === true).length === playerNum) {
-                gameOverSound.play();
                 $("#game-over").show();
                 $("#final-gems").text(player[playerNum - 1].getDotCollected());
                 $("#final-score").text(player[playerNum - 1].getScore());
@@ -386,6 +400,7 @@ const GamePanel = (function () {
                         rank--;
                 }
                 $("#rank").text(rank);
+                gameOverSound.play();
                 $("#restart-button").on("click", function () {
                     Authentication.unlock(() => {
                         Socket.unlockGame();
@@ -400,7 +415,6 @@ const GamePanel = (function () {
         }
 
         if (gameEnd) {
-            gameWinSound.play();
             $("#game-over").show();
             $("#final-gems").text(player[playerNum - 1].getDotCollected());
             $("#final-score").text(player[playerNum - 1].getScore());
@@ -410,6 +424,7 @@ const GamePanel = (function () {
                     rank--;
             }
             $("#rank").text(rank);
+            gameWinSound.play();
             $("#restart-button").on("click", function () {
                 Authentication.unlock(() => {
                     Socket.unlockGame();
@@ -475,7 +490,9 @@ const GamePanel = (function () {
         player[playerNum - 1].stop(keycode);
     };
 
-    const createPlayer = function (totalPlayerNum) {
+    let totalPlayerNum = null;
+    const createPlayer = function (totalPlayerNumFromServer) {
+        totalPlayerNum = totalPlayerNumFromServer;
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         for (let i = 0; i < totalPlayerNum; i++) {
             switch (i + 1) {
@@ -489,7 +506,21 @@ const GamePanel = (function () {
         }
     };
 
-    return { createPlayer, stopPlayer, movePlayer, initialize, detectKeys };
+    const removeEverything = function () {
+        for (let i = 0; i < totalPlayerNum; i++) {
+            //delete player[i];
+            player.pop();
+        }
+        for (let i = 0; i < 4; i++) {
+            //delete ghost[i];
+            ghost.pop();
+        }
+    };
+
+    return {
+        createPlayer, stopPlayer, movePlayer, initialize, detectKeys, removeEverything,
+        setGameStartTime, createGhost, getGhost
+    };
 })();
 
 const UI = (function () {
