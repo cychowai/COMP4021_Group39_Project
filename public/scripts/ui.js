@@ -185,8 +185,15 @@ const GamePanel = (function () {
     let player = [];
     let playerNum = null;
     let ghost = [];
-    const totalGameTime = 120;   // Total game time in seconds (2 minutes)
+    const totalGameTime = 15;   // Total game time in seconds (2 minutes)
     let gameStartTime = 0;
+
+    const getGhost = function() {
+        return ghost;
+    }
+    const setGameStartTime = function() {
+        gameStartTime = 0;
+    }
 
     const initialize = function () {
         /* Create the game area */
@@ -204,6 +211,13 @@ const GamePanel = (function () {
             });
         });
     }
+    
+    const createGhost = function(){
+        for (let i = 0; i < 4; i++) {
+            ghost.push(Ghost(context, 300, 272, i, gameArea));
+            ghost[i].scatterOn();
+        }
+    };
 
     const detectKeys = function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
@@ -229,15 +243,6 @@ const GamePanel = (function () {
             //player.stop(event.keyCode%36);
             if (event.keyCode == 32)
                 player[playerNum - 1].slowDown();
-            /*
-            Authentication.stop(playerNum, event.keyCode % 36,
-                () => {
-                    //player.move(event.keyCode%36);
-                    Socket.newStopSignal(playerNum, event.keyCode % 36);
-                },
-                //error, do nothing
-            );
-            */
         });
 
         /* Start the game */
@@ -255,11 +260,30 @@ const GamePanel = (function () {
             ghost[i].update(now);
 
         /* timer */
-        if (gameStartTime === 0) gameStartTime = now;
+        if (gameStartTime == 0) gameStartTime = now;
         const gameTimeSoFar = now - gameStartTime;
         const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
         $("#time-remaining").text(timeRemaining);
 
+        if(timeRemaining <= 0){
+            $("#game-over").show();
+            $("#final-gems").text(player[playerNum-1].getDotCollected());
+            $("#final-score").text(player[playerNum-1].getScore());
+            let rank = player.length;
+            for(let i = 0; i< player.length && i != playerNum-1; i++){
+                if(player[playerNum-1].getScore()>player[i].getScore())
+                    rank--;
+            }
+            $("#rank").text(rank);
+            gameOverSound.play();
+            $("#restart-button").on("click", function () {
+                Authentication.unlock( () => {
+                    Socket.unlockGame();
+                });
+            });
+            $("#restart-button").show();
+            return;
+        }
         //checkGameOver(); //in checkGameStatus.js
         //checkGameWin(); //in checkGameStatus.js
 
@@ -319,7 +343,9 @@ const GamePanel = (function () {
         player[playerNum - 1].stop(keycode);
     };
 
-    const createPlayer = function (totalPlayerNum) {
+    let totalPlayerNum = null;
+    const createPlayer = function (totalPlayerNumFromServer) {
+        totalPlayerNum = totalPlayerNumFromServer;
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         for (let i = 0; i < totalPlayerNum; i++) {
             switch (i + 1) {
@@ -333,7 +359,22 @@ const GamePanel = (function () {
         }
     };
 
-    return { createPlayer, stopPlayer, movePlayer, initialize, detectKeys };
+    const removeEverything = function () {
+        for (let i=0; i<totalPlayerNum; i++){
+            //delete player[i];
+            player.pop();
+        }
+        for(let i=0; i<4; i++){
+            //delete ghost[i];
+            ghost.pop();
+        }
+
+    };
+
+    
+
+    return { createPlayer, stopPlayer, movePlayer, initialize, detectKeys, removeEverything, setGameStartTime, createGhost
+    ,getGhost };
 })();
 
 const UI = (function () {

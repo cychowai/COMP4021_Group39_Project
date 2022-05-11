@@ -49,6 +49,17 @@
                     <div id="time-remaining">120</div>
                 </div>
                 <canvas id="game-area"></canvas>
+                <div id="game-over">
+                    <text x="50%" y="50%">
+                        Time's up! You have collected
+                        <tspan id="final-gems">0</tspan>
+                        dot(s).  Your score is
+                        <tspan id="final-score">0</tspan>
+                         And you are at rank
+                        <tspan id="rank">0</tspan>
+                    </text>
+                </div>
+                <button id="restart-button" >back to main panel!</button>
             </div>
             <div id="chat-panel" class="col">
                 <div id="instructionBox" class="col">
@@ -118,16 +129,7 @@
             UI.initialize();
 
             // Validate the signin
-            Authentication.validate(
-                () => {
-                    SignInForm.hide();
-                    UserPanel.update(Authentication.getUser());
-                    UserPanel.show();
-
-                    Socket.connect();
-                },
-                () => { SignInForm.show(); }
-            );
+            SignInForm.show();
         });
     </script>
 </body>
