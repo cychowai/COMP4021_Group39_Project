@@ -212,13 +212,6 @@ const GamePanel = (function () {
         });
     }
 
-    const createGhost = function () {
-        for (let i = 0; i < 4; i++) {
-            ghost.push(Ghost(context, 300, 272, i, gameArea, 2));
-            ghost[i].scatterOn();
-        }
-    };
-
     const detectKeys = function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         /* Handle the keydown of arrow keys and spacebar */
