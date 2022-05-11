@@ -288,6 +288,11 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
             //
             //}
 
+            if (eatPriority === 3) {
+                sprite.setPlayerScale(0.8);
+                setTimeout(changeEatPriority(1), 10000);
+            }
+
             if (eatDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum())) {
                 wakaSound.play();
             }
@@ -329,6 +334,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
         getRowCol: getRowCol,
         changeEatPriority: changeEatPriority,
         eatGhostPoint: eatGhostPoint,
-		eatPlayerPoint: eatPlayerPoint,
+        getDotCollected: getDotCollected,
+		    eatPlayerPoint: eatPlayerPoint,
     };
 };

@@ -212,13 +212,6 @@ const GamePanel = (function () {
         });
     }
 
-    const createGhost = function () {
-        for (let i = 0; i < 4; i++) {
-            ghost.push(Ghost(context, 300, 272, i, gameArea, 2));
-            ghost[i].scatterOn();
-        }
-    };
-
     const detectKeys = function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         /* Handle the keydown of arrow keys and spacebar */
@@ -288,7 +281,6 @@ const GamePanel = (function () {
         }
         //return false;
     }
-
 
     /*
     const eatGhost = function (player, ghost) {
@@ -382,16 +374,49 @@ const GamePanel = (function () {
         if (timeRemaining >= 0) {
             $("#time-remaining").text(timeRemaining);
             gameEnd = checkGameWinDot();
+
+            if (playerDead.filter((e) => e === true).length === playerNum) {
+                gameOverSound.play();
+                $("#game-over").show();
+                $("#final-gems").text(player[playerNum - 1].getDotCollected());
+                $("#final-score").text(player[playerNum - 1].getScore());
+                let rank = player.length;
+                for (let i = 0; i < player.length && i !== playerNum - 1; i++) {
+                    if (player[playerNum - 1].getScore() > player[i].getScore())
+                        rank--;
+                }
+                $("#rank").text(rank);
+                $("#restart-button").on("click", function () {
+                    Authentication.unlock(() => {
+                        Socket.unlockGame();
+                    });
+                });
+                $("#restart-button").show();
+                return;
+            }
         }
         else {
             gameEnd = true;
         }
 
         if (gameEnd) {
-            //winner
             gameWinSound.play();
-            //other players
-            //gameOverSound.play();
+            $("#game-over").show();
+            $("#final-gems").text(player[playerNum - 1].getDotCollected());
+            $("#final-score").text(player[playerNum - 1].getScore());
+            let rank = player.length;
+            for (let i = 0; i < player.length && i !== playerNum - 1; i++) {
+                if (player[playerNum - 1].getScore() > player[i].getScore())
+                    rank--;
+            }
+            $("#rank").text(rank);
+            $("#restart-button").on("click", function () {
+                Authentication.unlock(() => {
+                    Socket.unlockGame();
+                });
+            });
+            $("#restart-button").show();
+            return;
         }
 
         /* Clear the screen */
