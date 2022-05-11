@@ -269,7 +269,7 @@ const GamePanel = (function () {
                 //ghost eat player
                 if (!playerDead[playerID]) {
                     player.eaten();
-                    gameOverSound.play();
+                    //gameOverSound.play();
                     playerDead[playerID] = true;
                 }
             }
@@ -306,6 +306,37 @@ const GamePanel = (function () {
         //return false;
     }
     */
+	
+	const eatPlayer = function (player, player2, playerID, player2ID) {
+        const player_box = player.getBoundingBox();
+        const player2_xy = player2.getXY();
+        if (player_box.isPointInBox(player2_xy.x, player2_xy.y)) {
+            if (player.getEatPriority() > player2.getEatPriority()) {
+                //player eat ghost
+                if (!playerDead[player2ID]) {
+                    player.eatPlayerPoint();
+                    player2.eaten();
+                    eatGhostSound.play();
+                    playerDead[player2ID] = true;
+                }
+            }
+            else if (player2.getEatPriority() > player.getEatPriority()) {
+                //ghost eat player
+                if (!playerDead[playerID]) {
+					player2.eatPlayerPoint();
+                    player.eaten();
+                    //gameOverSound.play();
+                    playerDead[playerID] = true;
+                }
+            }
+            else {
+                console.log(player.getEatPriority());
+                console.log(player2.getEatPriority());
+                console.log("equal power");
+            }
+        }
+        //return false;
+    }
 
     /* The main processing of the game */
     function doFrame(now) {
@@ -327,6 +358,14 @@ const GamePanel = (function () {
                 eatGhost(player[i], ghost[j], i, j);
             }
         }
+		
+		for (let i = 0; i < player.length; i++) {
+			for (let j = 0; j < player.length; j++) {
+				if ((i != j) && (!ghostDead[i]) && (!ghostDead[j])) {
+					eatPlayer(player[i], player[j], i, j);
+				}
+			}
+		}
 
         /* timer */
         if (gameStartTime === 0) gameStartTime = now;

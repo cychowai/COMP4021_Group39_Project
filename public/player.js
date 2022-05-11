@@ -233,6 +233,10 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
     const eatGhostPoint = function () {
         score += 500;
     }
+	
+	const eatPlayerPoint = function () {
+        score += 1000;
+    }
 
     const eatDot = function (x, y) {
         const row = Math.floor(y / tileSize);
@@ -256,7 +260,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
         if (map[row][column] === 3) {
             map[row][column] = 0;
             changeEatPriority(3);
-            console.log(eatPriority);
+            //console.log(eatPriority);
             score += 50;
             return true;
         }
@@ -313,7 +317,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
     // The methods are returned as an object here.
     return {
         move: move,
-        getXY: getXY,
+        getXY: sprite.getXY,
         setXY: setXY,
         stop: stop,
         speedUp: speedUp,
@@ -331,5 +335,6 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
         changeEatPriority: changeEatPriority,
         eatGhostPoint: eatGhostPoint,
         getDotCollected: getDotCollected,
+		    eatPlayerPoint: eatPlayerPoint,
     };
 };
