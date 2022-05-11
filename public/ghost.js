@@ -1,4 +1,4 @@
-const Ghost = function (ctx, x, y, colour, gameArea) {
+const Ghost = function (ctx, x, y, colour, gameArea, order) {
     const sequences = [];
 
     for (let i = 0; i < 4; i++) {

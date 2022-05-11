@@ -1,4 +1,4 @@
-const Player = function (ctx, x, y, gameArea, playerNum, score) {
+const Player = function (ctx, x, y, gameArea, playerNum, score, order) {
     const sequences = {
         idleLeft: { x: 45, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
         idleUp: { x: 45, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },

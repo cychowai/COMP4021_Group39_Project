@@ -205,7 +205,7 @@ const GamePanel = (function () {
         gameArea = BoundingBox(context, 0, 0, 560, 560);
 
         for (let i = 0; i < 4; i++) {
-            ghost.push(Ghost(context, 280, 280, i, gameArea));
+            ghost.push(Ghost(context, 280, 280, i, gameArea, 2));
             ghostDead.push(false);
             ghost[i].scatterOn();
         }
@@ -220,7 +220,7 @@ const GamePanel = (function () {
 
     const createGhost = function () {
         for (let i = 0; i < 4; i++) {
-            ghost.push(Ghost(context, 300, 272, i, gameArea));
+            ghost.push(Ghost(context, 300, 272, i, gameArea, 2));
             ghost[i].scatterOn();
         }
     };
@@ -417,10 +417,10 @@ const GamePanel = (function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         for (let i = 0; i < totalPlayerNum; i++) {
             switch (i + 1) {
-                case 1: player.push(Player(context, 30, 30, gameArea, i, 0)); break;
-                case 2: player.push(Player(context, 530, 30, gameArea, i, 0)); break;
-                case 3: player.push(Player(context, 30, 530, gameArea, i, 0)); break;
-                case 4: player.push(Player(context, 530, 530, gameArea, i, 0)); break;
+                case 1: player.push(Player(context, 30, 30, gameArea, i, 0, 1)); break;
+                case 2: player.push(Player(context, 530, 30, gameArea, i, 0, 1)); break;
+                case 3: player.push(Player(context, 30, 530, gameArea, i, 0, 1)); break;
+                case 4: player.push(Player(context, 530, 530, gameArea, i, 0, 1)); break;
             }
 
             console.log("player no.:", playerNum);
