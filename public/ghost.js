@@ -1,4 +1,4 @@
-const Ghost = function (ctx, x, y, colour, gameArea, order) {
+const Ghost = function (ctx, x, y, colour, gameArea, eatPriority) {
     const sequences = [];
 
     for (let i = 0; i < 4; i++) {
@@ -48,7 +48,6 @@ const Ghost = function (ctx, x, y, colour, gameArea, order) {
     let direction = 0;
     let speed = 20;
     let moveBuffer = null;
-    let eatPriority = 2; //player is 1 or 3
 
     const eaten = function () {
         sprite.setSequence(sequencesDead);

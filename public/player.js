@@ -1,4 +1,4 @@
-const Player = function (ctx, x, y, gameArea, playerNum, score, order) {
+const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
     const sequences = {
         idleLeft: { x: 45, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
         idleUp: { x: 45, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
@@ -35,8 +35,6 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, order) {
     const getDotCollected = function () {
         return dotCollected;
     };
-
-    let eatPriority = 1; //ghost is 2;
 
     // This function gets the current sprite position.
     const getXY = function () {
