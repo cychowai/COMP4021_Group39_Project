@@ -264,7 +264,7 @@ const GamePanel = (function () {
         if (gameStartTime === 0) gameStartTime = now;
         const gameTimeSoFar = now - gameStartTime;
         const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
-        if (timeRemaining > 0) {
+        if (timeRemaining >= 0) {
             $("#time-remaining").text(timeRemaining);
             gameEnd = checkGameWinDot();
         }

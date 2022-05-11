@@ -341,3 +341,6 @@ button.icon:active {
 #game-over{
     display:none;
 }
+#readyButton {
+    display: none;
+}
