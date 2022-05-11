@@ -187,6 +187,7 @@ const GamePanel = (function () {
     let ghost = [];
     const totalGameTime = 15;   // Total game time in seconds (2 minutes)
     let gameStartTime = 0;
+    let gameEnd = false;
 
     const getGhost = function() {
         return ghost;
@@ -254,24 +255,30 @@ const GamePanel = (function () {
     function doFrame(now) {
         /* Update the sprites */
         for (let i = 0; i < player.length; i++)
-            player[i].update(now, i+1);
-		
+            player[i].update(now, i + 1);
+
         for (let i = 0; i < ghost.length; i++)
             ghost[i].update(now);
 
         /* timer */
-        if (gameStartTime == 0) gameStartTime = now;
+        if (gameStartTime === 0) gameStartTime = now;
         const gameTimeSoFar = now - gameStartTime;
         const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
-        $("#time-remaining").text(timeRemaining);
+        if (timeRemaining > 0) {
+            $("#time-remaining").text(timeRemaining);
+            gameEnd = checkGameWinDot();
+        }
+        else {
+            gameEnd = true;
+        }
 
-        if(timeRemaining <= 0){
+        if(gameEnd){
             $("#game-over").show();
             $("#final-gems").text(player[playerNum-1].getDotCollected());
             $("#final-score").text(player[playerNum-1].getScore());
             let rank = player.length;
-            for(let i = 0; i< player.length && i != playerNum-1; i++){
-                if(player[playerNum-1].getScore()>player[i].getScore())
+            for(let i = 0; i < player.length && i !== playerNum-1; i++){
+                if(player[playerNum-1].getScore() > player[i].getScore())
                     rank--;
             }
             $("#rank").text(rank);
@@ -284,8 +291,6 @@ const GamePanel = (function () {
             $("#restart-button").show();
             return;
         }
-        //checkGameOver(); //in checkGameStatus.js
-        //checkGameWin(); //in checkGameStatus.js
 
         /* Clear the screen */
         context.clearRect(0, 0, canvas.width, canvas.height);
