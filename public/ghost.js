@@ -58,7 +58,7 @@ const Ghost = function (ctx, x, y, colour, gameArea, eatPriority) {
         sprite.setSequence(sequencesDead);
 
         //eatGhostSound.play();
-        console.log("ghost eaten");
+        //console.log("ghost eaten");
     }
 
     const getEatPriority = function () {
