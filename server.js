@@ -29,6 +29,19 @@ function containWordCharsOnly(text) {
 
 let playerNum = 0;   //this is the current number of players, serves 2 purpose in this program.
 let playing = 0; //0=not playing
+let randomNum = [];
+
+function generateRandom(){
+    setInterval(function() {
+        for(let i=0; i<4; i++){
+            randomNum[i] = Math.random();
+        }
+        io.emit("server random", randomNum);
+        
+        console.log(randomNum);
+        }, 1000);
+}
+generateRandom();
 
 // Handle the /register endpoint
 app.post("/register", (req, res) => {

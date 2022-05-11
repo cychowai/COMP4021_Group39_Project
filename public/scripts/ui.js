@@ -219,6 +219,12 @@ const GamePanel = (function () {
         }
     };
 
+    const scatter = function(){
+        for (let i = 0; i < 4; i++) {
+            ghost[i].scatterOn();
+        }
+    }
+
     const detectKeys = function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         /* Handle the keydown of arrow keys and spacebar */
@@ -374,7 +380,7 @@ const GamePanel = (function () {
     
 
     return { createPlayer, stopPlayer, movePlayer, initialize, detectKeys, removeEverything, setGameStartTime, createGhost
-    ,getGhost };
+    ,getGhost, scatter };
 })();
 
 const UI = (function () {

@@ -2,12 +2,17 @@
 const Socket = (function () {
     // This stores the current Socket.IO socket
     let socket = null;
+    let randomNum = [0.1,0.3,0.6,0.9];
+    let lock = false;
 
     // This function gets the socket from the module
     const getSocket = function () {
         return socket;
     };
 
+    const getRandomNum = function() {
+        return randomNum;
+    }
     // This function connects the server and initializes the socket
     const connect = function () {
         socket = io();
@@ -58,6 +63,7 @@ const Socket = (function () {
             $("#chat-panel").hide();
             GamePanel.createPlayer(totalPlayerNum);
             GamePanel.detectKeys();
+            //GamePanel.scatter();
             console.log(totalPlayerNum);
         });
 
@@ -79,7 +85,13 @@ const Socket = (function () {
             GamePanel.setGameStartTime();
             GamePanel.createGhost();
         });
-        
+        socket.on("server random", (serverRandomNum) => {
+            console.log(serverRandomNum);
+            console.log("Here is the server random");
+            randomNum = serverRandomNum;
+            console.log(randomNum);
+            console.log("Here is the client random");
+        })
     };
 
     // This function disconnects the socket from the server
@@ -115,5 +127,6 @@ const Socket = (function () {
         socket.emit("unlock game");
     };
 
-    return { getSocket, connect, disconnect, postMessage, sendingMessage, newMoveSignal, newStopSignal, startGame, unlockGame };
+    return { getSocket, connect, disconnect, postMessage, sendingMessage, newMoveSignal, 
+        newStopSignal, startGame, unlockGame, getRandomNum };
 })();

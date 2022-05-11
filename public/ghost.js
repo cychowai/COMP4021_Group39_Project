@@ -223,9 +223,16 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
 
     const scatter = function () {
         var exit = false;
+        let repeat = 0;
         while (!exit) {
+            repeat++;
+            if(repeat > 10)
+                break;
+            console.log("I am in a loop");
+            console.log(Socket.getRandomNum()[colour]);
+            console.log("Here");
             if (direction === 3) {
-                var r = Math.floor(Math.random() * 3);
+                var r = Math.floor(Socket.getRandomNum()[colour] * 3);
                 let dir = 0;
                 switch (r) {
                     case 0:
@@ -249,10 +256,12 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
                             exit = true;
                         }
                         break;
+                    default:
+                        exit
                 }
             }
             else if (direction == 1) {
-                var r = Math.floor(Math.random() * 3);
+                var r = Math.floor(Socket.getRandomNum()[colour] * 3);
                 let dir = 0;
                 switch (r) {
                     case 0:
@@ -279,7 +288,7 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
                 }
             }
             else if (direction == 2) {
-                var r = Math.floor(Math.random() * 3);
+                var r = Math.floor(Socket.getRandomNum()[colour] * 3);
                 let dir = 0;
                 switch (r) {
                     case 0:
@@ -306,7 +315,7 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
                 }
             }
             else if (direction === 4) {
-                var r = Math.floor(Math.random() * 3);
+                var r = Math.floor(Socket.getRandomNum()[colour]* 3);
                 let dir = 0;
                 switch (r) {
                     case 0:
@@ -333,7 +342,7 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
                 }
             }
             else if (direction === 0) {
-                var dir = Math.floor(Math.random() * 4) + 1;
+                var dir = Math.floor(Socket.getRandomNum()[colour] * 4) + 1;
                 switch (dir) {
                     case 1:
                         if (!isCollideWithWall(x, y, dir)) {
@@ -366,6 +375,7 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
 
     const scatterOn = function () {
         setInterval(scatter, 500);
+        console.log("new scatter");
     };
 
     // The methods are returned as an object here.
