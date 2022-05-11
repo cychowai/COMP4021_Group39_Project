@@ -511,6 +511,12 @@ const GamePanel = (function () {
             //delete player[i];
             player.pop();
         }
+        for (let i = 0; i < playerDead.length; i++) {
+            playerDead.pop();
+        }
+        for (let i = 0; i < ghostDead.length; i++) {
+            ghostDead.pop();
+        }
         for (let i = 0; i < 4; i++) {
             //delete ghost[i];
             ghost.pop();
