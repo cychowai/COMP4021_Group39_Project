@@ -185,9 +185,12 @@ const GamePanel = (function () {
     let player = [];
     let playerNum = null;
     let ghost = [];
-    const totalGameTime = 5;   // Total game time in seconds (2 minutes)
+    const totalGameTime = 15;   // Total game time in seconds (2 minutes)
     let gameStartTime = 0;
 
+    const getGhost = function() {
+        return ghost;
+    }
     const setGameStartTime = function() {
         gameStartTime = 0;
     }
@@ -264,7 +267,14 @@ const GamePanel = (function () {
 
         if(timeRemaining <= 0){
             $("#game-over").show();
-            $("#final-gems").text(player[0].getDotCollected);
+            $("#final-gems").text(player[playerNum-1].getDotCollected());
+            $("#final-score").text(player[playerNum-1].getScore());
+            let rank = player.length;
+            for(let i = 0; i< player.length && i != playerNum-1; i++){
+                if(player[playerNum-1].getScore()>player[i].getScore())
+                    rank--;
+            }
+            $("#rank").text(rank);
             gameOverSound.play();
             $("#restart-button").on("click", function () {
                 Authentication.unlock( () => {
@@ -363,7 +373,8 @@ const GamePanel = (function () {
 
     
 
-    return { createPlayer, stopPlayer, movePlayer, initialize, detectKeys, removeEverything, setGameStartTime, createGhost };
+    return { createPlayer, stopPlayer, movePlayer, initialize, detectKeys, removeEverything, setGameStartTime, createGhost
+    ,getGhost };
 })();
 
 const UI = (function () {

@@ -8,7 +8,10 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
         moveLeft: { x: 143, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
         moveUp: { x: 335, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
         moveRight: { x: 237, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
-        moveDown: { x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true }
+        moveDown: { x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
+
+        die:{x: 395, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 8, timing: 1000, loop: false},
+        
     };
 
     const sprite = Sprite(ctx, x, y);
@@ -28,6 +31,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
     let speed = 20;
     let moveBuffer = null;
     let dotCollected = 0;
+    
 
     const getDotCollected = function(){
         return dotCollected;
@@ -254,6 +258,13 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
             if (isCollideWithWall(x, y, direction)) {
                 direction = 0;
             }
+            /*let ghost = GamePanel.getGhost();
+            for(let i = 0; i<4; i++){
+                if(sprite.getBoundingBox().isPointInBox(ghost[i].getXY().x,ghost[i].getXY().y)){
+                    sprite.setSequence(sequences.die);
+                }
+            }*/
+            
         }
 
         /* Update the sprite object */

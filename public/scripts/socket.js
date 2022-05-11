@@ -70,6 +70,8 @@ const Socket = (function () {
             $("#game-panel").hide();
             /* Hide the start screen */
             $("#chat-panel").show();
+            $("#restart-button").hide();
+            $("#game-over").hide();
             GamePanel.removeEverything();
             initializeMap();
             context.clearRect(0, 0, canvas.width, canvas.height);
