@@ -185,20 +185,12 @@ const GamePanel = (function () {
     let player = [];
     let playerNum = null;
     let ghost = [];
-    // Total game time in seconds (2 minutes)
-    //const totalGameTime = 120;
-    const totalGameTime = 15;
+    const totalGameTime = 120;   // Total game time in seconds (2 minutes)
     let gameStartTime = 0;
     let gameEnd = false;
-
-    const getGhost = function () {
-        return ghost;
-    }
-    const setGameStartTime = function () {
-        gameStartTime = 0;
-    }
-
-    let ghostDead = [];
+	
+	let ghostDead = [];
+	let playerDead = [];
 
     const initialize = function () {
         /* Create the game area */
@@ -206,7 +198,7 @@ const GamePanel = (function () {
 
         for (let i = 0; i < 4; i++) {
             ghost.push(Ghost(context, 280, 280, i, gameArea));
-            ghostDead.push(false);
+			ghostDead.push(false);
             ghost[i].scatterOn();
         }
 
@@ -217,13 +209,6 @@ const GamePanel = (function () {
             });
         });
     }
-
-    const createGhost = function () {
-        for (let i = 0; i < 4; i++) {
-            ghost.push(Ghost(context, 300, 272, i, gameArea));
-            ghost[i].scatterOn();
-        }
-    };
 
     const detectKeys = function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
@@ -249,80 +234,98 @@ const GamePanel = (function () {
             //player.stop(event.keyCode%36);
             if (event.keyCode == 32)
                 player[playerNum - 1].slowDown();
+            /*
+            Authentication.stop(playerNum, event.keyCode % 36,
+                () => {
+                    //player.move(event.keyCode%36);
+                    Socket.newStopSignal(playerNum, event.keyCode % 36);
+                },
+                //error, do nothing
+            );
+            */
         });
 
         /* Start the game */
         //sounds.background.play();
         requestAnimationFrame(doFrame);
     }
-
-    const eatGhost = function (player, ghost, ghostID) {
-        const player_box = player.getBoundingBox();
-        const ghost_xy = ghost.getXY();
-        if (player_box.isPointInBox(ghost_xy.x, ghost_xy.y)) {
-            if (player.getEatPriority() > ghost.getEatPriority()) {
-                //player eat ghost
-                if (!ghostDead[ghostID]) {
-                    ghost.eaten();
-                    eatGhostSound.play();
-                    ghostDead[ghostID] = true;
-                }
-            }
-            else if (ghost.getEatPriority() > player.getEatPriority()) {
-                //ghost eat player
-                player.eaten();
-            }
-            else {
-                console.log(player.getEatPriority());
-                console.log(ghost.getEatPriority());
-                console.log("error");
-            }
-        }
-        //return false;
-    }
-
-
-    /*
-    const eatGhost = function (player, ghost) {
-        if ((player.getRowCol().row == ghost.getRowCol().row) && (player.getRowCol().column == ghost.getRowCol().column)){
-            if (player.getEatPriority() > ghost.getEatPriority()){
-                //player eat ghost
-                console.log("player eat ghost");
-                player.eaten();
-            }
-            else if (ghost.getEatPriority() > player.getEatPriority()){
-                //ghost eat player
-                console.log("ghost eat player");
-                console.log(player.getEatPriority());
-                console.log(ghost.getEatPriority());
-                ghost.eaten();
-            }
-            else {
-                console.log(player.getEatPriority());
-                console.log(ghost.getEatPriority());
-                console.log("error");
-            }
-        }
-        //return false;
-    }
-    */
+		
+	const eatGhost = function (player, ghost, playerID, ghostID) {
+		const player_box = player.getBoundingBox();
+		const ghost_xy = ghost.getXY();
+		if (player_box.isPointInBox(ghost_xy.x,ghost_xy.y)){
+			if (player.getEatPriority() > ghost.getEatPriority()){
+				//player eat ghost
+				if (!ghostDead[ghostID]){
+					player.eatGhostPoint();
+					ghost.eaten();
+					eatGhostSound.play();
+					ghostDead[ghostID] = true;
+				}
+			}
+			else if (ghost.getEatPriority() > player.getEatPriority()){
+				//ghost eat player
+				if (!playerDead[playerID]){
+					player.eaten();
+					gameOverSound.play();
+					playerDead[playerID] = true;
+				}
+			}
+			else {
+				console.log(player.getEatPriority());
+				console.log(ghost.getEatPriority());
+				console.log("error");
+			}
+		}
+		//return false;
+	}
+	
+	
+	/*
+	const eatGhost = function (player, ghost) {
+		if ((player.getRowCol().row == ghost.getRowCol().row) && (player.getRowCol().column == ghost.getRowCol().column)){
+			if (player.getEatPriority() > ghost.getEatPriority()){
+				//player eat ghost
+				console.log("player eat ghost");
+				player.eaten();
+			}
+			else if (ghost.getEatPriority() > player.getEatPriority()){
+				//ghost eat player
+				console.log("ghost eat player");
+				console.log(player.getEatPriority());
+				console.log(ghost.getEatPriority());
+				ghost.eaten();
+			}
+			else {
+				console.log(player.getEatPriority());
+				console.log(ghost.getEatPriority());
+				console.log("error");
+			}
+		}
+		//return false;
+	}
+	*/
 
     /* The main processing of the game */
     function doFrame(now) {
+        /* Update the sprites */
         for (let i = 0; i < ghost.length; i++)
-            if (!ghostDead[i])
-                ghost[i].update(now);
-            else if (ghostDead[i])
-                ghost[i].eaten();
-
-        for (let i = 0; i < player.length; i++)
-            player[i].update(now, i + 1);
-
-        for (let i = 0; i < player.length; i++) {
-            for (let j = 0; j < ghost.length; j++) {
-                eatGhost(player[i], ghost[j], j);
-            }
-        }
+			if (!ghostDead[i])
+				ghost[i].update(now);
+			else if (ghostDead[i])
+				ghost[i].eaten();
+			
+		for (let i = 0; i < player.length; i++)
+			if (!playerDead[i])
+				player[i].update(now, i + 1);
+			else if (playerDead[i])
+				player[i].eaten();
+	
+		for (let i = 0; i < player.length; i++) {
+			for (let j = 0; j < ghost.length; j++) {
+				eatGhost(player[i], ghost[j], i, j);
+			}
+		}
 
         /* timer */
         if (gameStartTime === 0) gameStartTime = now;
@@ -337,23 +340,10 @@ const GamePanel = (function () {
         }
 
         if (gameEnd) {
-            $("#game-over").show();
-            $("#final-gems").text(player[playerNum - 1].getDotCollected());
-            $("#final-score").text(player[playerNum - 1].getScore());
-            let rank = player.length;
-            for (let i = 0; i < player.length && i !== playerNum - 1; i++) {
-                if (player[playerNum - 1].getScore() > player[i].getScore())
-                    rank--;
-            }
-            $("#rank").text(rank);
-            gameOverSound.play();
-            $("#restart-button").on("click", function () {
-                Authentication.unlock(() => {
-                    Socket.unlockGame();
-                });
-            });
-            $("#restart-button").show();
-            return;
+            //winner
+            gameWinSound.play();
+            //other players
+            //gameOverSound.play();
         }
 
         /* Clear the screen */
@@ -363,8 +353,8 @@ const GamePanel = (function () {
         /* Draw the sprites */
         for (let i = 0; i < ghost.length; i++)
             ghost[i].draw();
-
-        for (let i = 0; i < player.length; i++)
+		
+		for (let i = 0; i < player.length; i++)
             player[i].draw();
 
         /* print score board */
@@ -412,37 +402,21 @@ const GamePanel = (function () {
         player[playerNum - 1].stop(keycode);
     };
 
-    let totalPlayerNum = null;
-    const createPlayer = function (totalPlayerNumFromServer) {
-        totalPlayerNum = totalPlayerNumFromServer;
+    const createPlayer = function (totalPlayerNum) {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         for (let i = 0; i < totalPlayerNum; i++) {
             switch (i + 1) {
-                case 1: player.push(Player(context, 30, 30, gameArea, i, 0)); break;
-                case 2: player.push(Player(context, 530, 30, gameArea, i, 0)); break;
-                case 3: player.push(Player(context, 30, 530, gameArea, i, 0)); break;
-                case 4: player.push(Player(context, 530, 530, gameArea, i, 0)); break;
+                case 1: player.push(Player(context, 30, 30, gameArea, i, 0)); playerDead.push(false); break;
+                case 2: player.push(Player(context, 530, 30, gameArea, i, 0)); playerDead.push(false); break;
+                case 3: player.push(Player(context, 30, 530, gameArea, i, 0)); playerDead.push(false); break;
+                case 4: player.push(Player(context, 530, 530, gameArea, i, 0)); playerDead.push(false); break;
             }
 
             console.log("player no.:", playerNum);
         }
     };
 
-    const removeEverything = function () {
-        for (let i = 0; i < totalPlayerNum; i++) {
-            //delete player[i];
-            player.pop();
-        }
-        for (let i = 0; i < 4; i++) {
-            //delete ghost[i];
-            ghost.pop();
-        }
-    };
-
-    return {
-        createPlayer, stopPlayer, movePlayer, initialize, detectKeys, removeEverything,
-        setGameStartTime, createGhost, getGhost
-    };
+    return { createPlayer, stopPlayer, movePlayer, initialize, detectKeys };
 })();
 
 const UI = (function () {
