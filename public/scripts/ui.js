@@ -186,8 +186,8 @@ const GamePanel = (function () {
     let playerNum = null;
     let ghost = [];
     // Total game time in seconds (2 minutes)
-    //const totalGameTime = 120;
-    const totalGameTime = 15;
+    const totalGameTime = 120;
+    //const totalGameTime = 15;
     let gameStartTime = 0;
     let gameEnd = false;
 
@@ -280,7 +280,6 @@ const GamePanel = (function () {
         }
         //return false;
     }
-
 
     /*
     const eatGhost = function (player, ghost) {
