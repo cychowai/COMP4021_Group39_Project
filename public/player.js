@@ -29,11 +29,6 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
     let direction = 0;
     let speed = 20;
     let moveBuffer = null;
-    let dotCollected = 0;
-
-    const getDotCollected = function () {
-        return dotCollected;
-    };
 
     const getXY = function () {
         return { x, y };
