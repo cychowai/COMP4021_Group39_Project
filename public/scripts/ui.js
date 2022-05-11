@@ -306,8 +306,8 @@ const GamePanel = (function () {
         //return false;
     }
     */
-	
-	const eatPlayer = function (player, player2, playerID, player2ID) {
+
+    const eatPlayer = function (player, player2, playerID, player2ID) {
         const player_box = player.getBoundingBox();
         const player2_xy = player2.getXY();
         if (player_box.isPointInBox(player2_xy.x, player2_xy.y)) {
@@ -323,7 +323,7 @@ const GamePanel = (function () {
             else if (player2.getEatPriority() > player.getEatPriority()) {
                 //ghost eat player
                 if (!playerDead[playerID]) {
-					player2.eatPlayerPoint();
+                    player2.eatPlayerPoint();
                     player.eaten();
                     //gameOverSound.play();
                     playerDead[playerID] = true;
@@ -358,14 +358,14 @@ const GamePanel = (function () {
                 eatGhost(player[i], ghost[j], i, j);
             }
         }
-		
-		for (let i = 0; i < player.length; i++) {
-			for (let j = 0; j < player.length; j++) {
-				if ((i != j) && (!ghostDead[i]) && (!ghostDead[j])) {
-					eatPlayer(player[i], player[j], i, j);
-				}
-			}
-		}
+
+        for (let i = 0; i < player.length; i++) {
+            for (let j = 0; j < player.length; j++) {
+                if ((i != j) && (!ghostDead[i]) && (!ghostDead[j])) {
+                    eatPlayer(player[i], player[j], i, j);
+                }
+            }
+        }
 
         /* timer */
         if (gameStartTime === 0) gameStartTime = now;

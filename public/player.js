@@ -233,8 +233,8 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
     const eatGhostPoint = function () {
         score += 500;
     }
-	
-	const eatPlayerPoint = function () {
+
+    const eatPlayerPoint = function () {
         score += 1000;
     }
 
@@ -335,6 +335,6 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
         changeEatPriority: changeEatPriority,
         eatGhostPoint: eatGhostPoint,
         getDotCollected: getDotCollected,
-		    eatPlayerPoint: eatPlayerPoint,
+        eatPlayerPoint: eatPlayerPoint,
     };
 };
