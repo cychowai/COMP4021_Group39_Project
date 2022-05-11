@@ -185,7 +185,9 @@ const GamePanel = (function () {
     let player = [];
     let playerNum = null;
     let ghost = [];
-    const totalGameTime = 120;   // Total game time in seconds (2 minutes)
+    // Total game time in seconds (2 minutes)
+    const totalGameTime = 120;
+    //const totalGameTime = 15;
     let gameStartTime = 0;
     let gameEnd = false;
 	
@@ -197,8 +199,8 @@ const GamePanel = (function () {
         gameArea = BoundingBox(context, 0, 0, 560, 560);
 
         for (let i = 0; i < 4; i++) {
-            ghost.push(Ghost(context, 280, 280, i, gameArea));
-			ghostDead.push(false);
+            ghost.push(Ghost(context, 280, 280, i, gameArea, 2));
+            ghostDead.push(false);
             ghost[i].scatterOn();
         }
 
@@ -209,6 +211,13 @@ const GamePanel = (function () {
             });
         });
     }
+
+    const createGhost = function () {
+        for (let i = 0; i < 4; i++) {
+            ghost.push(Ghost(context, 300, 272, i, gameArea, 2));
+            ghost[i].scatterOn();
+        }
+    };
 
     const detectKeys = function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
@@ -406,10 +415,10 @@ const GamePanel = (function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         for (let i = 0; i < totalPlayerNum; i++) {
             switch (i + 1) {
-                case 1: player.push(Player(context, 30, 30, gameArea, i, 0)); playerDead.push(false); break;
-                case 2: player.push(Player(context, 530, 30, gameArea, i, 0)); playerDead.push(false); break;
-                case 3: player.push(Player(context, 30, 530, gameArea, i, 0)); playerDead.push(false); break;
-                case 4: player.push(Player(context, 530, 530, gameArea, i, 0)); playerDead.push(false); break;
+                case 1: player.push(Player(context, 30, 30, gameArea, i, 0, 1)); playerDead.push(false); break;
+                case 2: player.push(Player(context, 530, 30, gameArea, i, 0, 1)); playerDead.push(false); break;
+                case 3: player.push(Player(context, 30, 530, gameArea, i, 0, 1)); playerDead.push(false); break;
+                case 4: player.push(Player(context, 530, 530, gameArea, i, 0, 1)); playerDead.push(false); break;
             }
 
             console.log("player no.:", playerNum);

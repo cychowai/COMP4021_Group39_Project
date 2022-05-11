@@ -1,4 +1,4 @@
-const Ghost = function (ctx, x, y, colour, gameArea) {
+const Ghost = function (ctx, x, y, colour, gameArea, eatPriority) {
     const sequences = [];
 
     for (let i = 0; i < 4; i++) {
@@ -53,17 +53,17 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
     let direction = 0;
     let speed = 20;
     let moveBuffer = null;
-	let eatPriority = 2; //player is 1 or 3
-	
-	const eaten = function() {
-		sprite.setSequence(sequencesDead);		
-		//eatGhostSound.play();
-		//console.log("ghost eaten");
-	}
-	
-	const getEatPriority = function () {
-		return eatPriority;
-	}	
+
+    const eaten = function () {
+        sprite.setSequence(sequencesDead);
+
+        //eatGhostSound.play();
+        console.log("ghost eaten");
+    }
+
+    const getEatPriority = function () {
+        return eatPriority;
+    }
 
     const isCollideWithWall = function (x, y, dir) {
         if (dir === 0) {
