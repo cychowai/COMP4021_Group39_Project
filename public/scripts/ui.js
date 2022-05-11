@@ -490,7 +490,9 @@ const GamePanel = (function () {
         player[playerNum - 1].stop(keycode);
     };
 
-    const createPlayer = function (totalPlayerNum) {
+    let totalPlayerNum = null;
+    const createPlayer = function (totalPlayerNumFromServer) {
+        totalPlayerNum = totalPlayerNumFromServer;
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         for (let i = 0; i < totalPlayerNum; i++) {
             switch (i + 1) {
