@@ -194,6 +194,14 @@ const GamePanel = (function () {
     let ghostDead = [];
     let playerDead = [];
 
+    const getGhost = function () {
+        return ghost;
+    };
+
+    const setGameStartTime = function () {
+        gameStartTime = 0;
+    };
+
     const initialize = function () {
         /* Create the game area */
         gameArea = BoundingBox(context, 0, 0, 560, 560);
@@ -211,6 +219,13 @@ const GamePanel = (function () {
             });
         });
     }
+
+    const createGhost = function () {
+        for (let i = 0; i < 4; i++) {
+            ghost.push(Ghost(context, 300, 272, i, gameArea));
+            ghost[i].scatterOn();
+        }
+    };
 
     const detectKeys = function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
@@ -489,7 +504,21 @@ const GamePanel = (function () {
         }
     };
 
-    return { createPlayer, stopPlayer, movePlayer, initialize, detectKeys };
+    const removeEverything = function () {
+        for (let i = 0; i < totalPlayerNum; i++) {
+            //delete player[i];
+            player.pop();
+        }
+        for (let i = 0; i < 4; i++) {
+            //delete ghost[i];
+            ghost.pop();
+        }
+    };
+
+    return {
+        createPlayer, stopPlayer, movePlayer, initialize, detectKeys, removeEverything,
+        setGameStartTime, createGhost, getGhost
+    };
 })();
 
 const UI = (function () {
