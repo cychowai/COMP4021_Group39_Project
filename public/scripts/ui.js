@@ -197,13 +197,16 @@ const GamePanel = (function () {
     const setGameStartTime = function () {
         gameStartTime = 0;
     }
+	
+	let ghostDead = [];
 
     const initialize = function () {
         /* Create the game area */
         gameArea = BoundingBox(context, 0, 0, 560, 560);
 
         for (let i = 0; i < 4; i++) {
-            ghost.push(Ghost(context, 300, 272, i, gameArea));
+            ghost.push(Ghost(context, 280, 280, i, gameArea));
+			ghostDead.push(false);
             ghost[i].scatterOn();
         }
 
@@ -252,15 +255,74 @@ const GamePanel = (function () {
         //sounds.background.play();
         requestAnimationFrame(doFrame);
     }
+		
+	const eatGhost = function (player, ghost, ghostID) {
+		const player_box = player.getBoundingBox();
+		const ghost_xy = ghost.getXY();
+		if (player_box.isPointInBox(ghost_xy.x,ghost_xy.y)){
+			if (player.getEatPriority() > ghost.getEatPriority()){
+				//player eat ghost
+				if (!ghostDead[ghostID]){
+					ghost.eaten();
+					eatGhostSound.play();
+					ghostDead[ghostID] = true;
+				}
+			}
+			else if (ghost.getEatPriority() > player.getEatPriority()){
+				//ghost eat player
+				player.eaten();
+			}
+			else {
+				console.log(player.getEatPriority());
+				console.log(ghost.getEatPriority());
+				console.log("error");
+			}
+		}
+		//return false;
+	}
+	
+	
+	/*
+	const eatGhost = function (player, ghost) {
+		if ((player.getRowCol().row == ghost.getRowCol().row) && (player.getRowCol().column == ghost.getRowCol().column)){
+			if (player.getEatPriority() > ghost.getEatPriority()){
+				//player eat ghost
+				console.log("player eat ghost");
+				player.eaten();
+			}
+			else if (ghost.getEatPriority() > player.getEatPriority()){
+				//ghost eat player
+				console.log("ghost eat player");
+				console.log(player.getEatPriority());
+				console.log(ghost.getEatPriority());
+				ghost.eaten();
+			}
+			else {
+				console.log(player.getEatPriority());
+				console.log(ghost.getEatPriority());
+				console.log("error");
+			}
+		}
+		//return false;
+	}
+	*/
 
     /* The main processing of the game */
     function doFrame(now) {
-        /* Update the sprites */
-        for (let i = 0; i < player.length; i++)
-            player[i].update(now, i + 1);
-
         for (let i = 0; i < ghost.length; i++)
-            ghost[i].update(now);
+			if (!ghostDead[i])
+				ghost[i].update(now);
+			else if (ghostDead[i])
+				ghost[i].eaten();
+			
+		for (let i = 0; i < player.length; i++)
+            player[i].update(now, i + 1);
+	
+		for (let i = 0; i < player.length; i++) {
+			for (let j = 0; j < ghost.length; j++) {
+				eatGhost(player[i], ghost[j], j);
+			}
+		}
 
         /* timer */
         if (gameStartTime === 0) gameStartTime = now;
@@ -299,11 +361,11 @@ const GamePanel = (function () {
         createBoard();
 
         /* Draw the sprites */
-        for (let i = 0; i < player.length; i++)
-            player[i].draw();
-
         for (let i = 0; i < ghost.length; i++)
             ghost[i].draw();
+		
+		for (let i = 0; i < player.length; i++)
+            player[i].draw();
 
         /* print score board */
         for (let i = 0; i < player.length; i++) {
