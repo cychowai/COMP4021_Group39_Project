@@ -330,5 +330,6 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
         getRowCol: getRowCol,
         changeEatPriority: changeEatPriority,
         eatGhostPoint: eatGhostPoint,
+        getDotCollected: getDotCollected,
     };
 };
