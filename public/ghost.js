@@ -9,8 +9,8 @@ const Ghost = function (ctx, x, y, colour, gameArea, eatPriority) {
             moveDown: { x: 44, y: 84 + i * 20, width: 20, height: 20, count: 2, timing: 50, loop: true }
         }
     }
-	
-	const sequencesDead = {x: 4, y: 164, width: 20, height: 20, count: 2, timing: 50, loop: true }
+
+    const sequencesDead = { x: 4, y: 164, width: 20, height: 20, count: 2, timing: 50, loop: true }
 
     /*
     const sequences = {
@@ -32,13 +32,13 @@ const Ghost = function (ctx, x, y, colour, gameArea, eatPriority) {
         [x, y] = [xvalue, yvalue];
         return this;
     };
-	
-	const getRowCol = function () {
-		let row = Math.floor(y / tileSize);
-		let column = Math.floor(x / tileSize);
-		return { row, column }; 	
 
-	};
+    const getRowCol = function () {
+        let row = Math.floor(y / tileSize);
+        let column = Math.floor(x / tileSize);
+        return { row, column };
+
+    };
 
     sprite.setSequence(sequences.moveLeft)
         .setScale(2)
@@ -242,7 +242,7 @@ const Ghost = function (ctx, x, y, colour, gameArea, eatPriority) {
     const scatter = function () {
         var exit = false;
         while (!exit) {
-			var r = Math.floor(Math.random() * 3);
+            var r = Math.floor(Math.random() * 3);
             if (direction === 3) {
                 //var r = Math.floor(Math.random() * 3);
                 let dir = 0;
@@ -384,7 +384,7 @@ const Ghost = function (ctx, x, y, colour, gameArea, eatPriority) {
     };
 
     const scatterOn = function () {
-        setInterval(scatter,100);
+        setInterval(scatter, 100);
     };
 
     // The methods are returned as an object here.
@@ -397,8 +397,8 @@ const Ghost = function (ctx, x, y, colour, gameArea, eatPriority) {
         update: update,
         isCollideWithWall: isCollideWithWall,
         scatterOn: scatterOn,
-		getEatPriority: getEatPriority,
-		eaten: eaten,
-		getRowCol: getRowCol,
+        getEatPriority: getEatPriority,
+        eaten: eaten,
+        getRowCol: getRowCol,
     };
 }
