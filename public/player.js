@@ -35,10 +35,6 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
         return dotCollected;
     };
 
-    const getXY = function () {
-        return { x, y };
-    };
-
     const setXY = function (xvalue, yvalue) {
         [x, y] = [xvalue, yvalue];
         return this;
@@ -244,6 +240,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
         if (map[row][column] === 2) {
             map[row][column] = 0;
             score += 50;
+            dotCollected++;
             return true;
         }
         return false;
