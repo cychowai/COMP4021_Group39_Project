@@ -23,11 +23,6 @@ const Ghost = function (ctx, x, y, colour, gameArea, eatPriority) {
 
     const sprite = Sprite(ctx, x, y);
 
-    // This function gets the current sprite position.
-    const getXY = function () {
-        return { x, y };
-    };
-
     const setXY = function (xvalue, yvalue) {
         [x, y] = [xvalue, yvalue];
         return this;
