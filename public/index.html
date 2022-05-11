@@ -49,13 +49,36 @@
                     <div id="time-remaining">120</div>
                 </div>
                 <canvas id="game-area"></canvas>
+                <br><br>
+                <div id="game-over">
+                    <text x="50%" y="50%">
+                        Time's up! You have collected&nbsp;
+                        <tspan id="final-gems">0</tspan>
+                        dot(s). Your score is&nbsp;
+                        <tspan id="final-score">0</tspan>
+                        . And you are at rank&nbsp;
+                        <tspan id="rank">0</tspan>
+                        .
+                    </text>
+                </div>
+                <br>
+                <button id="restart-button">Back to main panel !</button>
             </div>
             <div id="chat-panel" class="col">
                 <div id="instructionBox" class="col">
                     The player controls Pac-Man,
                     who must eat all the dots inside an enclosed maze while avoiding four colored ghosts.
+                    <br>
                     Eating large flashing dots called "Power Pellets" causes the ghosts to temporarily turn blue,
                     allowing Pac-Man to eat them for bonus points.
+                    <br>
+                    Use arrow keys to move your pacman, and press space for accelerating with double speed.
+                    <br>
+                    For eating each dot and cherry, you have 50 points, and after you eat cherry,
+                    you can eat other players for 1000 points each and ghosts for 500 points each.
+                    <br>
+                    The game time is 2 minutes, with the highest scores player to win,
+                    or if all the dots are eaten, the game will end also.
                 </div>
                 <div id="online-users-area" class="col">Hi</div>
                 <div id="player1" class="col playerBox">Player1 here!</div>
@@ -64,7 +87,7 @@
                 <div id="player4" class="col playerBox">Player4 here!</div>
                 <div id="someonePlaying" class="col playerBox">someone is playing! please wait!</div>
                 <button id="readyButton" class="">Ready !</button>
-                <button id="startButton" class="">here we go !</button>
+                <button id="startButton" class="">Start Game !</button>
             </div>
         </div>
     </div>
@@ -117,16 +140,7 @@
             UI.initialize();
 
             // Validate the signin
-            Authentication.validate(
-                () => {
-                    SignInForm.hide();
-                    UserPanel.update(Authentication.getUser());
-                    UserPanel.show();
-
-                    Socket.connect();
-                },
-                () => { SignInForm.show(); }
-            );
+            SignInForm.show();
         });
     </script>
 </body>

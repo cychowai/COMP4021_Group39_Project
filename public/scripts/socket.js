@@ -58,11 +58,28 @@ const Socket = (function () {
             $("#chat-panel").hide();
             GamePanel.createPlayer(totalPlayerNum);
             GamePanel.detectKeys();
+            console.log(totalPlayerNum);
         });
 
         socket.on("refuse starting", () => {
             $("#someonePlaying").show();
         });
+
+        socket.on("unlock game", () => {
+            //UI.initialize();
+            $("#game-panel").hide();
+            /* Hide the start screen */
+            $("#chat-panel").show();
+            $("#restart-button").hide();
+            $("#game-over").hide();
+            GamePanel.removeEverything();
+            initializeMap();
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            createBoard();
+            GamePanel.setGameStartTime();
+            GamePanel.createGhost();
+        });
+        
     };
 
     // This function disconnects the socket from the server
@@ -94,5 +111,9 @@ const Socket = (function () {
         socket.emit("start game", totalPlayerNum);
     };
 
-    return { getSocket, connect, disconnect, postMessage, sendingMessage, newMoveSignal, newStopSignal, startGame };
+    const unlockGame = function () {
+        socket.emit("unlock game");
+    };
+
+    return { getSocket, connect, disconnect, postMessage, sendingMessage, newMoveSignal, newStopSignal, startGame, unlockGame };
 })();

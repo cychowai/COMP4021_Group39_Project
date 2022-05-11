@@ -8,7 +8,10 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
         moveLeft: { x: 143, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
         moveUp: { x: 335, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
         moveRight: { x: 237, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
-        moveDown: { x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true }
+        moveDown: { x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
+
+        die:{x: 395, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 8, timing: 1000, loop: false},
+        
     };
 
     const sprite = Sprite(ctx, x, y);
@@ -27,6 +30,12 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
     let direction = 0;
     let speed = 20;
     let moveBuffer = null;
+    let dotCollected = 0;
+    
+    const getDotCollected = function(){
+        return dotCollected;
+    };
+
 	let eatPriority = 1; //ghost is 2;
 	
 	// This function gets the current sprite position.
@@ -280,6 +289,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
 
             if (eatDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum()) ) {
                 wakaSound.play();
+                dotCollected++;
             }
 
             if (eatPowerDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum())) {
@@ -290,6 +300,13 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
             if (isCollideWithWall(x, y, direction)) {
                 direction = 0;
             }
+            /*let ghost = GamePanel.getGhost();
+            for(let i = 0; i<4; i++){
+                if(sprite.getBoundingBox().isPointInBox(ghost[i].getXY().x,ghost[i].getXY().y)){
+                    sprite.setSequence(sequences.die);
+                }
+            }*/
+            
         }
 
         /* Update the sprite object */
@@ -314,6 +331,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
         eatDot: eatDot,
         eatPowerDot: eatPowerDot,
         getScore: getScore,
+        getDotCollected : getDotCollected,
 		getEatPriority: getEatPriority,
 		eaten: eaten,
 		getRowCol: getRowCol,
