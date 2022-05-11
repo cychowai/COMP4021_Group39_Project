@@ -287,7 +287,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score, eatPriority) {
 
             if (eatPriority === 3) {
                 sprite.setPlayerScale(0.8);
-                setTimeout(changeEatPriority(1), 12000);
+                //setTimeout(changeEatPriority(1), 12000);
             }
 
             if (eatDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum())) {
