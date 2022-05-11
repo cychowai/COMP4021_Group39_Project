@@ -391,7 +391,6 @@ const GamePanel = (function () {
             gameEnd = checkGameWinDot();
 
             if (playerDead.filter((e) => e === true).length === playerNum) {
-                gameOverSound.play();
                 $("#game-over").show();
                 $("#final-gems").text(player[playerNum - 1].getDotCollected());
                 $("#final-score").text(player[playerNum - 1].getScore());
@@ -401,6 +400,7 @@ const GamePanel = (function () {
                         rank--;
                 }
                 $("#rank").text(rank);
+                gameOverSound.play();
                 $("#restart-button").on("click", function () {
                     Authentication.unlock(() => {
                         Socket.unlockGame();
@@ -415,7 +415,6 @@ const GamePanel = (function () {
         }
 
         if (gameEnd) {
-            gameWinSound.play();
             $("#game-over").show();
             $("#final-gems").text(player[playerNum - 1].getDotCollected());
             $("#final-score").text(player[playerNum - 1].getScore());
@@ -425,6 +424,7 @@ const GamePanel = (function () {
                     rank--;
             }
             $("#rank").text(rank);
+            gameWinSound.play();
             $("#restart-button").on("click", function () {
                 Authentication.unlock(() => {
                     Socket.unlockGame();
