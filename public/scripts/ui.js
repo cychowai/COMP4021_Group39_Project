@@ -185,8 +185,12 @@ const GamePanel = (function () {
     let player = [];
     let playerNum = null;
     let ghost = [];
-    const totalGameTime = 12;   // Total game time in seconds (2 minutes)
+    const totalGameTime = 5;   // Total game time in seconds (2 minutes)
     let gameStartTime = 0;
+
+    const setGameStartTime = function() {
+        gameStartTime = 0;
+    }
 
     const initialize = function () {
         /* Create the game area */
@@ -204,6 +208,13 @@ const GamePanel = (function () {
             });
         });
     }
+    
+    const createGhost = function(){
+        for (let i = 0; i < 4; i++) {
+            ghost.push(Ghost(context, 300, 272, i, gameArea));
+            ghost[i].scatterOn();
+        }
+    };
 
     const detectKeys = function () {
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
@@ -246,7 +257,7 @@ const GamePanel = (function () {
             ghost[i].update(now);
 
         /* timer */
-        if (gameStartTime === 0) gameStartTime = now;
+        if (gameStartTime == 0) gameStartTime = now;
         const gameTimeSoFar = now - gameStartTime;
         const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
         $("#time-remaining").text(timeRemaining);
@@ -322,7 +333,9 @@ const GamePanel = (function () {
         player[playerNum - 1].stop(keycode);
     };
 
-    const createPlayer = function (totalPlayerNum) {
+    let totalPlayerNum = null;
+    const createPlayer = function (totalPlayerNumFromServer) {
+        totalPlayerNum = totalPlayerNumFromServer;
         playerNum = SignInForm.getPlayerNum(); //local player number for the broswer
         for (let i = 0; i < totalPlayerNum; i++) {
             switch (i + 1) {
@@ -336,7 +349,21 @@ const GamePanel = (function () {
         }
     };
 
-    return { createPlayer, stopPlayer, movePlayer, initialize, detectKeys };
+    const removeEverything = function () {
+        for (let i=0; i<totalPlayerNum; i++){
+            //delete player[i];
+            player.pop();
+        }
+        for(let i=0; i<4; i++){
+            //delete ghost[i];
+            ghost.pop();
+        }
+
+    };
+
+    
+
+    return { createPlayer, stopPlayer, movePlayer, initialize, detectKeys, removeEverything, setGameStartTime, createGhost };
 })();
 
 const UI = (function () {

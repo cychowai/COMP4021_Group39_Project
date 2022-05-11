@@ -58,6 +58,7 @@ const Socket = (function () {
             $("#chat-panel").hide();
             GamePanel.createPlayer(totalPlayerNum);
             GamePanel.detectKeys();
+            console.log(totalPlayerNum);
         });
 
         socket.on("refuse starting", () => {
@@ -65,11 +66,18 @@ const Socket = (function () {
         });
 
         socket.on("unlock game", () => {
-            UI.initialize();
+            //UI.initialize();
             $("#game-panel").hide();
             /* Hide the start screen */
             $("#chat-panel").show();
+            GamePanel.removeEverything();
+            initializeMap();
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            createBoard();
+            GamePanel.setGameStartTime();
+            GamePanel.createGhost();
         });
+        
     };
 
     // This function disconnects the socket from the server
