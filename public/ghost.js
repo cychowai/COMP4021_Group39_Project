@@ -23,11 +23,6 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
 
     const sprite = Sprite(ctx, x, y);
 
-    // This function gets the current sprite position.
-    const getXY = function () {
-        return { x, y };
-    };
-
     const setXY = function (xvalue, yvalue) {
         [x, y] = [xvalue, yvalue];
         return this;
@@ -391,8 +386,7 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
     // The methods are returned as an object here.
     return {
         move: move,
-        getXY: getXY,
-        //getXY: sprite.getXY,
+        getXY: sprite.getXY,
         setXY: setXY,
         getBoundingBox: sprite.getBoundingBox,
         draw: sprite.draw,
