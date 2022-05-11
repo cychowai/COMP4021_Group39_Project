@@ -335,3 +335,9 @@ button.icon:active {
 #score-board-4 { 
     display: none;
 }
+#restart-button{
+    display: none;
+}
+#game-over{
+    display:none;
+}
