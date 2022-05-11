@@ -33,7 +33,7 @@ const Sprite = function (ctx, x, y) {
         lastUpdate = 0;
         return this;
     };
-    const setPlayerScale = function(playerValue) {
+    const setPlayerScale = function (playerValue) {
         playerScale = playerValue;
         return this;
     };

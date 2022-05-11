@@ -1,17 +1,17 @@
 const Player = function (ctx, x, y, gameArea, playerNum, score) {
     const sequences = {
-        idleLeft: { x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
-        idleUp: {  x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
-        idleRight: { x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
-        idleDown: { x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
+        idleLeft: { x: 45, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
+        idleUp: { x: 45, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
+        idleRight: { x: 45, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
+        idleDown: { x: 45, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 1, timing: 2000, loop: false },
 
-        moveLeft: { x: 143, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
-        moveUp: { x: 335, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
-        moveRight: { x: 237, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
-        moveDown: { x: 45, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
+        moveLeft: { x: 143, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
+        moveUp: { x: 335, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
+        moveRight: { x: 237, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
+        moveDown: { x: 45, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 2, timing: 150, loop: true },
 
-        die:{x: 395, y: 40 + (63*(playerNum)), width: 30, height: 30, count: 8, timing: 1000, loop: false},
-        
+        die: { x: 395, y: 40 + (63 * (playerNum)), width: 30, height: 30, count: 8, timing: 1000, loop: false },
+
     };
 
     const sprite = Sprite(ctx, x, y);
@@ -31,14 +31,14 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
     let speed = 20;
     let moveBuffer = null;
     let dotCollected = 0;
-    
-    const getDotCollected = function(){
+
+    const getDotCollected = function () {
         return dotCollected;
     };
 
-	let eatPriority = 1; //ghost is 2;
-	
-	// This function gets the current sprite position.
+    let eatPriority = 1; //ghost is 2;
+
+    // This function gets the current sprite position.
     const getXY = function () {
         return { x, y };
     };
@@ -47,20 +47,20 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
         [x, y] = [xvalue, yvalue];
         return this;
     };
-	
-	const getRowCol = function () {
-		let row = Math.floor(y / tileSize);
-		let column = Math.floor(x / tileSize);
-		return { row, column }; 	
-	};	
+
+    const getRowCol = function () {
+        let row = Math.floor(y / tileSize);
+        let column = Math.floor(x / tileSize);
+        return { row, column };
+    };
 
     const getScore = function () {
         return score;
     };
-	
-	const getEatPriority = function () {
-		return eatPriority;
-	}
+
+    const getEatPriority = function () {
+        return eatPriority;
+    }
 
     const isCollideWithWall = function (x, y, dir) {
         if (dir === 0) {
@@ -227,16 +227,16 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
     const slowDown = function () {
         speed = 20; //back to normal speed
     };
-	
-	const eaten = function() {
-		gameOverSound.play();
-		console.log("player eaten");
-	}
-	
-	const eatGhostPoint = function() {
-		score += 500;
-	}
-	
+
+    const eaten = function () {
+        gameOverSound.play();
+        console.log("player eaten");
+    }
+
+    const eatGhostPoint = function () {
+        score += 500;
+    }
+
     const eatDot = function (x, y) {
         const row = Math.floor(y / tileSize);
         const column = Math.floor(x / tileSize);
@@ -247,19 +247,19 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
         }
         return false;
     };
-	
-	const changeEatPriority = function (num) {
-		eatPriority = num;
-		return this;
-	}
+
+    const changeEatPriority = function (num) {
+        eatPriority = num;
+        return this;
+    }
 
     const eatPowerDot = function (x, y) {
         const row = Math.floor(y / tileSize);
         const column = Math.floor(x / tileSize);
         if (map[row][column] === 3) {
             map[row][column] = 0;
-			changeEatPriority(3);
-			console.log(eatPriority);
+            changeEatPriority(3);
+            console.log(eatPriority);
             score += 50;
             return true;
         }
@@ -282,19 +282,19 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
             /* Set the new position if it is within the game area */
             if (gameArea.isPointInBox(x, y))
                 sprite.setXY(x, y);
-			
-			//if (eatGhost(x, y) && (updatingPlayer === SignInForm.getPlayerNum()) ) {
-				//
-			//}
 
-            if (eatDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum()) ) {
+            //if (eatGhost(x, y) && (updatingPlayer === SignInForm.getPlayerNum()) ) {
+            //
+            //}
+
+            if (eatDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum())) {
                 wakaSound.play();
                 dotCollected++;
             }
 
             if (eatPowerDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum())) {
                 powerDotSound.play();
-				console.log(eatPriority);
+                console.log(eatPriority);
             }
 
             if (isCollideWithWall(x, y, direction)) {
@@ -306,7 +306,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
                     sprite.setSequence(sequences.die);
                 }
             }*/
-            
+
         }
 
         /* Update the sprite object */
@@ -319,7 +319,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
     // The methods are returned as an object here.
     return {
         move: move,
-		getXY: getXY,
+        getXY: getXY,
         setXY: setXY,
         stop: stop,
         speedUp: speedUp,
@@ -331,10 +331,11 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
         eatDot: eatDot,
         eatPowerDot: eatPowerDot,
         getScore: getScore,
-        getDotCollected : getDotCollected,
-		getEatPriority: getEatPriority,
-		eaten: eaten,
-		getRowCol: getRowCol,
-		changeEatPriority: changeEatPriority,
+        getDotCollected: getDotCollected,
+        getEatPriority: getEatPriority,
+        eatGhostPoint: eatGhostPoint,
+        eaten: eaten,
+        getRowCol: getRowCol,
+        changeEatPriority: changeEatPriority,
     };
 };
