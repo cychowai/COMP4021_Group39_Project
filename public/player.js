@@ -27,10 +27,31 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
     let direction = 0;
     let speed = 20;
     let moveBuffer = null;
+	let eatPriority = 1; //ghost is 2;
+	
+	// This function gets the current sprite position.
+    const getXY = function () {
+        return { x, y };
+    };
+
+    const setXY = function (xvalue, yvalue) {
+        [x, y] = [xvalue, yvalue];
+        return this;
+    };
+	
+	const getRowCol = function () {
+		let row = Math.floor(y / tileSize);
+		let column = Math.floor(x / tileSize);
+		return { row, column }; 	
+	};	
 
     const getScore = function () {
         return score;
     };
+	
+	const getEatPriority = function () {
+		return eatPriority;
+	}
 
     const isCollideWithWall = function (x, y, dir) {
         if (dir === 0) {
@@ -197,7 +218,16 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
     const slowDown = function () {
         speed = 20; //back to normal speed
     };
-
+	
+	const eaten = function() {
+		gameOverSound.play();
+		console.log("player eaten");
+	}
+	
+	const eatGhostPoint = function() {
+		score += 500;
+	}
+	
     const eatDot = function (x, y) {
         const row = Math.floor(y / tileSize);
         const column = Math.floor(x / tileSize);
@@ -208,12 +238,19 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
         }
         return false;
     };
+	
+	const changeEatPriority = function (num) {
+		eatPriority = num;
+		return this;
+	}
 
     const eatPowerDot = function (x, y) {
         const row = Math.floor(y / tileSize);
         const column = Math.floor(x / tileSize);
         if (map[row][column] === 3) {
             map[row][column] = 0;
+			changeEatPriority(3);
+			console.log(eatPriority);
             score += 50;
             return true;
         }
@@ -236,6 +273,10 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
             /* Set the new position if it is within the game area */
             if (gameArea.isPointInBox(x, y))
                 sprite.setXY(x, y);
+			
+			//if (eatGhost(x, y) && (updatingPlayer === SignInForm.getPlayerNum()) ) {
+				//
+			//}
 
             if (eatDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum()) ) {
                 wakaSound.play();
@@ -243,6 +284,7 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
 
             if (eatPowerDot(x, y) && (updatingPlayer === SignInForm.getPlayerNum())) {
                 powerDotSound.play();
+				console.log(eatPriority);
             }
 
             if (isCollideWithWall(x, y, direction)) {
@@ -260,6 +302,8 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
     // The methods are returned as an object here.
     return {
         move: move,
+		getXY: getXY,
+        setXY: setXY,
         stop: stop,
         speedUp: speedUp,
         slowDown: slowDown,
@@ -270,5 +314,9 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
         eatDot: eatDot,
         eatPowerDot: eatPowerDot,
         getScore: getScore,
+		getEatPriority: getEatPriority,
+		eaten: eaten,
+		getRowCol: getRowCol,
+		changeEatPriority: changeEatPriority,
     };
 };
