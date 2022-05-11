@@ -9,6 +9,8 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
             moveDown: { x: 44, y: 84 + i * 20, width: 20, height: 20, count: 2, timing: 50, loop: true }
         }
     }
+	
+	const sequencesDead = {x: 4, y: 164, width: 20, height: 20, count: 2, timing: 50, loop: true }
 
     /*
     const sequences = {
@@ -54,8 +56,10 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
 	let eatPriority = 2; //player is 1 or 3
 	
 	const eaten = function() {
-		console.log("player eaten");
-		gameOverSound.play();
+		sprite.setSequence(sequencesDead);
+		
+		//eatGhostSound.play();
+		console.log("ghost eaten");
 	}
 	
 	const getEatPriority = function () {
@@ -239,8 +243,9 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
     const scatter = function () {
         var exit = false;
         while (!exit) {
+			var r = Math.floor(Math.random() * 3);
             if (direction === 3) {
-                var r = Math.floor(Math.random() * 3);
+                //var r = Math.floor(Math.random() * 3);
                 let dir = 0;
                 switch (r) {
                     case 0:
@@ -267,7 +272,7 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
                 }
             }
             else if (direction == 1) {
-                var r = Math.floor(Math.random() * 3);
+                //var r = Math.floor(Math.random() * 3);
                 let dir = 0;
                 switch (r) {
                     case 0:
@@ -294,7 +299,7 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
                 }
             }
             else if (direction == 2) {
-                var r = Math.floor(Math.random() * 3);
+                //var r = Math.floor(Math.random() * 3);
                 let dir = 0;
                 switch (r) {
                     case 0:
@@ -321,7 +326,7 @@ const Ghost = function (ctx, x, y, colour, gameArea) {
                 }
             }
             else if (direction === 4) {
-                var r = Math.floor(Math.random() * 3);
+                //var r = Math.floor(Math.random() * 3);
                 let dir = 0;
                 switch (r) {
                     case 0:

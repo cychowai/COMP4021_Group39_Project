@@ -220,8 +220,12 @@ const Player = function (ctx, x, y, gameArea, playerNum, score) {
     };
 	
 	const eaten = function() {
-		eatGhostSound.play();
-		console.log("ghost eaten");
+		gameOverSound.play();
+		console.log("player eaten");
+	}
+	
+	const eatGhostPoint = function() {
+		score += 500;
 	}
 	
     const eatDot = function (x, y) {

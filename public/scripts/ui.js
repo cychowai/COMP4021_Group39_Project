@@ -188,6 +188,8 @@ const GamePanel = (function () {
     const totalGameTime = 120;   // Total game time in seconds (2 minutes)
     let gameStartTime = 0;
     let gameEnd = false;
+	
+	let ghostDead = [];
 
     const initialize = function () {
         /* Create the game area */
@@ -195,6 +197,7 @@ const GamePanel = (function () {
 
         for (let i = 0; i < 4; i++) {
             ghost.push(Ghost(context, 280, 280, i, gameArea));
+			ghostDead.push(false);
             ghost[i].scatterOn();
         }
 
@@ -245,25 +248,22 @@ const GamePanel = (function () {
         //sounds.background.play();
         requestAnimationFrame(doFrame);
     }
-	
-	
-	const eatGhost = function (player, ghost) {
+		
+	const eatGhost = function (player, ghost, ghostID) {
 		const player_box = player.getBoundingBox();
 		const ghost_xy = ghost.getXY();
 		if (player_box.isPointInBox(ghost_xy.x,ghost_xy.y)){
 			if (player.getEatPriority() > ghost.getEatPriority()){
 				//player eat ghost
-				console.log("player eat ghost");
-				console.log(player.getEatPriority());
-				console.log(ghost.getEatPriority());
-				player.eaten();
+				if (!ghostDead[ghostID]){
+					ghost.eaten();
+					eatGhostSound.play();
+					ghostDead[ghostID] = true;
+				}
 			}
 			else if (ghost.getEatPriority() > player.getEatPriority()){
 				//ghost eat player
-				console.log("ghost eat player");
-				console.log(player.getEatPriority());
-				console.log(ghost.getEatPriority());
-				ghost.eaten();
+				player.eaten();
 			}
 			else {
 				console.log(player.getEatPriority());
@@ -303,16 +303,18 @@ const GamePanel = (function () {
     /* The main processing of the game */
     function doFrame(now) {
         /* Update the sprites */
-        for (let i = 0; i < player.length; i++)
-            player[i].update(now, i + 1);
-
         for (let i = 0; i < ghost.length; i++)
-            ghost[i].update(now);
-		
+			if (!ghostDead[i])
+				ghost[i].update(now);
+			else if (ghostDead[i])
+				ghost[i].eaten();
+			
+		for (let i = 0; i < player.length; i++)
+            player[i].update(now, i + 1);
 	
 		for (let i = 0; i < player.length; i++) {
 			for (let j = 0; j < ghost.length; j++) {
-				eatGhost(player[i], ghost[j]);
+				eatGhost(player[i], ghost[j], j);
 			}
 		}
 
@@ -340,11 +342,11 @@ const GamePanel = (function () {
         createBoard();
 
         /* Draw the sprites */
-        for (let i = 0; i < player.length; i++)
-            player[i].draw();
-
         for (let i = 0; i < ghost.length; i++)
             ghost[i].draw();
+		
+		for (let i = 0; i < player.length; i++)
+            player[i].draw();
 
         /* print score board */
         for (let i = 0; i < player.length; i++) {
